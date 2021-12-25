@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-$(f=i8)orbkb=$h)^n!rq_86v7@uk@r+6=dnhhw9da3=v-b(ms
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["mistapp.cn","www.mistapp.cn"]
 
 
 # Application definition
