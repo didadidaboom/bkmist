@@ -28,6 +28,12 @@ class PublishView(CreateAPIView):
         serializer.is_valid(raise_exception=True)
         if request.data.get("address"):
             serializer.save(address=request.data.get("address"))
+        if request.data.get("addressName"):
+            serializer.save(addressName=request.data.get("addressName"))
+        if request.data.get("latitude"):
+            serializer.save(latitude=request.data.get("latitude"))
+        if request.data.get("longitude"):
+            serializer.save(longitude=request.data.get("longitude"))
         moment_obj = self.perform_create(serializer)
         if request.data.get("topic"):
             for topic in request.data.get("topic"):
