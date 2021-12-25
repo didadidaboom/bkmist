@@ -32,7 +32,7 @@ class UserInfo(models.Model):
     tacit_write_count = models.PositiveIntegerField(verbose_name="好友测试填写次数", default=0)
 
     class Meta:
-        db_table = "userInfo"
+        db_table = "userinfo"
         verbose_name = "话题"
         verbose_name_plural = verbose_name
 
@@ -97,7 +97,7 @@ class TopicInfo(models.Model):
     create_date = models.DateTimeField(verbose_name="话题创建时间",auto_now_add=True)
 
     class Meta:
-        db_table = "topicInfo"
+        db_table = "topicinfo"
         verbose_name = "话题"
         verbose_name_plural = verbose_name
 
