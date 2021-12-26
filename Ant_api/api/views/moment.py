@@ -70,7 +70,7 @@ class MomentDetailView(RetrieveAPIView):
             models.Moment.objects.filter(id=moment_object.id).update(viewer_count=F("viewer_count") + 1)
             return response
         viewer_object.create(viewer_user=request.user,moment=moment_object,create_time=timezone.now())
-        models.Moment.objects.filter(id=moment_object.id).update(viewer_count=F("viewer_count")+1)
+        models.Moment.objects.filter(id=moment_object.id).update(viewer_count=1)
         return response
 
 class MomentFavorView(APIView):
