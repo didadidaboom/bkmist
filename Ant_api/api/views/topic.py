@@ -15,13 +15,13 @@ class TopicView(ListAPIView,CreateAPIView):
     queryset = TopicInfo.objects
     serializer_class = TopicSerializer
     def get_queryset(self):
-        queryset_ori = TopicInfo.objects.all().order_by("-cited_count")
+        queryset_ori = TopicInfo.objects.all()
         queryset = queryset_ori
         title = self.request.query_params.get('title')
         if title is not None:
-            queryset = queryset_ori.filter(title__contains=title)
+            queryset = queryset_ori.filter(title__contains=title).order_by("-cited_count")
         else:
-            queryset = queryset[0:10]
+            queryset = queryset.order_by("-cited_count")[0:10]
         return queryset
 
 
