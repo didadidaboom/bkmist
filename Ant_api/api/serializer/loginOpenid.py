@@ -21,6 +21,8 @@ class LoginOpenidModelSerializer(serializers.ModelSerializer):
     nickName = serializers.CharField(read_only=True)
     avatarUrl = serializers.CharField(read_only=True)
     token = serializers.CharField(read_only=True)
+    real_nickName = serializers.CharField(read_only=True)
+    real_avatarUrl = serializers.CharField(read_only=True)
 
     class Meta:
         model = models.UserInfo

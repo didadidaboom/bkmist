@@ -156,7 +156,7 @@ TENCENT_SIGN = ""
 '''
 腾讯云 文件存储
 '''
-TENCENT_FILE_CONFIG = {}
+#TENCENT_FILE_CONFIG = {}
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES":["utils.auth.GeneralAuthentication",],

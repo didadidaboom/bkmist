@@ -32,7 +32,6 @@ class LoginOpenidView(APIView):
         5.如果有手机号 验证手机号
         6.返回token
         '''
-        print(11111111111111111111111)
         code = request.data.get("code")
         phone = request.data.get("phone")
         real_avatarUrl = request.data.get("real_avatarUrl")
