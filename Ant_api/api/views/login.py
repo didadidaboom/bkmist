@@ -63,7 +63,6 @@ class LoginOpenidView(APIView):
             ser = LoginOpenidwithoutPhone(data=info)
             if not ser.is_valid():
                 return Response(status=status.HTTP_400_BAD_REQUEST)
-            print("no phone")
             phone = ser.validated_data.get("phone")
             nickName = ser.validated_data.get("nickName")
             avatarUrl = ser.validated_data.get("avatarUrl")
@@ -91,7 +90,6 @@ class LoginOpenidView(APIView):
         user_object, flag = models.UserInfo.objects.get_or_create(**ser.validated_data)
         user_object.token = str(uuid.uuid4())
         user_object.save()
-        print("with phone")
         return Response({
             "nickName": nickName,
             "avatarUrl":avatarUrl,
@@ -116,7 +114,7 @@ class getAccessView(APIView):
             return Response({}, status=status.HTTP_400_BAD_REQUEST)
         data_code = {
             "scene":tacitid,
-            "page":"pages/replyTacit/replyTacit",
+            #"page":"pages/replyTacit/replyTacit",
             "width":280,
             "is_hyaline":True
         }
