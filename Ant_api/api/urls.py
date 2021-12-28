@@ -22,6 +22,8 @@ urlpatterns = [
 
     #话题相关
     url(r'^topic/$', topic.TopicView.as_view()),
+    url(r'^topicMoment/$', topic.TopicMomentView.as_view()),
+    url(r'^topicDetail/(?P<pk>\d+)/$', topic.TopicDetailView.as_view()),
 
     #发布瞬间
     url(r'^publish/$', publish.PublishView.as_view()),
