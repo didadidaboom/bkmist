@@ -63,14 +63,11 @@ class TopicDetailView(RetrieveAPIView):
     serializer_class = moment.GetMomentDetailModelSerializer
     def get(self, request, *args, **kwargs):
         response = super().get(self, request, *args, **kwargs)
-        #验证用户是否登入：登陆增加浏览记录，未登录不进行操作
-        #获取AUTHORIZATION
         if not request.user:
             return response
         topic_object = self.get_object()
         if int(topic_object.user.id) is int(request.user.id):
             return response
-        '''
         viewer_object=models.TopicViewerRecord.objects.filter(topic=topic_object,viewer_user=request.user)
         exists = viewer_object.exists()
         if exists:
@@ -79,5 +76,4 @@ class TopicDetailView(RetrieveAPIView):
             return response
         viewer_object.create(viewer_user=request.user,moment=moment_object,create_time=timezone.now(),viewer_count=1)
         models.Moment.objects.filter(id=moment_object.id).update(viewer_count=1)
-        '''
         return response

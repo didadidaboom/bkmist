@@ -103,7 +103,7 @@ class TopicInfo(models.Model):
 
 class TopicViewerRecord(models.Model):
     topic = models.ForeignKey(verbose_name="话题", to="TopicInfo",on_delete=models.CASCADE)
-    vier_user = models.ForeignKey(verbose_name="用户", to="UserInfo", on_delete=models.CASCADE)
+    viewer_user = models.ForeignKey(verbose_name="用户", to="UserInfo", on_delete=models.CASCADE)
     create_time = models.DateTimeField(verbose_name="话题浏览的时间", auto_now_add=True)
     viewer_count = models.PositiveIntegerField(verbose_name="浏览次数", default=0)
 
