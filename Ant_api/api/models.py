@@ -100,7 +100,7 @@ class TopicInfo(models.Model):
         db_table = "topicinfo"
         verbose_name = "话题"
         verbose_name_plural = verbose_name
-'''
+
 class TopicViewerRecord(models.Model):
     topic = models.ForeignKey(verbose_name="话题", to="TopicInfo",on_delete=models.CASCADE)
     user = models.ForeignKey(verbose_name="用户", to="UserInfo", null=True,blank=True,on_delete=models.SET_NULL)
@@ -111,7 +111,7 @@ class TopicViewerRecord(models.Model):
         db_table = "topic_viewer_record"
         verbose_name = "话题浏览记录"
         verbose_name_plural = verbose_name
-'''
+
 
 class TopicFocusRecord(models.Model):
     topic = models.ForeignKey(verbose_name="话题", to="TopicInfo",on_delete=models.CASCADE)
