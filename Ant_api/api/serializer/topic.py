@@ -33,9 +33,8 @@ class GetTopicDetailModelSerializer(ModelSerializer):
         if exists:
             return True
         return False
-'''
+
 class FocusTopicModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.TopicFocusRecord
-        fields = ["user"]
-'''
+        fields = ["topic"]

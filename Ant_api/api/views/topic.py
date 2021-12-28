@@ -9,7 +9,7 @@ from rest_framework import status
 
 from api.models import TopicInfo,UserInfo
 from api import models
-from api.serializer.topic import TopicSerializer
+from api.serializer.topic import TopicSerializer,FocusTopicModelSerializer
 from api.serializer import moment,topic
 
 from utils.auth import UserAuthentication,GeneralAuthentication
@@ -121,27 +121,20 @@ class FocusTopicView(APIView):
         2.验证数据
         3.判断是否存在：存在 删除；不存在 保存
         '''
-        pass
-        '''
-        serializer = FocusUserModelSerializer(data=request.data)
-        if request.data.get("user") == self.request.user.id:
-            return Response({},status=status.HTTP_204_NO_CONTENT)
+        serializer = FocusTopicModelSerializer(data=request.data)
         ser = serializer.is_valid()
         if not ser:
             return Response({},status=status.HTTP_400_BAD_REQUEST)
-        obj = models.UserFocusRecord.objects.filter(
-            user = request.data.get("user"),
-            focus_user = self.request.user
+        obj = models.TopicFocusRecord.objects.filter(
+            topic = int(request.data.get("topic")),
+            user = self.request.user.id
         )
-        user_obj = models.UserInfo.objects
+        topic_obj = models.TopicInfo.objects
         exists = obj.exists()
         if not exists:
-            serializer.save(focus_user=self.request.user)
-            user_obj.filter(id=serializer.validated_data.get("user").id).update(focused_count=F("focused_count")+1)
-            user_obj.filter(id=self.request.user.id).update(focus_count=F("focus_count")+1)
+            serializer.save(user=self.request.user)
+            topic_obj.filter(id=int(request.data.get("topic"))).update(focus_count=F("focus_count")+1)
             return Response({},status=status.HTTP_201_CREATED)
-        user_obj.filter(id=request.data.get("user")).update(focused_count=F("focused_count")-1)
-        user_obj.filter(id=self.request.user.id).update(focus_count=F("focus_count")-1)
+        topic_obj.filter(id=int(request.data.get("topic"))).update(focus_count=F("focus_count")-1)
         obj.delete()
-        '''
         return Response({}, status=status.HTTP_200_OK)
