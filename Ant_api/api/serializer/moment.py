@@ -163,7 +163,7 @@ class GetMomentDetailModelSerializer(MomentSerializer):
                 user_id = obj.user.id
                 if_status_name = "裂"
             return {"id":user_id,"nickName":nickName,"avatarUrl":avatarUrl,"if_status_name":if_status_name,"is_focused":is_focused}
-        return {"id": obj.user.id, "nickName": obj.user.nickName, "avatarUrl": obj.user.avatarUrl,"if_status_name": None}
+        return {"id": obj.user.id, "nickName": obj.user.nickName, "avatarUrl": obj.user.avatarUrl,"if_status_name": None,"is_focused":is_focused}
         #return model_to_dict(obj.user, fields=['id', 'nickName', 'avatarUrl'])
 
     def get_topic(self,obj):

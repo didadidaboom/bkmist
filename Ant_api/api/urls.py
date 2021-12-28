@@ -22,8 +22,12 @@ urlpatterns = [
 
     #话题相关
     url(r'^topic/$', topic.TopicView.as_view()),
-    url(r'^topicMoment/$', topic.TopicMomentView.as_view()),
+    url(r'^topicMomentTime/$', topic.TopicMomentTimeView.as_view()),
+    url(r'^topicMomentHotView/$', topic.TopicMomentHotViewView.as_view()),
+    url(r'^topicMomentHotComment/$', topic.TopicMomentHotCommentView.as_view()),
+    url(r'^topicMomentHotFavor/$', topic.TopicMomentHotFavorView.as_view()),
     url(r'^topicDetail/(?P<pk>\d+)/$', topic.TopicDetailView.as_view()),
+    url(r'^focusTopic/$', topic.FocusTopicView.as_view()),
 
     #发布瞬间
     url(r'^publish/$', publish.PublishView.as_view()),

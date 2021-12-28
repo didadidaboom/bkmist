@@ -2,6 +2,7 @@ from django.db.models import F
 from django.utils import timezone
 from django.forms.models import model_to_dict
 
+from rest_framework.views import APIView
 from rest_framework.generics import ListAPIView,CreateAPIView,RetrieveAPIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -9,7 +10,7 @@ from rest_framework import status
 from api.models import TopicInfo,UserInfo
 from api import models
 from api.serializer.topic import TopicSerializer
-from api.serializer import moment
+from api.serializer import moment,topic
 
 from utils.auth import UserAuthentication,GeneralAuthentication
 from utils import pagination,filter
@@ -43,24 +44,58 @@ class TopicView(ListAPIView,CreateAPIView):
         return Response(serializer.data,status=status.HTTP_201_CREATED,headers=headers)
 
 
-class TopicMomentView(ListAPIView):
+class TopicMomentTimeView(ListAPIView):
     serializer_class = moment.GetMomentModelSerializer
     pagination_class = pagination.Pagination
     filter_backends = [filter.MinFilterBackend,filter.MaxFilterBackend]
 
     def get_queryset(self):
         topic_id = self.request.query_params.get("topic_id")
-        print(topic_id)
         cited_obj = models.TopicCitedRecord.objects.filter(topic_id=int(topic_id)).all()
         moment_list = [obj.moment_id for obj in cited_obj]
-        print(moment_list)
         queryset = models.Moment.objects.filter(moment_status=0,id__in=moment_list).all().order_by('-id')
+        return queryset
+
+class TopicMomentHotViewView(ListAPIView):
+    serializer_class = moment.GetMomentModelSerializer
+    pagination_class = pagination.Pagination
+    filter_backends = [filter.MinFilterBackend,filter.MaxFilterBackend]
+
+    def get_queryset(self):
+        topic_id = self.request.query_params.get("topic_id")
+        cited_obj = models.TopicCitedRecord.objects.filter(topic_id=int(topic_id)).all()
+        moment_list = [obj.moment_id for obj in cited_obj]
+        queryset = models.Moment.objects.filter(moment_status=0,id__in=moment_list).all().order_by('-viewer_count')
+        return queryset
+
+class TopicMomentHotCommentView(ListAPIView):
+    serializer_class = moment.GetMomentModelSerializer
+    pagination_class = pagination.Pagination
+    filter_backends = [filter.MinFilterBackend,filter.MaxFilterBackend]
+
+    def get_queryset(self):
+        topic_id = self.request.query_params.get("topic_id")
+        cited_obj = models.TopicCitedRecord.objects.filter(topic_id=int(topic_id)).all()
+        moment_list = [obj.moment_id for obj in cited_obj]
+        queryset = models.Moment.objects.filter(moment_status=0,id__in=moment_list).all().order_by('-comment_count')
+        return queryset
+
+class TopicMomentHotFavorView(ListAPIView):
+    serializer_class = moment.GetMomentModelSerializer
+    pagination_class = pagination.Pagination
+    filter_backends = [filter.MinFilterBackend,filter.MaxFilterBackend]
+
+    def get_queryset(self):
+        topic_id = self.request.query_params.get("topic_id")
+        cited_obj = models.TopicCitedRecord.objects.filter(topic_id=int(topic_id)).all()
+        moment_list = [obj.moment_id for obj in cited_obj]
+        queryset = models.Moment.objects.filter(moment_status=0,id__in=moment_list).all().order_by('-favor_count')
         return queryset
 
 class TopicDetailView(RetrieveAPIView):
     queryset = models.TopicInfo.objects
     authentication_classes = [GeneralAuthentication,]
-    serializer_class = moment.GetMomentDetailModelSerializer
+    serializer_class = topic.GetTopicDetailModelSerializer
     def get(self, request, *args, **kwargs):
         response = super().get(self, request, *args, **kwargs)
         if not request.user:
@@ -72,8 +107,41 @@ class TopicDetailView(RetrieveAPIView):
         exists = viewer_object.exists()
         if exists:
             viewer_object.update(viewer_count=F("viewer_count")+1,create_time=timezone.now())
-            models.Moment.objects.filter(id=moment_object.id).update(viewer_count=F("viewer_count") + 1)
+            models.TopicInfo.objects.filter(id=topic_object.id).update(viewer_count=F("viewer_count") + 1)
             return response
-        viewer_object.create(viewer_user=request.user,moment=moment_object,create_time=timezone.now(),viewer_count=1)
-        models.Moment.objects.filter(id=moment_object.id).update(viewer_count=1)
+        viewer_object.create(viewer_user=request.user,topic=topic_object,create_time=timezone.now(),viewer_count=1)
+        models.TopicInfo.objects.filter(id=topic_object.id).update(viewer_count=1)
         return response
+
+class FocusTopicView(APIView):
+    authentication_classes = [UserAuthentication,]
+    def post(self, request, *args, **kwargs):
+        '''
+        1.判断关注的用户是否是本人
+        2.验证数据
+        3.判断是否存在：存在 删除；不存在 保存
+        '''
+        pass
+        '''
+        serializer = FocusUserModelSerializer(data=request.data)
+        if request.data.get("user") == self.request.user.id:
+            return Response({},status=status.HTTP_204_NO_CONTENT)
+        ser = serializer.is_valid()
+        if not ser:
+            return Response({},status=status.HTTP_400_BAD_REQUEST)
+        obj = models.UserFocusRecord.objects.filter(
+            user = request.data.get("user"),
+            focus_user = self.request.user
+        )
+        user_obj = models.UserInfo.objects
+        exists = obj.exists()
+        if not exists:
+            serializer.save(focus_user=self.request.user)
+            user_obj.filter(id=serializer.validated_data.get("user").id).update(focused_count=F("focused_count")+1)
+            user_obj.filter(id=self.request.user.id).update(focus_count=F("focus_count")+1)
+            return Response({},status=status.HTTP_201_CREATED)
+        user_obj.filter(id=request.data.get("user")).update(focused_count=F("focused_count")-1)
+        user_obj.filter(id=self.request.user.id).update(focus_count=F("focus_count")-1)
+        obj.delete()
+        '''
+        return Response({}, status=status.HTTP_200_OK)
