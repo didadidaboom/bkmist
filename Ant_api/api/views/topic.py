@@ -42,7 +42,7 @@ class TopicView(ListAPIView,CreateAPIView):
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data,status=status.HTTP_201_CREATED,headers=headers)
 
-'''
+
 class TopicMomentView(ListAPIView):
     serializer_class = moment.GetMomentModelSerializer
     pagination_class = pagination.Pagination
@@ -70,6 +70,7 @@ class TopicDetailView(RetrieveAPIView):
         topic_object = self.get_object()
         if int(topic_object.user.id) is int(request.user.id):
             return response
+        '''
         viewer_object=models.TopicViewerRecord.objects.filter(topic=topic_object,viewer_user=request.user)
         exists = viewer_object.exists()
         if exists:
@@ -78,5 +79,5 @@ class TopicDetailView(RetrieveAPIView):
             return response
         viewer_object.create(viewer_user=request.user,moment=moment_object,create_time=timezone.now(),viewer_count=1)
         models.Moment.objects.filter(id=moment_object.id).update(viewer_count=1)
+        '''
         return response
-'''
