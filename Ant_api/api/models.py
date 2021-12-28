@@ -100,10 +100,10 @@ class TopicInfo(models.Model):
         db_table = "topicinfo"
         verbose_name = "话题"
         verbose_name_plural = verbose_name
-'''
+
 class TopicViewerRecord(models.Model):
     topic = models.ForeignKey(verbose_name="话题", to="TopicInfo",on_delete=models.CASCADE)
-    user = models.ForeignKey(verbose_name="用户", to="UserInfo", null=True,blank=True,on_delete=models.SET_NULL)
+    vier_user = models.ForeignKey(verbose_name="用户", to="UserInfo", on_delete=models.CASCADE)
     create_time = models.DateTimeField(verbose_name="话题浏览的时间", auto_now_add=True)
     viewer_count = models.PositiveIntegerField(verbose_name="浏览次数", default=0)
 
@@ -111,7 +111,6 @@ class TopicViewerRecord(models.Model):
         db_table = "topic_viewer_record"
         verbose_name = "话题浏览记录"
         verbose_name_plural = verbose_name
-'''
 
 class TopicFocusRecord(models.Model):
     topic = models.ForeignKey(verbose_name="话题", to="TopicInfo",on_delete=models.CASCADE)
