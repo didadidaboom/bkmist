@@ -51,11 +51,16 @@ class TopicMomentTimeView(ListAPIView):
 
     def get_queryset(self):
         topic_id = self.request.query_params.get("topic_id")
+        queryset = models.Moment.objects.filter(moment_status=0,topiccitedrecord__topic=int(topic_id)).all().order_by('-id')
+        return queryset
+    '''
+    def get_queryset(self):
+        topic_id = self.request.query_params.get("topic_id")
         cited_obj = models.TopicCitedRecord.objects.filter(topic_id=int(topic_id)).all()
         moment_list = [obj.moment_id for obj in cited_obj]
         queryset = models.Moment.objects.filter(moment_status=0,id__in=moment_list).all().order_by('-id')
         return queryset
-
+    '''
 class TopicMomentHotViewView(ListAPIView):
     serializer_class = moment.GetMomentModelSerializer
     pagination_class = pagination.Pagination
@@ -63,11 +68,16 @@ class TopicMomentHotViewView(ListAPIView):
 
     def get_queryset(self):
         topic_id = self.request.query_params.get("topic_id")
+        queryset = models.Moment.objects.filter(moment_status=0,topiccitedrecord__topic=int(topic_id)).all().order_by('-viewer_count')
+        return queryset
+    '''
+    def get_queryset(self):
+        topic_id = self.request.query_params.get("topic_id")
         cited_obj = models.TopicCitedRecord.objects.filter(topic_id=int(topic_id)).all()
         moment_list = [obj.moment_id for obj in cited_obj]
         queryset = models.Moment.objects.filter(moment_status=0,id__in=moment_list).all().order_by('-viewer_count')
         return queryset
-
+    '''
 class TopicMomentHotCommentView(ListAPIView):
     serializer_class = moment.GetMomentModelSerializer
     pagination_class = pagination.Pagination
@@ -75,11 +85,16 @@ class TopicMomentHotCommentView(ListAPIView):
 
     def get_queryset(self):
         topic_id = self.request.query_params.get("topic_id")
+        queryset = models.Moment.objects.filter(moment_status=0,topiccitedrecord__topic=int(topic_id)).all().order_by('-comment_count')
+        return queryset
+    '''
+    def get_queryset(self):
+        topic_id = self.request.query_params.get("topic_id")
         cited_obj = models.TopicCitedRecord.objects.filter(topic_id=int(topic_id)).all()
         moment_list = [obj.moment_id for obj in cited_obj]
         queryset = models.Moment.objects.filter(moment_status=0,id__in=moment_list).all().order_by('-comment_count')
         return queryset
-
+    '''
 class TopicMomentHotFavorView(ListAPIView):
     serializer_class = moment.GetMomentModelSerializer
     pagination_class = pagination.Pagination
@@ -87,11 +102,16 @@ class TopicMomentHotFavorView(ListAPIView):
 
     def get_queryset(self):
         topic_id = self.request.query_params.get("topic_id")
+        queryset = models.Moment.objects.filter(moment_status=0,topiccitedrecord__topic=int(topic_id)).all().order_by('-favor_count')
+        return queryset
+    '''
+    def get_queryset(self):
+        topic_id = self.request.query_params.get("topic_id")
         cited_obj = models.TopicCitedRecord.objects.filter(topic_id=int(topic_id)).all()
         moment_list = [obj.moment_id for obj in cited_obj]
         queryset = models.Moment.objects.filter(moment_status=0,id__in=moment_list).all().order_by('-favor_count')
         return queryset
-
+    '''
 class TopicDetailView(RetrieveAPIView):
     queryset = models.TopicInfo.objects
     authentication_classes = [GeneralAuthentication,]

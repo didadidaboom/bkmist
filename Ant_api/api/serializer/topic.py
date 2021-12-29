@@ -38,3 +38,16 @@ class FocusTopicModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.TopicFocusRecord
         fields = ["topic"]
+
+class FocusMomentTopicModelSerializer(serializers.ModelSerializer):
+    topic_id = serializers.SerializerMethodField(read_only=True)
+    topic_title = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = models.TopicFocusRecord
+        fields = ["topic_id","topic_title"]
+    def get_topic_id(self,obj):
+        return obj.topic.id
+    def get_topic_title(self,obj):
+        return obj.topic.title
+

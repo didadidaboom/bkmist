@@ -4,9 +4,9 @@ from rest_framework.generics import ListAPIView,CreateAPIView,RetrieveAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from django.db.models import F
+from django.db.models import Q,F
 
-from api.serializer import moment
+from api.serializer import moment,topic
 from api.models import Moment
 from api import models
 from utils import filter,pagination
@@ -47,6 +47,31 @@ class MomentView(ListAPIView):
     pagination_class = pagination.Pagination
     filter_backends = [filter.MinFilterBackend,filter.MaxFilterBackend]
 
+class FocusMomentView(ListAPIView):
+    serializer_class = moment.GetMomentModelSerializer
+    pagination_class = pagination.Pagination
+    filter_backends = [filter.MinFilterBackend,filter.MaxFilterBackend]
+    authentication_classes = [UserAuthentication,]
+    def get_queryset(self):
+        topic_obj = models.TopicFocusRecord.objects.filter(user=self.request.user).all()
+        queryset = models.Moment.objects.filter(
+            moment_status=0,if_status=0
+        ).filter(
+            ~Q(user_id=self.request.user.id)
+        ).filter(
+            Q(user__user_focus__focus_user_id=self.request.user.id)
+        ).all().distinct().order_by('-id')
+        return queryset
+
+class FocusMomentTopicView(ListAPIView):
+    serializer_class = topic.FocusMomentTopicModelSerializer
+    authentication_classes = [UserAuthentication,]
+    def get_queryset(self):
+        queryset = models.TopicFocusRecord.objects.filter(user=self.request.user).all().order_by("-id")
+        return queryset
+
+
+#Q(user__topicfocusrecord__topic_id__in = [22,])
 class MomentDetailView(RetrieveAPIView):
     '''
     获取单条瞬间详细
