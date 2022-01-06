@@ -164,9 +164,6 @@ REST_FRAMEWORK = {
     "UNAUTHENTICATED_TOKEN": None,
 }
 
-#tacit reply choices
-TACITREPLY_MAX_FAVOR_COUNT_IF_STATUS = 5
-
 from rest_framework.exceptions import ValidationError
 try:
     from Ant_api.local_settings import *

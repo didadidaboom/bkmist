@@ -1,4 +1,5 @@
 from django.utils import timezone
+from django.conf import settings
 
 from rest_framework.generics import ListAPIView,CreateAPIView,RetrieveAPIView
 from rest_framework.views import APIView
@@ -55,7 +56,10 @@ class FocusMomentView(ListAPIView):
     def get_queryset(self):
         topic_obj = models.TopicFocusRecord.objects.filter(user=self.request.user).all()
         queryset = models.Moment.objects.filter(
-            moment_status=0,if_status=0
+            moment_status=0
+        ).filter(Q(if_status=0)|Q(
+            Q(favor_count__gt = settings.MAX_FAVOR_COUNT_IF_STATUS)|
+            Q(comment_count__gt = settings.MAX_COMMENT_COUNT_IF_STATUS))
         ).filter(
             ~Q(user_id=self.request.user.id)
         ).filter(
