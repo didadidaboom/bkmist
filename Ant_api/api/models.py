@@ -145,6 +145,7 @@ class AddressFocusRecord(models.Model):
         verbose_name_plural = verbose_name
 
 class AddressGeohash(models.Model):
+    address = models.ForeignKey(verbose_name="address",to="Address",related_name="addressGeo",on_delete=models.CASCADE)
     location = GeohashField(null=True)
     objects = GeoManager()
 
@@ -158,7 +159,7 @@ class Address(models.Model):
     addressName = models.CharField(verbose_name="瞬间发布的位置名称", max_length=100, null=True, blank=True)
     latitude = models.CharField(verbose_name="纬度", max_length=100, null=True, blank=True)
     longitude = models.CharField(verbose_name="经度", max_length=100, null=True, blank=True)
-    addressGeohash = models.ForeignKey(verbose_name="Geohash",to="AddressGeohash",related_name="addressGeo",on_delete=models.CASCADE)
+    #addressGeohash = models.ForeignKey(verbose_name="Geohash",to="AddressGeohash",related_name="addressGeo",on_delete=models.CASCADE)
     moment = models.ForeignKey(verbose_name="瞬间的ID", to="Moment", related_name="address",
                                on_delete=models.CASCADE)
 
