@@ -42,21 +42,21 @@ class PublishView(CreateAPIView):
         latitude = addressList.get("latitude")
         longitude = addressList.get("longitude")
         if (latitude is not None) and (longitude is not None):
-            geohash_obj = models.AddressGeohash.objects.create(location=(float(latitude),float(longitude)))
+            #geohash_obj = models.AddressGeohash.objects.create(location=(float(latitude),float(longitude)))
             if address:
                 if addressName:
                     models.Address.objects.create(moment=moment_obj,address=address,addressName=addressName,
-                                                  latitude=latitude,longitude=longitude,addressGeohash=geohash_obj)
+                                                  latitude=latitude,longitude=longitude)#,addressGeohash=geohash_obj)
                 else:
                     models.Address.objects.create(moment=moment_obj,address=address, latitude=latitude,
-                                                  longitude=longitude,addressGeohash=geohash_obj)
+                                                  longitude=longitude)#,addressGeohash=geohash_obj)
             else:
                 if addressName:
                     models.Address.objects.create(moment=moment_obj,addressName=addressName,latitude=latitude,
-                                                  longitude=longitude,addressGeohash=geohash_obj)
+                                                  longitude=longitude)#,addressGeohash=geohash_obj)
                 else:
-                    models.Address.objects.create(moment=moment_obj, latitude=latitude, longitude=longitude,
-                                                                addressGeohash=geohash_obj)
+                    models.Address.objects.create(moment=moment_obj, latitude=latitude, longitude=longitude)#,
+                                                                #addressGeohash=geohash_obj)
         if request.data.get("topic"):
             for topic in request.data.get("topic"):
                 TopicCitedRecord.objects.create(
