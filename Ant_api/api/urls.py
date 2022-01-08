@@ -2,7 +2,7 @@
 from django.conf.urls import url
 from api import views
 from api.views import autho
-from api.views import topic
+from api.views import topic,address
 from api.views import publish
 from api.views import moment
 from api.views import comment
@@ -28,6 +28,11 @@ urlpatterns = [
     url(r'^topicMomentHotFavor/$', topic.TopicMomentHotFavorView.as_view()),
     url(r'^topicDetail/(?P<pk>\d+)/$', topic.TopicDetailView.as_view()),
     url(r'^focusTopic/$', topic.FocusTopicView.as_view()),
+
+    #位置相关
+    url(r'^addressDetail/(?P<pk>\d+)/$', address.AddressDetailView.as_view()),
+    url(r'^addressMomentsDistance/$', address.AddressMomentDistanceView.as_view()),
+    url(r'^focusAddress/$', address.FocusAddressView.as_view()),
 
     #发布瞬间
     url(r'^publish/$', publish.PublishView.as_view()),

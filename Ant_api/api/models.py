@@ -133,6 +133,32 @@ class TopicCitedRecord(models.Model):
         verbose_name = "话题引用记录"
         verbose_name_plural = verbose_name
 
+class AddressFocusRecord(models.Model):
+    address = models.ForeignKey(verbose_name="位置", to="Address",on_delete=models.CASCADE)
+    user = models.ForeignKey(verbose_name="用户", to="UserInfo", on_delete=models.CASCADE)
+    create_time = models.DateTimeField(verbose_name="关注的时间", auto_now_add=True)
+
+    class Meta:
+        db_table = "address_focus_record"
+        verbose_name = "位置关注记录"
+        verbose_name_plural = verbose_name
+
+class Address(models.Model):
+    '''
+    位置
+    '''
+    address = models.CharField(verbose_name="瞬间发布的位置", max_length=100, null=True, blank=True)
+    addressName = models.CharField(verbose_name="瞬间发布的位置名称", max_length=100, null=True, blank=True)
+    latitude = models.CharField(verbose_name="纬度", max_length=100, null=True, blank=True)
+    longitude = models.CharField(verbose_name="经度", max_length=100, null=True, blank=True)
+    moment = models.ForeignKey(verbose_name="瞬间的ID", to="Moment", related_name="address",
+                               on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = "moment_address"
+        verbose_name="位置"
+        verbose_name_plural=verbose_name
+
 class Moment(models.Model):
     '''
     瞬间
@@ -167,21 +193,6 @@ class Moment(models.Model):
         db_table = "moment"
         verbose_name = "瞬间"
         verbose_name_plural = verbose_name
-
-class Address(models.Model):
-    '''
-    位置
-    '''
-    address = models.CharField(verbose_name="瞬间发布的位置", max_length=100, null=True, blank=True)
-    addressName = models.CharField(verbose_name="瞬间发布的位置名称", max_length=100, null=True, blank=True)
-    latitude = models.CharField(verbose_name="纬度", max_length=100, null=True, blank=True)
-    longitude = models.CharField(verbose_name="经度", max_length=100, null=True, blank=True)
-    moment = models.ForeignKey(verbose_name="瞬间的ID", to="Moment", related_name="address",
-                               on_delete=models.CASCADE)
-    class Meta:
-        db_table = "moment_address"
-        verbose_name="位置"
-        verbose_name_plural=verbose_name
 
 class MomentDetail(models.Model):
     '''
