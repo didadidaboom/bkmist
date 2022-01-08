@@ -45,18 +45,24 @@ class PublishView(CreateAPIView):
             geohash_obj = models.AddressGeohash.objects.create(location=(float(latitude),float(longitude)))
             if address:
                 if addressName:
-                    models.Address.objects.create(moment=moment_obj,address=address,addressName=addressName,
-                                                  latitude=latitude,longitude=longitude,addressGeohash=geohash_obj)
+                    address_obj = models.Address.objects.create(moment=moment_obj,address=address,addressName=addressName,
+                                                  latitude=latitude,longitude=longitude)
+                    models.AddressGeohash.objects.create(address=address_obj,location=(float(latitude), float(longitude)))
                 else:
-                    models.Address.objects.create(moment=moment_obj,address=address, latitude=latitude,
-                                                  longitude=longitude,addressGeohash=geohash_obj)
+                    address_obj = models.Address.objects.create(moment=moment_obj,address=address, latitude=latitude,
+                                                  longitude=longitude)
+                    models.AddressGeohash.objects.create(address=address_obj,
+                                                         location=(float(latitude), float(longitude)))
             else:
                 if addressName:
-                    models.Address.objects.create(moment=moment_obj,addressName=addressName,latitude=latitude,
-                                                  longitude=longitude,addressGeohash=geohash_obj)
+                    address_obj = models.Address.objects.create(moment=moment_obj,addressName=addressName,latitude=latitude,
+                                                  longitude=longitude)
+                    models.AddressGeohash.objects.create(address=address_obj,
+                                                         location=(float(latitude), float(longitude)))
                 else:
-                    models.Address.objects.create(moment=moment_obj, latitude=latitude, longitude=longitude,
-                                                                addressGeohash=geohash_obj)
+                    address_obj = models.Address.objects.create(moment=moment_obj, latitude=latitude, longitude=longitude)
+                    models.AddressGeohash.objects.create(address=address_obj,
+                                                         location=(float(latitude), float(longitude)))
 
         if request.data.get("topic"):
             for topic in request.data.get("topic"):
