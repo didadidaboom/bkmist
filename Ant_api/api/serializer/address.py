@@ -40,8 +40,7 @@ class FocusMomentAddressModelSerializer(ModelSerializer):
         model = models.AddressFocusRecord
         fields = ["address_id","address_title"]
     def get_address_id(self,obj):
-        #return obj.address.id
-        return None
+        return obj.address.id
     def get_address_title(self,obj):
         if obj.address.addressName:
             address = obj.address.addressName
