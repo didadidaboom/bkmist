@@ -41,7 +41,6 @@ class PublishView(CreateAPIView):
         addressName = addressList.get("addressName")
         latitude = addressList.get("latitude")
         longitude = addressList.get("longitude")
-
         if (latitude is not None) and (longitude is not None):
             geohash_obj = models.AddressGeohash.objects.create(location=(float(latitude),float(longitude)))
             if address:

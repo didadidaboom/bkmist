@@ -1,7 +1,6 @@
 from django.db.models import F
 from django.utils import timezone
 from django.forms.models import model_to_dict
-import logging
 
 from rest_framework.views import APIView
 from rest_framework.generics import RetrieveAPIView,ListAPIView
@@ -13,7 +12,6 @@ from api.serializer import moment,address
 
 from utils.auth import GeneralAuthentication,UserAuthentication
 from utils import pagination,filter
-logger = logging.getLogger(__name__)
 
 class AddressDetailView(RetrieveAPIView):
     queryset = models.Address.objects
