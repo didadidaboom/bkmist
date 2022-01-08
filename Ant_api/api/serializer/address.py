@@ -110,7 +110,34 @@ class GetAddressMomentModelSerializer(ModelSerializer):
                     else:
                         moment["create_date"] = str(second) + "秒前"
 
+            #is_favor
+            request = self.context.get("request")
+            if not request.user:
+                moment["is_favor"] = False
+            else:
+                momentfavor_object = models.MomentFavorRecord.objects.filter(user=request.user, moment=item["moment_id"])
+                exists = momentfavor_object.exists()
+                if exists:
+                    moment["is_favor"] = True
+                else:
+                    moment["is_favor"] = False
 
+            #address
+            exist = models.Address.objects.filter(moment=item["moment_id"]).exists()
+            if not exist:
+                moment["address"] = None
+            else:
+                address_obj = models.Address.objects.filter(moment=item["moment_id"]).first()
+                if address_obj.addressName:
+                    address = address_obj.addressName
+                    moment["address"] = {"id": address_obj.id, "name": address}
+                elif address_obj.address:
+                    address = address_obj.address
+                    moment["address"] = {"id": address_obj.id, "name": address}
+                else:
+                    address = None
+                    moment["address"] =  None
+            
             moment["content"]=item["moment__content"]
             moment["favor_count"] = item["moment__favor_count"]
             moment["viewer_count"] = item["moment__viewer_count"]
