@@ -45,6 +45,7 @@ class GetAddressMomentModelSerializer(ModelSerializer):
             "moment__user",
             "moment__user__nickName",
             "moment__user__avatarUrl",
+            "moment__create_date",
             "moment__content",
             "moment__favor_count",
             "moment__viewer_count",
