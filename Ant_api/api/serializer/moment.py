@@ -49,13 +49,18 @@ class GetMomentModelSerializer(MomentSerializer):
         #fields = ["id","content","topic","address","user","create_date","imageList"]
 
     def get_address(self,obj):
-        if obj.addressName:
-            address = obj.addressName
-        elif obj.address:
-            address = obj.address
+        exist = models.Address.objects.filter(moment=obj).exists()
+        if not exist:
+            return None
+        address_obj = models.Address.objects.filter(moment=obj).first()
+        if address_obj.addressName:
+            address = address_obj.addressName
+        elif address_obj.address:
+            address = address_obj.address
         else:
             address = None
-        return address
+            return None
+        return {"id":address_obj.id,"name":address}
 
     def get_user(self,obj):
         if obj.if_status:
@@ -132,14 +137,19 @@ class GetMomentDetailModelSerializer(MomentSerializer):
         model = Moment
         fields = "__all__"
 
-    def get_address(self,obj):
-        if obj.addressName:
-            address = obj.addressName
-        elif obj.address:
-            address = obj.address
+    def get_address(self, obj):
+        exist = models.Address.objects.filter(moment=obj).exists()
+        if not exist:
+            return None
+        address_obj = models.Address.objects.filter(moment=obj).first()
+        if address_obj.addressName:
+            address = address_obj.addressName
+        elif address_obj.address:
+            address = address_obj.address
         else:
             address = None
-        return address
+            return None
+        return {"id": address_obj.id, "name": address}
 
     def get_user(self,obj):
         #判断是否已经被关注

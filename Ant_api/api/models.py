@@ -139,10 +139,10 @@ class Moment(models.Model):
     '''
     content = models.CharField(verbose_name="瞬间内容",max_length=255)
     #topic = models.ForeignKey(verbose_name="话题",to="TopicInfo", null=True,blank=True,on_delete=models.SET_NULL)
-    address = models.CharField(verbose_name="瞬间发布的位置",max_length=100,null=True,blank=True)
-    addressName = models.CharField(verbose_name="瞬间发布的位置名称", max_length=100, null=True, blank=True)
-    latitude = models.CharField(verbose_name="纬度", max_length=100, null=True, blank=True)
-    longitude = models.CharField(verbose_name="经度", max_length=100, null=True, blank=True)
+    #address = models.CharField(verbose_name="瞬间发布的位置",max_length=100,null=True,blank=True)
+    #addressName = models.CharField(verbose_name="瞬间发布的位置名称", max_length=100, null=True, blank=True)
+    #latitude = models.CharField(verbose_name="纬度", max_length=100, null=True, blank=True)
+    #longitude = models.CharField(verbose_name="经度", max_length=100, null=True, blank=True)
     user = models.ForeignKey(verbose_name="用户",to="UserInfo",related_name="user_moment",null=True,blank=True,on_delete=models.CASCADE)
 
     favor_count = models.PositiveIntegerField(verbose_name="点赞数",default=0)
@@ -167,6 +167,21 @@ class Moment(models.Model):
         db_table = "moment"
         verbose_name = "瞬间"
         verbose_name_plural = verbose_name
+
+class Address(models.Model):
+    '''
+    位置
+    '''
+    address = models.CharField(verbose_name="瞬间发布的位置", max_length=100, null=True, blank=True)
+    addressName = models.CharField(verbose_name="瞬间发布的位置名称", max_length=100, null=True, blank=True)
+    latitude = models.CharField(verbose_name="纬度", max_length=100, null=True, blank=True)
+    longitude = models.CharField(verbose_name="经度", max_length=100, null=True, blank=True)
+    moment = models.ForeignKey(verbose_name="瞬间的ID", to="Moment", related_name="address",
+                               on_delete=models.CASCADE)
+    class Meta:
+        db_table = "moment_address"
+        verbose_name="位置"
+        verbose_name_plural=verbose_name
 
 class MomentDetail(models.Model):
     '''

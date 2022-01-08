@@ -7,10 +7,9 @@ class PublishSerializer(serializers.ModelSerializer):
     """瞬间发布的序列化器"""
     imageList = MomentDetailSerializer(many=True)
 
-
     class Meta:
         model = Moment
-        fields = ["id","address","addressName","latitude","longitude","content","if_status","moment_status","imageList"]
+        fields = ["id","content","if_status","moment_status","imageList"]
         extra_kwargs = {
             'content':{'required':True}
         }
