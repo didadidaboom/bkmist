@@ -80,8 +80,37 @@ class GetAddressMomentModelSerializer(ModelSerializer):
             else:
                 topic_obj = models.TopicCitedRecord.objects.filter(moment=item["moment_id"]).all()
                 moment["topic"] = [model_to_dict(row.topic, fields=['id', 'title']) for row in topic_obj]
-            
-            moment["create_date"]=item["moment__create_date"]
+
+            #imagelist
+            query_details = models.MomentDetail.objects.filter(moment=item["moment_id"])
+            moment["imageList"] = [model_to_dict(row, fields=["id", "path", "path_key"]) for row in query_details]
+
+            #create date
+            create_date = item["moment__create_date"]
+            a = create_date
+            b = create_date.now()
+            delta = b - a
+            second = delta.seconds
+            minute_ori = second / 60
+            minute_ceil = ceil(minute_ori)
+            minute_floor = floor(minute_ori)
+            hour_ori = minute_ori / 60
+            hour_ceil = ceil(hour_ori)
+            hour_floor = floor(hour_ori)
+            day_ori = delta.days
+            day = day_ori + 1
+            if (day_ori):
+                moment["create_date"] = str(day) + "天前"
+            else:
+                if (hour_ori > 1):
+                    moment["create_date"] = str(hour_ceil) + "小时前"
+                else:
+                    if (minute_ori > 1):
+                        moment["create_date"] = str(minute_ceil) + "分钟前"
+                    else:
+                        moment["create_date"] = str(second) + "秒前"
+
+
             moment["content"]=item["moment__content"]
             moment["favor_count"] = item["moment__favor_count"]
             moment["viewer_count"] = item["moment__viewer_count"]
