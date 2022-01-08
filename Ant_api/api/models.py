@@ -149,14 +149,11 @@ class AddressGeohash(models.Model):
     objects = GeoManager()
 
     class Meta:
-        db_table = "moment_address_geohash"
+        db_table = "address_geohash"
         verbose_name = "位置geohash"
         verbose_name_plural = verbose_name
 
 class Address(models.Model):
-    '''
-    位置
-    '''
     address = models.CharField(verbose_name="瞬间发布的位置", max_length=100, null=True, blank=True)
     addressName = models.CharField(verbose_name="瞬间发布的位置名称", max_length=100, null=True, blank=True)
     latitude = models.CharField(verbose_name="纬度", max_length=100, null=True, blank=True)
@@ -166,7 +163,7 @@ class Address(models.Model):
                                on_delete=models.CASCADE)
 
     class Meta:
-        db_table = "moment_address"
+        db_table = "address"
         verbose_name="位置"
         verbose_name_plural=verbose_name
 

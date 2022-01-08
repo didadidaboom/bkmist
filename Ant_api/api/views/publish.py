@@ -41,6 +41,7 @@ class PublishView(CreateAPIView):
         addressName = addressList.get("addressName")
         latitude = addressList.get("latitude")
         longitude = addressList.get("longitude")
+
         if (latitude is not None) and (longitude is not None):
             geohash_obj = models.AddressGeohash.objects.create(location=(float(latitude),float(longitude)))
             if address:
@@ -57,6 +58,7 @@ class PublishView(CreateAPIView):
                 else:
                     models.Address.objects.create(moment=moment_obj, latitude=latitude, longitude=longitude,
                                                                 addressGeohash=geohash_obj)
+
         if request.data.get("topic"):
             for topic in request.data.get("topic"):
                 TopicCitedRecord.objects.create(
