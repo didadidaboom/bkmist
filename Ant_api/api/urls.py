@@ -32,6 +32,7 @@ urlpatterns = [
     #位置相关
     url(r'^addressDetail/(?P<pk>\d+)/$', address.AddressDetailView.as_view()),
     url(r'^addressMomentsDistance/$', address.AddressMomentDistanceView.as_view()),
+    url(r'^addressMomentsTime/$', address.AddressMomentTimeView.as_view()),
     url(r'^focusAddress/$', address.FocusAddressView.as_view()),
 
     #发布瞬间
