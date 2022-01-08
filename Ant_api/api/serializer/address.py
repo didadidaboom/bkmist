@@ -33,7 +33,7 @@ class GetAddressMomentModelSerializer(ModelSerializer):
         fields="__all__"
 
     def get_moment_list(self,obj):
-        address_query = models.Address.objects.filter(addressGeohash=obj).order_by('-id')
+        address_query = models.Address.objects.filter(addressGeo=obj).order_by('-id')
         address_query.values(
             "moment_id",
         )
