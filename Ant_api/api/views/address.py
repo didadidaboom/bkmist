@@ -13,6 +13,7 @@ from api.serializer import moment,address
 
 from utils.auth import GeneralAuthentication,UserAuthentication
 from utils import pagination,filter
+logger = logging.getLogger(__name__)
 
 class AddressDetailView(RetrieveAPIView):
     queryset = models.Address.objects
@@ -27,8 +28,8 @@ class AddressMomentDistanceView(ListAPIView):
     def get_queryset(self):
         address_id = self.request.query_params.get("address_id")
         address_obj = models.Address.objects.get(id=address_id)
+        logger.debug("11111111111111111111111")
         geohash = address_obj.addressGeohash.location
-        logging.debug("11111111111111111111111111111111")
         address_geohash_obj = models.AddressGeohash.objects.filter(
             location__distance_lt=((float(geohash.point.lat),float(geohash.point.lon)),10.0)
         ).order_by_distance()
