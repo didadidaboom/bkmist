@@ -53,5 +53,5 @@ class GetAddressMomentModelSerializer(ModelSerializer):
         request = self.context.get("request")
         #if not request.user:
         #moment_list = collections.OrderedDict()
-        return address_query.values()
+        return address_query
 
