@@ -137,7 +137,7 @@ class GetAddressMomentModelSerializer(ModelSerializer):
                 else:
                     address = None
                     moment["address"] =  None
-            
+
             moment["content"]=item["moment__content"]
             moment["favor_count"] = item["moment__favor_count"]
             moment["viewer_count"] = item["moment__viewer_count"]
