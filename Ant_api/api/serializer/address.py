@@ -24,3 +24,21 @@ class FocusAddressModelSerializer(ModelSerializer):
     class Meta:
         model = models.AddressFocusRecord
         fields = ["address"]
+
+class GetAddressMomentModelSerializer(ModelSerializer):
+    moment_list = serializers.SerializerMethodField()
+
+    class Meta:
+        model = models.AddressGeohash
+        fields="__all__"
+
+    def get_moment_list(self,obj):
+        address_query = models.Address.objects.filter(addressGeohash=obj).order_by('-id')
+        address_query.values(
+            "id",
+            "address",
+            "addressName",
+            "moment_id",
+        )
+        return address_query
+

@@ -19,19 +19,16 @@ class AddressDetailView(RetrieveAPIView):
     serializer_class = address.GetAddressDetailModelSerializer
 
 class AddressMomentDistanceView(ListAPIView):
-    serializer_class = moment.GetMomentModelSerializer
+    serializer_class = address.GetAddressMomentModelSerializer
     pagination_class = pagination.Pagination
     filter_backends = [filter.MinFilterBackend,filter.MaxFilterBackend]
 
     def get_queryset(self):
         address_id = self.request.query_params.get("address_id")
         address_obj = models.Address.objects.get(id=address_id)
-        address_geohash_obj = models.AddressGeohash.objects.filter(
+        queryset = models.AddressGeohash.objects.filter(
             location__distance_lt=((float(address_obj.latitude), float(address_obj.longitude)), 10.0)
         ).order_by_distance()
-        queryset = models.Moment.objects.filter(moment_status=0,
-                                                address__addressGeohash__in=address_geohash_obj
-                                                ).all()
         return queryset
 
 class AddressMomentTimeView(ListAPIView):
