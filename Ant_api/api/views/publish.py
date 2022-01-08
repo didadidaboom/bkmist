@@ -44,18 +44,18 @@ class PublishView(CreateAPIView):
         if (latitude is not None) and (longitude is not None):
             if address:
                 if addressName:
-                    models.Address.objects.create(moment=moment_obj,address=address,addressName=addressName,
+                    address_obj = models.Address.objects.create(moment=moment_obj,address=address,addressName=addressName,
                                                   latitude=latitude,longitude=longitude)
                 else:
-                    models.Address.objects.create(moment=moment_obj,address=address, latitude=latitude,
+                    address_obj = models.Address.objects.create(moment=moment_obj,address=address, latitude=latitude,
                                                   longitude=longitude)
             else:
                 if addressName:
-                    models.Address.objects.create(moment=moment_obj,addressName=addressName,latitude=latitude,
+                    address_obj = models.Address.objects.create(moment=moment_obj,addressName=addressName,latitude=latitude,
                                                   longitude=longitude)
                 else:
-                    models.Address.objects.create(moment=moment_obj, latitude=latitude, longitude=longitude)
-
+                    address_obj = models.Address.objects.create(moment=moment_obj, latitude=latitude, longitude=longitude)
+            address_obj.location = (float(latitude),float(longitude))
         if request.data.get("topic"):
             for topic in request.data.get("topic"):
                 TopicCitedRecord.objects.create(

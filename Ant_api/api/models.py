@@ -1,6 +1,7 @@
 import datetime
 
 from django.db import models
+from utils.geo import GeohashField, GeoManager
 
 '''
 CASCADE: When the referenced object is deleted, also delete the objects that have references to it
@@ -151,6 +152,7 @@ class Address(models.Model):
     addressName = models.CharField(verbose_name="瞬间发布的位置名称", max_length=100, null=True, blank=True)
     latitude = models.CharField(verbose_name="纬度", max_length=100, null=True, blank=True)
     longitude = models.CharField(verbose_name="经度", max_length=100, null=True, blank=True)
+    location = GeohashField()
     moment = models.ForeignKey(verbose_name="瞬间的ID", to="Moment", related_name="address",
                                on_delete=models.CASCADE)
 
