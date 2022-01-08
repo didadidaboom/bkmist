@@ -1,3 +1,7 @@
+import datetime
+from math import floor, ceil
+import collections
+
 from rest_framework.serializers import ModelSerializer
 from rest_framework import serializers
 
@@ -36,6 +40,20 @@ class GetAddressMomentModelSerializer(ModelSerializer):
         address_query = models.Address.objects.filter(addressGeo=obj).order_by('-id')
         address_query = address_query.values(
             "moment_id",
+            "moment__user",
+            "moment__create_date",
+            "moment__content",
+            "moment__favor_count",
+            "moment__viewer_count",
+            "moment__comment_count",
+            "moment__share_count",
+            "moment__if_status",
+            "moment__moment_status"
         )
+        request = self.context.get("request")
+        #if not request.user:
+        #    #moment_list = collections.OrderedDict()
+        #    #for item in address_query:
+        address_query["is_favor"] = False
         return address_query
 
