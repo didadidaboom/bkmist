@@ -133,7 +133,7 @@ class TopicCitedRecord(models.Model):
         db_table = "topic_cited_record"
         verbose_name = "话题引用记录"
         verbose_name_plural = verbose_name
-
+'''
 class AddressFocusRecord(models.Model):
     address = models.ForeignKey(verbose_name="位置", to="Address",on_delete=models.CASCADE)
     user = models.ForeignKey(verbose_name="用户", to="UserInfo", on_delete=models.CASCADE)
@@ -166,7 +166,7 @@ class Address(models.Model):
         db_table = "address"
         verbose_name="位置"
         verbose_name_plural=verbose_name
-
+'''
 class Moment(models.Model):
     '''
     瞬间

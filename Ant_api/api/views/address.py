@@ -13,7 +13,7 @@ from api.serializer import address
 
 from utils.auth import GeneralAuthentication,UserAuthentication
 from utils import pagination,filter
-
+'''
 class AddressDetailView(RetrieveAPIView):
     queryset = models.Address.objects
     authentication_classes = [GeneralAuthentication,]
@@ -32,11 +32,6 @@ class AddressMomentDistanceView(ListAPIView):
 class FocusAddressView(APIView):
     authentication_classes = [UserAuthentication,]
     def post(self, request, *args, **kwargs):
-        '''
-        1.判断关注的用户是否是本人
-        2.验证数据
-        3.判断是否存在：存在 删除；不存在 保存
-        '''
         serializer = address.FocusAddressModelSerializer(data=request.data)
         ser = serializer.is_valid()
         if not ser:
@@ -51,3 +46,4 @@ class FocusAddressView(APIView):
             return Response({},status=status.HTTP_201_CREATED)
         obj.delete()
         return Response({}, status=status.HTTP_200_OK)
+'''
