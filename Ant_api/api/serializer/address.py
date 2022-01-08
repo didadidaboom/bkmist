@@ -73,7 +73,6 @@ class GetAddressMomentModelSerializer(ModelSerializer):
                 moment["user"]={"id": item["moment__user"], "nickName": item["moment__user__nickName"], "avatarUrl": item["moment__user__avatarUrl"],
                     "if_status_name": None}
 
-            moment["user"] = item["moment__user"]
             moment["create_date"]=item["moment__create_date"]
             moment["content"]=item["moment__content"]
             moment["favor_count"] = item["moment__favor_count"]
