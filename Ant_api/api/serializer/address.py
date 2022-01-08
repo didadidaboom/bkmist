@@ -87,5 +87,5 @@ class GetAddressMomentModelSerializer(ModelSerializer):
             moment["if_status"] = item["moment__if_status"]
             moment["moment_status"] = item["moment__moment_status"]
             moment_list[item["moment_id"]]=moment
-        return moment_list.values()[0]
+        return moment_list.values()
 
