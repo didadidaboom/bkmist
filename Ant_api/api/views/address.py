@@ -13,7 +13,7 @@ from api.serializer import address
 
 from utils.auth import GeneralAuthentication,UserAuthentication
 from utils import pagination,filter
-'''
+
 class AddressDetailView(RetrieveAPIView):
     queryset = models.Address.objects
     authentication_classes = [GeneralAuthentication,]
@@ -46,4 +46,3 @@ class FocusAddressView(APIView):
             return Response({},status=status.HTTP_201_CREATED)
         obj.delete()
         return Response({}, status=status.HTTP_200_OK)
-'''

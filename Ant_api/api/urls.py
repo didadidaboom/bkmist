@@ -30,9 +30,9 @@ urlpatterns = [
     url(r'^focusTopic/$', topic.FocusTopicView.as_view()),
 
     #位置相关
-    #url(r'^addressDetail/(?P<pk>\d+)/$', address.AddressDetailView.as_view()),
-    #url(r'^addressMomentsDistance/$', address.AddressMomentDistanceView.as_view()),
-    #url(r'^focusAddress/$', address.FocusAddressView.as_view()),
+    url(r'^addressDetail/(?P<pk>\d+)/$', address.AddressDetailView.as_view()),
+    url(r'^addressMomentsDistance/$', address.AddressMomentDistanceView.as_view()),
+    url(r'^focusAddress/$', address.FocusAddressView.as_view()),
 
     #发布瞬间
     url(r'^publish/$', publish.PublishView.as_view()),
