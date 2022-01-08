@@ -2,6 +2,7 @@ import datetime
 from math import floor, ceil
 import collections
 from django.conf import settings
+from django.forms.models import model_to_dict
 
 from rest_framework.serializers import ModelSerializer
 from rest_framework import serializers
@@ -72,7 +73,14 @@ class GetAddressMomentModelSerializer(ModelSerializer):
             else:
                 moment["user"]={"id": item["moment__user"], "nickName": item["moment__user__nickName"], "avatarUrl": item["moment__user__avatarUrl"],
                     "if_status_name": None}
-
+            #topic
+            exist = models.TopicCitedRecord.objects.filter(moment=item["moment_id"]).exists()
+            if not exist:
+                moment["topic"] = {}
+            else:
+                topic_obj = models.TopicCitedRecord.objects.filter(moment=item["moment_id"]).all()
+                moment["topic"] = [model_to_dict(row.topic, fields=['id', 'title']) for row in topic_obj]
+            
             moment["create_date"]=item["moment__create_date"]
             moment["content"]=item["moment__content"]
             moment["favor_count"] = item["moment__favor_count"]
