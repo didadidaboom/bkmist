@@ -144,6 +144,15 @@ class AddressFocusRecord(models.Model):
         verbose_name = "位置关注记录"
         verbose_name_plural = verbose_name
 
+class AddressGeohash(models.Model):
+    location = GeohashField(null=True)
+    objects = GeoManager()
+
+    class Meta:
+        db_table = "moment_address_geohash"
+        verbose_name = "位置geohash"
+        verbose_name_plural = verbose_name
+
 class Address(models.Model):
     '''
     位置
@@ -160,15 +169,6 @@ class Address(models.Model):
         db_table = "moment_address"
         verbose_name="位置"
         verbose_name_plural=verbose_name
-
-class AddressGeohash(models.Model):
-    location = GeohashField(null=True)
-    objects = GeoManager()
-
-    class Meta:
-        db_table = "moment_address_geohash"
-        verbose_name = "位置geohash"
-        verbose_name_plural = verbose_name
 
 class Moment(models.Model):
     '''
