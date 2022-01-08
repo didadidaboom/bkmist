@@ -40,5 +40,5 @@ class GetAddressMomentModelSerializer(ModelSerializer):
             "addressName",
             "moment_id",
         )
-        return address_query
+        return address_query.values()
 
