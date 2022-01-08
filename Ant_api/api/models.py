@@ -153,6 +153,7 @@ class Address(models.Model):
     latitude = models.CharField(verbose_name="纬度", max_length=100, null=True, blank=True)
     longitude = models.CharField(verbose_name="经度", max_length=100, null=True, blank=True)
     location = GeohashField(null=True)
+    objects = GeoManager()
     moment = models.ForeignKey(verbose_name="瞬间的ID", to="Moment", related_name="address",
                                on_delete=models.CASCADE)
 
