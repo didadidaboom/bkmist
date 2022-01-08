@@ -55,7 +55,7 @@ class PublishView(CreateAPIView):
                                                   longitude=longitude)
                 else:
                     address_obj = models.Address.objects.create(moment=moment_obj, latitude=latitude, longitude=longitude)
-            address_obj.location = (float(latitude),float(longitude))
+            #address_obj.location = (float(latitude),float(longitude))
         if request.data.get("topic"):
             for topic in request.data.get("topic"):
                 TopicCitedRecord.objects.create(
