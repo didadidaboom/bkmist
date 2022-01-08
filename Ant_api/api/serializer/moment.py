@@ -71,9 +71,6 @@ class GetMomentModelSerializer(ModelSerializer):
             if obj.favor_count > settings.MAX_FAVOR_COUNT_IF_STATUS:
                 user_id = obj.user.id
                 if_status_name = "裂"
-            if obj.comment_count > settings.MAX_COMMENT_COUNT_IF_STATUS:
-                user_id = obj.user.id
-                if_status_name = "裂"
             return {"id":user_id,"nickName":nickName,"avatarUrl":avatarUrl,"if_status_name":if_status_name}
         return {"id":obj.user.id,"nickName":obj.user.nickName,"avatarUrl":obj.user.avatarUrl,"if_status_name":None}
 
@@ -169,9 +166,6 @@ class GetMomentDetailModelSerializer(MomentSerializer):
             if obj.favor_count > settings.MAX_FAVOR_COUNT_IF_STATUS:
                 user_id = obj.user.id
                 if_status_name = "裂"
-            if obj.comment_count > settings.MAX_COMMENT_COUNT_IF_STATUS:
-                user_id = obj.user.id
-                if_status_name = "裂"
             return {"id":user_id,"nickName":nickName,"avatarUrl":avatarUrl,"if_status_name":if_status_name,"is_focused":is_focused}
         return {"id": obj.user.id, "nickName": obj.user.nickName, "avatarUrl": obj.user.avatarUrl,"if_status_name": None,"is_focused":is_focused}
         #return model_to_dict(obj.user, fields=['id', 'nickName', 'avatarUrl'])
@@ -258,16 +252,6 @@ class GetMomentDetailModelSerializer(MomentSerializer):
                                 }
                     else:
                         if obj.favor_count > settings.MAX_FAVOR_COUNT_IF_STATUS:
-                            item["status"] = {
-                                "comment_status_user_id": item["user_id"],
-                                "comment_status_name": "裂"
-                            }
-                        if obj.comment_count > settings.MAX_COMMENT_COUNT_IF_STATUS:
-                            item["status"] = {
-                                "comment_status_user_id": item["user_id"],
-                                "comment_status_name": "裂"
-                            }
-                        if obj.viewer_count > settings.MAX_VIEWER_IF_STATUS:
                             item["status"] = {
                                 "comment_status_user_id": item["user_id"],
                                 "comment_status_name": "裂"
@@ -373,11 +357,6 @@ class GetMomentDetailModelSerializer(MomentSerializer):
                             }
                 else:
                     if obj.favor_count > settings.MAX_FAVOR_COUNT_IF_STATUS:
-                        item["status"] = {
-                            "comment_status_user_id": item["user_id"],
-                            "comment_status_name": "裂"
-                        }
-                    if obj.comment_count > settings.MAX_COMMENT_COUNT_IF_STATUS:
                         item["status"] = {
                             "comment_status_user_id": item["user_id"],
                             "comment_status_name": "裂"

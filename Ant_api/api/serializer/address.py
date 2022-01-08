@@ -60,16 +60,12 @@ class GetAddressMomentModelSerializer(ModelSerializer):
         for item in address_query:
             moment["id"] = item["moment_id"]
             #user
-
             if item["moment__if_status"]:
                 nickName = getRandomName()
                 avatarUrl = getMosaic()
                 if_status_name = '条'
                 user_id = None
-                if obj.favor_count > settings.MAX_FAVOR_COUNT_IF_STATUS:
-                    user_id = item["moment__user"]
-                    if_status_name = "裂"
-                if obj.comment_count > settings.MAX_COMMENT_COUNT_IF_STATUS:
+                if item["moment__favor_count"] > settings.MAX_FAVOR_COUNT_IF_STATUS:
                     user_id = item["moment__user"]
                     if_status_name = "裂"
                 moment["user"]={"id": user_id, "nickName": nickName, "avatarUrl": avatarUrl, "if_status_name": if_status_name}
