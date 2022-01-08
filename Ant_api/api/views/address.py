@@ -28,7 +28,7 @@ class AddressMomentDistanceView(ListAPIView):
         address_obj = models.Address.objects.get(id=address_id)
         geohash = address_obj.addressGeohash.location
         address_geohash_obj = models.AddressGeohash.objects.filter(
-            location__distance_lt=((geohash.point.latitude,geohash.point.longitude),10.0)
+            location__distance_lt=((float(geohash.point.latitude),float(geohash.point.longitude)),10.0)
         ).order_by_distance()
         queryset = models.Moment.objects.filter(moment_status=0,
                                                 address__addressGeohash__in=address_geohash_obj
