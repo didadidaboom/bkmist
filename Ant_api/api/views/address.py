@@ -8,8 +8,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from api import models
-from api.serializer import moment
-from api.serializer import address
+from api.serializer import moment,address
 
 from utils.auth import GeneralAuthentication,UserAuthentication
 from utils import pagination,filter
@@ -28,11 +27,11 @@ class AddressMomentDistanceView(ListAPIView):
         address_id = self.request.query_params.get("address_id")
         address_obj = models.Address.objects.get(id=address_id)
         address_geohash_obj = models.AddressGeohash.objects.filter(
-            location__approx_distance_lt=((float(address_obj.latitude),float(address_obj.longitude)),10.0)
-        )
+            location__distance_lt=((float(address_obj.latitude),float(address_obj.longitude)),10.0)
+        ).order_by_distance()
         queryset = models.Moment.objects.filter(moment_status=0,
                                                 address__addressGeohash__in=address_geohash_obj
-                                                ).all().order_by('-id')
+                                                ).all()
         return queryset
 
 class AddressMomentTimeView(ListAPIView):
@@ -44,7 +43,7 @@ class AddressMomentTimeView(ListAPIView):
         address_id = self.request.query_params.get("address_id")
         address_obj = models.Address.objects.get(id=address_id)
         address_geohash_obj = models.AddressGeohash.objects.filter(
-            location__approx_distance_lt=((float(address_obj.latitude),float(address_obj.longitude)),10.0)
+            location__distance_lt=((float(address_obj.latitude),float(address_obj.longitude)),10.0)
         )
         queryset = models.Moment.objects.filter(moment_status=0,
                                                 address__addressGeohash__in=address_geohash_obj
