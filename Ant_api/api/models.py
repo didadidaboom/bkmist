@@ -152,7 +152,7 @@ class Address(models.Model):
     addressName = models.CharField(verbose_name="瞬间发布的位置名称", max_length=100, null=True, blank=True)
     latitude = models.CharField(verbose_name="纬度", max_length=100, null=True, blank=True)
     longitude = models.CharField(verbose_name="经度", max_length=100, null=True, blank=True)
-    #location = GeohashField()
+    location = GeohashField(null=True)
     moment = models.ForeignKey(verbose_name="瞬间的ID", to="Moment", related_name="address",
                                on_delete=models.CASCADE)
 
