@@ -52,7 +52,19 @@ class GetAddressMomentModelSerializer(ModelSerializer):
         )
         request = self.context.get("request")
         #if not request.user:
+        moment = {}
         moment_list = collections.OrderedDict()
-
-        return address_query[0]
+        for item in address_query:
+            moment["id"] = item["moment_id"]
+            moment["user"]=item["moment__user"]
+            moment["create_date"]=item["moment__create_date"]
+            moment["content"]=item["moment__content"]
+            moment["favor_count"] = item["moment__favor_count"]
+            moment["viewer_count"] = item["moment__viewer_count"]
+            moment["comment_count"] = item["moment__comment_count"]
+            moment["share_count"] = item["moment__share_count"]
+            moment["if_status"] = item["moment__if_status"]
+            moment["moment_status"] = item["moment__moment_status"]
+            moment_list[item["id"]]=moment
+        return moment_list.values()
 
