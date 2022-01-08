@@ -40,7 +40,8 @@ class FocusMomentAddressModelSerializer(ModelSerializer):
         model = models.AddressFocusRecord
         fields = ["address_id","address_title"]
     def get_address_id(self,obj):
-        return obj.address.id
+        #return obj.address.id
+        return None
     def get_address_title(self,obj):
         if obj.address.addressName:
             address = obj.address.addressName
@@ -48,7 +49,8 @@ class FocusMomentAddressModelSerializer(ModelSerializer):
             address = obj.address.address
         else:
             address = None
-        return address
+        #return address
+        return None
 
 class GetAddressMomentModelSerializer(ModelSerializer):
     moment_list = serializers.SerializerMethodField()
