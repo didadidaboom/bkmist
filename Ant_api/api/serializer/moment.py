@@ -33,7 +33,7 @@ class MomentSerializer(ModelSerializer):
         return moment
 
 
-class GetMomentModelSerializer(MomentSerializer):
+class GetMomentModelSerializer(ModelSerializer):
     '''首页第一次加载时 瞬间的序列化器'''
     user = serializers.SerializerMethodField()
     topic = serializers.SerializerMethodField()
