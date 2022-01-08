@@ -7,7 +7,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from django.db.models import Q,F
 
-from api.serializer import moment,topic
+from api.serializer import moment,topic,address
 from api.models import Moment
 from api import models
 from utils import filter,pagination
@@ -74,6 +74,12 @@ class FocusMomentTopicView(ListAPIView):
         queryset = models.TopicFocusRecord.objects.filter(user=self.request.user).all().order_by("-id")
         return queryset
 
+class FocusMomentAddressView(ListAPIView):
+    serializer_class = address.FocusMomentAddressModelSerializer
+    authentication_classes = [UserAuthentication,]
+    def get_queryset(self):
+        queryset = models.AddressFocusRecord.objects.filter(user=self.request.user).all().order_by("-id")
+        return queryset
 
 #Q(user__topicfocusrecord__topic_id__in = [22,])
 class MomentDetailView(RetrieveAPIView):

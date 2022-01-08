@@ -41,6 +41,7 @@ urlpatterns = [
     url(r'^moment/$', moment.MomentView.as_view()),
     url(r'^FocusMoment/$', moment.FocusMomentView.as_view()),
     url(r'^FocusMomentTopic/$', moment.FocusMomentTopicView.as_view()),
+    url(r'^FocusMomentAddress/$', moment.FocusMomentAddressView.as_view()),
     url(r'^momentDetail/(?P<pk>\d+)/$', moment.MomentDetailView.as_view()),
     #url(r'^momentDetail/$', views.MomentDetailView.as_view()),
     url(r'^momentFavor/$', moment.MomentFavorView.as_view()),
