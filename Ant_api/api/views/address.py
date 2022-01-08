@@ -1,6 +1,7 @@
 from django.db.models import F
 from django.utils import timezone
 from django.forms.models import model_to_dict
+import logging
 
 from rest_framework.views import APIView
 from rest_framework.generics import RetrieveAPIView,ListAPIView
@@ -27,6 +28,7 @@ class AddressMomentDistanceView(ListAPIView):
         address_id = self.request.query_params.get("address_id")
         address_obj = models.Address.objects.get(id=address_id)
         geohash = address_obj.addressGeohash.location
+        logging.debug("11111111111111111111111111111111")
         address_geohash_obj = models.AddressGeohash.objects.filter(
             location__distance_lt=((float(geohash.point.lat),float(geohash.point.lon)),10.0)
         ).order_by_distance()
