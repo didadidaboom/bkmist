@@ -27,11 +27,11 @@ class AddressMomentDistanceView(ListAPIView):
     def get_queryset(self):
         address_id = self.request.query_params.get("address_id")
         address_obj = models.Address.objects.get(id=address_id)
-        #address_geohash_obj = models.AddressGeohash.objects.filter(
-        #    location__approx_distance_lt=((address_obj.latitude,address_obj.longitude),10)
-        #)
-        queryset = models.Moment.objects.filter(moment_status=0, 
-                                                address__addressGeohash__location__approx_distance_lt=((address_obj.latitude,address_obj.longitude),10)
+        address_geohash_obj = models.AddressGeohash.objects.filter(
+            location__approx_distance_lt=((address_obj.latitude,address_obj.longitude),10)
+        )
+        queryset = models.Moment.objects.filter(moment_status=0,
+                                                address__addressGeohash__in=address_geohash_obj
                                                 ).all().order_by('-id')
         return queryset
 
