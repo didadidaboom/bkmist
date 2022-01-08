@@ -30,12 +30,12 @@ class GetAddressMomentModelSerializer(ModelSerializer):
 
     class Meta:
         model = models.AddressGeohash
-        fields="__all__"
+        fields=["moment_list"]
 
     def get_moment_list(self,obj):
         address_query = models.Address.objects.filter(addressGeo=obj).order_by('-id')
-        address_query.values(
+        address_query = address_query.values(
             "moment_id",
         )
-        return address_query.values()
+        return address_query
 
