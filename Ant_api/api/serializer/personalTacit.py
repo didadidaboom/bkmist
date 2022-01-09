@@ -144,4 +144,4 @@ class PersonalTacitReplyModelSerializer(serializers.ModelSerializer):
 class PersonalTacitRelyFavorSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.TacitReplyFavorRecord
-        exclude = ["user"]
+        fields=["tacitReplyRecord"]
