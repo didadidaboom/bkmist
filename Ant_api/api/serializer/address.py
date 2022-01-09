@@ -86,7 +86,7 @@ class GetAddressMomentModelSerializer(ModelSerializer):
                     if_status_name = "裂"
                 moment["user"]={"id": user_id, "nickName": nickName, "avatarUrl": avatarUrl, "if_status_name": if_status_name}
             else:
-                
+
                 moment["user"]={"id": item["momentciteaddressrecord__moment__user_id"],
                                 "nickName": item["momentciteaddressrecord__moment__user__nickName"],
                                 "avatarUrl": item["momentciteaddressrecord__moment__user__avatarUrl"],

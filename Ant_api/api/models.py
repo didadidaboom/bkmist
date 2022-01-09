@@ -215,7 +215,7 @@ class MomentDetail(models.Model):
 
 class MomentCiteAddressRecord(models.Model):
     address = models.ForeignKey(verbose_name="位置", to="Address",on_delete=models.CASCADE)
-    moment = models.ForeignKey(verbose_name="瞬间", to="Moment",on_delete=models.CASCADE)
+    moment = models.ForeignKey(verbose_name="瞬间", to="Moment", related_name="momentciteaddr",on_delete=models.CASCADE)
 
     class Meta:
         db_table = "moment_cite_address_record"
