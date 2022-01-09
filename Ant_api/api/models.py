@@ -159,9 +159,6 @@ class Address(models.Model):
     addressName = models.CharField(verbose_name="瞬间发布的位置名称", max_length=100, null=True, blank=True)
     latitude = models.CharField(verbose_name="纬度", max_length=100, null=True, blank=True)
     longitude = models.CharField(verbose_name="经度", max_length=100, null=True, blank=True)
-    #addressGeohash = models.ForeignKey(verbose_name="Geohash",to="AddressGeohash",related_name="addressGeo",on_delete=models.CASCADE)
-    moment = models.ForeignKey(verbose_name="瞬间的ID", to="Moment", related_name="address",
-                               on_delete=models.CASCADE)
 
     class Meta:
         db_table = "address"
@@ -215,6 +212,15 @@ class MomentDetail(models.Model):
         db_table = "moment_detail"
         verbose_name="瞬间图片"
         verbose_name_plural=verbose_name
+
+class MomentCitedAddressRecord(models.Model):
+    address = models.ForeignKey(verbose_name="位置", to="Address",on_delete=models.CASCADE)
+    moment = models.ForeignKey(verbose_name="瞬间", to="Moment",on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = "moment_cited_address_record"
+        verbose_name = "瞬间引用坐标记录"
+        verbose_name_plural = verbose_name
 
 class MomentViewerRecord(models.Model):
     '''
