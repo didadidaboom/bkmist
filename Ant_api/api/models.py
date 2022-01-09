@@ -213,12 +213,12 @@ class MomentDetail(models.Model):
         verbose_name="瞬间图片"
         verbose_name_plural=verbose_name
 
-class MomentCitedAddressRecord(models.Model):
+class MomentCiteAddressRecord(models.Model):
     address = models.ForeignKey(verbose_name="位置", to="Address",on_delete=models.CASCADE)
     moment = models.ForeignKey(verbose_name="瞬间", to="Moment",on_delete=models.CASCADE)
 
     class Meta:
-        db_table = "moment_cited_address_record"
+        db_table = "moment_cite_address_record"
         verbose_name = "瞬间引用坐标记录"
         verbose_name_plural = verbose_name
 
