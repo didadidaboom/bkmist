@@ -14,18 +14,19 @@ class PersonalMomentModelSerializer(serializers.ModelSerializer):
         fields = ["id","content","create_date","imageList","address","topic","if_status","moment_status"]
 
     def get_address(self, obj):
-        exist = models.Address.objects.filter(moment=obj).exists()
+        address_obj_ori = models.MomentCiteAddressRecord.objects.filter(moment=obj)
+        exist = address_obj_ori.exists()
         if not exist:
             return None
-        address_obj = models.Address.objects.filter(moment=obj).first()
-        if address_obj.addressName:
-            address = address_obj.addressName
-        elif address_obj.address:
-            address = address_obj.address
+        address_obj = address_obj_ori.first()
+        if address_obj.address.addressName:
+            address = address_obj.address.addressName
+        elif address_obj.address.address:
+            address = address_obj.address.address
         else:
             address = None
             return None
-        return {"id": address_obj.id, "name": address}
+        return {"id": address_obj.address.id, "name": address}
 
     def get_topic(self,obj):
         exist = models.TopicCitedRecord.objects.filter(moment=obj).exists()
