@@ -77,7 +77,7 @@ class personalTacitReplyFavorView(APIView):
         '''
         serializer = PersonalTacitRelyFavorSerializer(data=request.data)
         if not serializer.is_valid():
-            return Response({},status=status.HTTP_400_BAD_REQUEST)
+            return Response({},status=status.HTTP_303_BAD_REQUEST)
         tacitReplyRecord_object = serializer.validated_data.get("tacitReplyRecord")
         if tacitReplyRecord_object.user.id is request.user.id:
             return Response({},status=status.HTTP_204_NO_CONTENT)
