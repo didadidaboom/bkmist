@@ -86,10 +86,10 @@ class GetAddressMomentModelSerializer(ModelSerializer):
                     if_status_name = "裂"
                 moment["user"]={"id": user_id, "nickName": nickName, "avatarUrl": avatarUrl, "if_status_name": if_status_name}
             else:
-
+                user_obj = models.UserInfo.objects.filter(id=item["momentciteaddressrecord__moment__user_id"]).first()
                 moment["user"]={"id": item["momentciteaddressrecord__moment__user_id"],
-                                "nickName": item["momentciteaddressrecord__moment__user__nickName"],
-                                "avatarUrl": item["momentciteaddressrecord__moment__user__avatarUrl"],
+                                "nickName": user_obj.nickName,
+                                "avatarUrl": user_obj.avatarUrl,
                                 "if_status_name": None}
             #topic
             topic_cite_obj_ori = models.TopicCitedRecord.objects.filter(moment=item["momentciteaddressrecord__moment_id"])
