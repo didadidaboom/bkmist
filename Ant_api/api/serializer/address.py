@@ -59,51 +59,53 @@ class GetAddressMomentModelSerializer(ModelSerializer):
     def get_moment_list(self,obj):
         address_query = models.Address.objects.filter(addressGeo=obj).order_by('-id')
         address_query = address_query.values(
-            "moment_id",
-            "moment__user",
-            "moment__user__nickName",
-            "moment__user__avatarUrl",
-            "moment__create_date",
-            "moment__content",
-            "moment__favor_count",
-            "moment__viewer_count",
-            "moment__comment_count",
-            "moment__share_count",
-            "moment__if_status",
-            "moment__moment_status"
+            "momentciteaddressrecord__moment_id",
+            "momentciteaddressrecord__moment__user_id",
+            "momentciteaddressrecord__moment__create_date",
+            "momentciteaddressrecord__moment__content",
+            "momentciteaddressrecord__moment__favor_count",
+            "momentciteaddressrecord__moment__viewer_count",
+            "momentciteaddressrecord__moment__comment_count",
+            "momentciteaddressrecord__moment__share_count",
+            "momentciteaddressrecord__moment__if_status",
+            "momentciteaddressrecord__moment__moment_status",
         )
         request = self.context.get("request")
         moment = {}
         moment_list = collections.OrderedDict()
         for item in address_query:
-            moment["id"] = item["moment_id"]
+            moment["id"] = item["momentciteaddressrecord__moment_id"]
             #user
-            if item["moment__if_status"]:
+            if item["momentciteaddressrecord__moment__if_status"]:
                 nickName = getRandomName()
                 avatarUrl = getMosaic()
                 if_status_name = '条'
                 user_id = None
-                if item["moment__favor_count"] > settings.MAX_FAVOR_COUNT_IF_STATUS:
-                    user_id = item["moment__user"]
+                if item["momentciteaddressrecord__moment__favor_count"] > settings.MAX_FAVOR_COUNT_IF_STATUS:
+                    user_id = item["momentciteaddressrecord__moment__user_id"]
                     if_status_name = "裂"
                 moment["user"]={"id": user_id, "nickName": nickName, "avatarUrl": avatarUrl, "if_status_name": if_status_name}
             else:
-                moment["user"]={"id": item["moment__user"], "nickName": item["moment__user__nickName"], "avatarUrl": item["moment__user__avatarUrl"],
-                    "if_status_name": None}
+                
+                moment["user"]={"id": item["momentciteaddressrecord__moment__user_id"],
+                                "nickName": item["momentciteaddressrecord__moment__user__nickName"],
+                                "avatarUrl": item["momentciteaddressrecord__moment__user__avatarUrl"],
+                                "if_status_name": None}
             #topic
-            exist = models.TopicCitedRecord.objects.filter(moment=item["moment_id"]).exists()
+            topic_cite_obj_ori = models.TopicCitedRecord.objects.filter(moment=item["momentciteaddressrecord__moment_id"])
+            exist = topic_cite_obj_ori.exists()
             if not exist:
                 moment["topic"] = {}
             else:
-                topic_obj = models.TopicCitedRecord.objects.filter(moment=item["moment_id"]).all()
+                topic_obj = topic_cite_obj_ori.all()
                 moment["topic"] = [model_to_dict(row.topic, fields=['id', 'title']) for row in topic_obj]
 
             #imagelist
-            query_details = models.MomentDetail.objects.filter(moment=item["moment_id"])
+            query_details = models.MomentDetail.objects.filter(moment=item["momentciteaddressrecord__moment_id"])
             moment["imageList"] = [model_to_dict(row, fields=["id", "path", "path_key"]) for row in query_details]
 
             #create date
-            create_date = item["moment__create_date"]
+            create_date = item["momentciteaddressrecord__moment__create_date"]
             a = create_date
             b = create_date.now()
             delta = b - a
@@ -132,7 +134,7 @@ class GetAddressMomentModelSerializer(ModelSerializer):
             if not request.user:
                 moment["is_favor"] = False
             else:
-                momentfavor_object = models.MomentFavorRecord.objects.filter(user=request.user, moment=item["moment_id"])
+                momentfavor_object = models.MomentFavorRecord.objects.filter(user=request.user, moment=item["momentciteaddressrecord__moment_id"])
                 exists = momentfavor_object.exists()
                 if exists:
                     moment["is_favor"] = True
@@ -140,28 +142,29 @@ class GetAddressMomentModelSerializer(ModelSerializer):
                     moment["is_favor"] = False
 
             #address
-            exist = models.Address.objects.filter(moment=item["moment_id"]).exists()
+            m_a_obj_ori = models.MomentCiteAddressRecord.objects.filter(moment=item["momentciteaddressrecord__moment_id"])
+            exist = m_a_obj_ori.exists()
             if not exist:
                 moment["address"] = None
             else:
-                address_obj = models.Address.objects.filter(moment=item["moment_id"]).first()
-                if address_obj.addressName:
-                    address = address_obj.addressName
-                    moment["address"] = {"id": address_obj.id, "name": address}
-                elif address_obj.address:
-                    address = address_obj.address
-                    moment["address"] = {"id": address_obj.id, "name": address}
+                m_a_obj = m_a_obj_ori.first()
+                if m_a_obj.address.addressName:
+                    address = m_a_obj.address.addressName
+                    moment["address"] = {"id": m_a_obj.address.id, "name": address}
+                elif m_a_obj.address.address:
+                    address = m_a_obj.address.address
+                    moment["address"] = {"id": m_a_obj.address.id, "name": address}
                 else:
                     address = None
                     moment["address"] =  None
 
-            moment["content"]=item["moment__content"]
-            moment["favor_count"] = item["moment__favor_count"]
-            moment["viewer_count"] = item["moment__viewer_count"]
-            moment["comment_count"] = item["moment__comment_count"]
-            moment["share_count"] = item["moment__share_count"]
-            moment["if_status"] = item["moment__if_status"]
-            moment["moment_status"] = item["moment__moment_status"]
-            moment_list[item["moment_id"]]=moment
+            moment["content"]=item["momentciteaddressrecord__moment__content"]
+            moment["favor_count"] = item["momentciteaddressrecord__moment__favor_count"]
+            moment["viewer_count"] = item["momentciteaddressrecord__moment__viewer_count"]
+            moment["comment_count"] = item["momentciteaddressrecord__moment__comment_count"]
+            moment["share_count"] = item["momentciteaddressrecord__moment__share_count"]
+            moment["if_status"] = item["momentciteaddressrecord__moment__if_status"]
+            moment["moment_status"] = item["momentciteaddressrecord__moment__moment_status"]
+            moment_list[item["momentciteaddressrecord__moment_id"]]=moment
         return moment_list.values()
 
