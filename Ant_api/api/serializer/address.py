@@ -148,10 +148,10 @@ class GetAddressMomentModelSerializer(ModelSerializer):
             #address
             if item["address__addressName"]:
                 address = item["address__addressName"]
-                moment["address"] = {"id": item["address__address_id"], "name": address}
+                moment["address"] = {"id": item["address_id"], "name": address}
             elif item["address__address"]:
                 address = item["address__address"]
-                moment["address"] = {"id": item["address__address_id"], "name": address}
+                moment["address"] = {"id": item["address_id"], "name": address}
             else:
                 address = None
                 moment["address"] =  None
