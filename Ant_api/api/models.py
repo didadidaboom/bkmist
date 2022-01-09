@@ -374,6 +374,19 @@ class TacitReplyRecord(models.Model):
         verbose_name = "默契回复记录"
         verbose_name_plural = verbose_name
 
+class TacitReplyFavorRecord(models.Model):
+    '''
+    瞬间的喜欢记录
+    '''
+    tacitReplyRecord = models.ForeignKey(verbose_name="回复默契测试记录",to="TacitReplyRecord",on_delete=models.CASCADE)
+    user = models.ForeignKey(verbose_name="喜欢好友回复评论的用户", to="UserInfo", null=True, blank=True, on_delete=models.SET_NULL)
+    create_date = models.DateTimeField(verbose_name="瞬间喜欢时间",auto_now_add=True)
+
+    class Meta:
+        db_table = "tacit_reply_favor_record"
+        verbose_name = "好友默契回复被喜欢的记录"
+        verbose_name_plural = verbose_name
+
 class TacitReplyViewer(models.Model):
     user = models.ForeignKey(verbose_name="被浏览的用户", to="UserInfo", related_name="tacit_reply_viewer",null=True,blank=True,on_delete=models.CASCADE)
     viewer_user = models.ForeignKey(verbose_name="浏览的用户", to="UserInfo", related_name="viewer_tacit_reply_viewer",null=True,blank=True, on_delete=models.CASCADE)

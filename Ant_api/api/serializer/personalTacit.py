@@ -129,5 +129,14 @@ class PersonalTacitReplyModelSerializer(serializers.ModelSerializer):
             cited_obj = models.TacitReplyCitedRecord.objects.filter(tacitReplyRecord=row).all()
             answer = [model_to_dict(cited_row, ["selected_answer"] ) for cited_row in cited_obj]
             result["answer"]=answer
+            #is_favor
+            if not request.user:
+                result["is_favor"] = False
+            else:
+                result["is_favor"] = False
+                tacitreplyfavor_object = models.TacitReplyFavorRecord.objects.filter(user=request.user, tacitReplyRecord=row)
+                exists = tacitreplyfavor_object.exists()
+                if exists:
+                    result["is_favor"] = True
             results.append(result)
         return results
