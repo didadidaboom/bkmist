@@ -59,6 +59,7 @@ class GetAddressMomentModelSerializer(ModelSerializer):
     def get_moment_list(self,obj):
         address_query = models.MomentCiteAddressRecord.objects.filter(address__addressGeo=obj).all().order_by("-id")
         address_query = address_query.values(
+            "id",
             "moment_id",
             "moment__user",
             "moment__user__nickName",
@@ -163,6 +164,6 @@ class GetAddressMomentModelSerializer(ModelSerializer):
             moment["share_count"] = item["moment__share_count"]
             moment["if_status"] = item["moment__if_status"]
             moment["moment_status"] = item["moment__moment_status"]
-            moment_list[item["moment_id"]]=moment
+            moment_list[item["id"]]=moment
         return moment_list.values()
 
