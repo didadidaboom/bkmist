@@ -75,9 +75,11 @@ class personalTacitReplyFavorView(APIView):
         1.验证数据
         2.判断是否存在:如果存在 删除；如果不存在 保存
         '''
-        tacitReplyRecord_id= request.data.get("tacitReplyRecord")
-        tacitReplyRecord_object = models.TacitReplyRecord.objects.get(id=tacitReplyRecord_id)
-        if tacitReplyRecord_object.user_id is request.user.id:
+        serializer = PersonalTacitRelyFavorSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response({},status=status.HTTP_400_BAD_REQUEST)
+        tacitReplyRecord_object = serializer.validated_data.get("tacitReplyRecord")
+        if tacitReplyRecord_object.user.id is request.user.id:
             return Response({},status=status.HTTP_204_NO_CONTENT)
         tacitReplyRecordfavor_object= models.TacitReplyFavorRecord.objects.filter(user = request.user,tacitReplyRecord=tacitReplyRecord_object)
         exists = tacitReplyRecordfavor_object.exists()
