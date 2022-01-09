@@ -57,7 +57,7 @@ class GetAddressMomentModelSerializer(ModelSerializer):
         fields=["moment_list"]
 
     def get_moment_list(self,obj):
-        address_query = models.MomentCiteAddressRecord.objects.filter(address__addressGeo=obj).order_by('-id')
+        address_query = models.MomentCiteAddressRecord.objects.filter(address__addressGeo=obj).all().order_by("-id")
         address_query = address_query.values(
             "moment_id",
             "moment__user",
