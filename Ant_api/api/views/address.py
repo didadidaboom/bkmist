@@ -41,7 +41,7 @@ class AddressMomentTimeView(ListAPIView):
         address_obj = models.Address.objects.get(id=address_id)
         queryset = models.AddressGeohash.objects.filter(
             location__distance_lt=((float(address_obj.latitude), float(address_obj.longitude)), 10.0)
-        ).order_by("-address__momentciteaddressrecord__moment_id")
+        ).order_by("-address__momentciteaddressrecord__moment_id").distinct()
         return queryset
 '''
 class AddressMomentTimeView(ListAPIView):
