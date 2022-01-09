@@ -85,8 +85,8 @@ class personalTacitReplyFavorView(APIView):
         exists = tacitReplyRecordfavor_object.exists()
         if exists:
             tacitReplyRecordfavor_object.delete()
-            models.TacitReplyRecord.objects.filter(id=tacitReplyRecord_object).update(favor_count=F("favor_count") - 1)
+            models.TacitReplyRecord.objects.filter(id=tacitReplyRecord_object.id).update(favor_count=F("favor_count") - 1)
             return Response({},status=status.HTTP_200_OK)
         models.TacitReplyFavorRecord.objects.create(user = request.user,tacitReplyRecord=tacitReplyRecord_object)
-        models.TacitReplyRecord.objects.filter(id=tacitReplyRecord_object).update(favor_count = F("favor_count")+1)
+        models.TacitReplyRecord.objects.filter(id=tacitReplyRecord_object.id).update(favor_count = F("favor_count")+1)
         return Response({},status=status.HTTP_201_CREATED)
