@@ -140,3 +140,8 @@ class PersonalTacitReplyModelSerializer(serializers.ModelSerializer):
                     result["is_favor"] = True
             results.append(result)
         return results
+
+class PersonalTacitRelyFavorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.TacitReplyFavorRecord
+        exclude = ["user"]

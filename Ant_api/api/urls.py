@@ -72,6 +72,7 @@ urlpatterns = [
     url(r'^updatePersonalTacit/(?P<pk>\d+)/$', personalTacit.UpdatePersonalTacitView.as_view()),
     url(r'^delPersonalTacit/(?P<pk>\d+)/$', personalTacit.DelPersonalTacitView.as_view()),
     url(r'^personalTacitReply/$', personalTacit.PersonalTacitReplyView.as_view()),
+    url(r'^personalTacitReplyFavor/$', personalTacit.personalTacitReplyFavorView.as_view()),
 
     #获取他人主页资料
     url(r'^otherDetails/(?P<pk>\d+)/$', other.OtherDetailsView.as_view()),

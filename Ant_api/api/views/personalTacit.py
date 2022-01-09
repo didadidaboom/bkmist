@@ -1,10 +1,14 @@
 from rest_framework.generics import ListAPIView,UpdateAPIView,DestroyAPIView
+from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework import status
+from django.db.models import Q,F
 
 from api import models
 from api.serializer.personalTacit import PersonalTacitModelSerializer
 from api.serializer.personalTacit import UpdatePersonalTacitModelSerializer
 from api.serializer.personalTacit import PersonalTacitReplyModelSerializer
+from api.serializer.personalTacit import PersonalTacitRelyFavorSerializer
 
 from utils.pagination import Pagination
 from utils.filter import MaxFilterBackend,MinFilterBackend
@@ -60,3 +64,29 @@ class PersonalTacitReplyView(ListAPIView):
     def get_queryset(self):
         queryset = models.TacitRecord.objects.filter(user=self.request.user).order_by("-id").all()
         return queryset
+
+class personalTacitReplyFavorView(APIView):
+    '''
+    好友默契回复的被点赞数更新
+    '''
+    authentication_classes = [UserAuthentication,]
+    def post(self, request, *args, **kwargs):
+        '''
+        1.验证数据
+        2.判断是否存在:如果存在 删除；如果不存在 保存
+        '''
+        serializer = PersonalTacitRelyFavorSerializer(data=request.data)
+        if not serializer.is_valid():
+            return Response({},status=status.HTTP_400_BAD_REQUEST)
+        tacitReplyRecord_object = serializer.validated_data.get("tacitReplyRecord")
+        if tacitReplyRecord_object.user.id is request.user.id:
+            return Response({},status=status.HTTP_204_NO_CONTENT)
+        tacitReplyRecordfavor_object= models.TacitReplyFavorRecord.objects.filter(user = request.user,tacitReplyRecord=tacitReplyRecord_object)
+        exists = tacitReplyRecordfavor_object.exists()
+        if exists:
+            tacitReplyRecordfavor_object.delete()
+            models.TacitReplyRecord.objects.filter(id=tacitReplyRecord_object).update(favor_count=F("favor_count") - 1)
+            return Response({},status=status.HTTP_200_OK)
+        models.TacitReplyFavorRecord.objects.create(user = request.user,tacitReplyRecord=tacitReplyRecord_object)
+        models.TacitReplyRecord.objects.filter(id=tacitReplyRecord_object).update(favor_count = F("favor_count")+1)
+        return Response({},status=status.HTTP_201_CREATED)
