@@ -64,6 +64,7 @@ urlpatterns = [
     url(r'^personalMomentViewer/$', personal.PersonalMomentViewerView.as_view()),
     url(r'^personalFocusList/$', personal.PersonalFocusListView.as_view()),
     url(r'^personalFocusedList/$', personal.PersonalFocusedListView.as_view()),
+    url(r'^personalFriendList/$', personal.PersonalFriendListView.as_view()),
     #获取个人主页瞬间
     url(r'^personalMoment/$', personalMoment.PersonalMomentView.as_view()),
     url(r'^updatePersonalMoment/(?P<pk>\d+)/$', personalMoment.UpdatePersonalMomentView.as_view()),

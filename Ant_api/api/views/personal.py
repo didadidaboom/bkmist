@@ -110,5 +110,16 @@ class PersonalFocusedListView(ListAPIView):
     serializer_class = PersonalFocusedListModelSerializer
     authentication_classes = [UserAuthentication]
     def get_queryset(self):
-        queryset = models.UserFocusRecord.objects.filter(user=self.request.user).order_by("-create_time")[0:10]
+        queryset = models.UserFocusRecord.objects.filter(user=self.request.user,).order_by("-create_time")[0:10]
+        return queryset
+
+class PersonalFriendListView(ListAPIView):
+    serializer_class = PersonalFocusedListModelSerializer
+    authentication_classes = [UserAuthentication]
+    def get_queryset(self):
+        queryset = models.UserFocusRecord.objects.filter(
+            user=self.request.user
+        ).filter(
+            user__focus_user_focus=self.request.user
+        ).order_by("-create_time")
         return queryset
