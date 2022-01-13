@@ -119,5 +119,7 @@ class PersonalFriendListView(ListAPIView):
     def get_queryset(self):
         queryset = models.UserFocusRecord.objects.filter(
             user=self.request.user
+        ).filter(
+            focus_user__user_focus__focus_user=self.request.user
         ).order_by("-create_time")
         return queryset
