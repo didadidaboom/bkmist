@@ -114,7 +114,7 @@ class getAccessView(APIView):
             return Response({}, status=status.HTTP_400_BAD_REQUEST)
         data_code = {
             "scene":tacitid,
-            "page":"pages/replyTacit/replyTacit",
+            #"page":"pages/replyTacit/replyTacit",
             "width":280,
             "is_hyaline":True
         }
