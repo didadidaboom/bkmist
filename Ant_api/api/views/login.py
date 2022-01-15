@@ -113,7 +113,7 @@ class getAccessView(APIView):
         if results_json is 40013:
             return Response({}, status=status.HTTP_400_BAD_REQUEST)
         data_code = {
-            "scene":tacitid+1,
+            "scene":tacitid,
             "page":"pages/replyTacit/replyTacit",
             "width":280,
             "is_hyaline":True
