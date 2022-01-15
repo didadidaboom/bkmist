@@ -102,6 +102,7 @@ class LoginOpenidView(APIView):
 class getAccessView(APIView):
     def get(self, request, *args, **kwargs):
         tacitid = request.query_params.get("tacitid")
+        tacitid = int(tacitid) +1
         data = {
             "grant_type": "client_credential",
             "appid": settings.TENCENT_APPID,
