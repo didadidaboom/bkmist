@@ -126,7 +126,7 @@ class GetMomentDetailModelSerializer(MomentSerializer):
     imageList = serializers.SerializerMethodField()
     #create_date = serializers.DateTimeField(format=("%Y-%m-%d %H:%M:%S"))
     create_date = serializers.SerializerMethodField()
-    viewer = serializers.SerializerMethodField()
+    #viewer = serializers.SerializerMethodField()
     comment = serializers.SerializerMethodField()
     is_favor = serializers.SerializerMethodField()
     address = serializers.SerializerMethodField(read_only=True)
@@ -183,15 +183,15 @@ class GetMomentDetailModelSerializer(MomentSerializer):
         query_details = MomentDetail.objects.filter(moment = obj)
         #return [row.path for row in query_details]
         return [model_to_dict(row, fields=["id","path","path_key"]) for row in query_details]
-    def get_viewer(self,obj):
-        viewer_count = models.MomentViewerRecord.objects.filter(moment=obj).count()
-        viewer_query = models.MomentViewerRecord.objects.filter(moment=obj).order_by('-id')[0:5]
-
-        context = {
-            "count": viewer_count,
-            "viewerRecord": [model_to_dict(item.viewer_user,["nickName","avatarUrl"]) for item in viewer_query]
-        }
-        return context
+    # def get_viewer(self,obj):
+    #     viewer_count = models.MomentViewerRecord.objects.filter(moment=obj).count()
+    #     viewer_query = models.MomentViewerRecord.objects.filter(moment=obj).order_by('-id')[0:5]
+    #
+    #     context = {
+    #         "count": viewer_count,
+    #         "viewerRecord": [model_to_dict(item.viewer_user,["nickName","avatarUrl"]) for item in viewer_query]
+    #     }
+    #     return context
     def get_comment(self,obj):
         #check user
         request = self.context.get("request")
