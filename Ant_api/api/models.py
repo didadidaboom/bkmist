@@ -388,7 +388,7 @@ class TacitReplyFavorRecord(models.Model):
         verbose_name_plural = verbose_name
 
 class TacitReplyViewer(models.Model):
-    tacitRecord = models.ForeignKey(verbose_name="默契测试", to="TacitRecord", on_delete=models.CASCADE)
+    tacitRecord = models.ForeignKey(verbose_name="默契测试", to="TacitRecord",null=True, on_delete=models.CASCADE)
     user = models.ForeignKey(verbose_name="被浏览的用户", to="UserInfo", related_name="tacit_reply_viewer",null=True,blank=True,on_delete=models.CASCADE)
     viewer_user = models.ForeignKey(verbose_name="浏览的用户", to="UserInfo", related_name="viewer_tacit_reply_viewer",null=True,blank=True, on_delete=models.CASCADE)
     create_time = models.DateTimeField(verbose_name="用户浏览的时间",auto_now_add=True)
@@ -401,7 +401,7 @@ class TacitReplyViewer(models.Model):
         verbose_name_plural = verbose_name
 
 class TacitReplyWrite(models.Model):
-    tacitRecord = models.ForeignKey(verbose_name="默契测试", to="TacitRecord", on_delete=models.CASCADE)
+    tacitRecord = models.ForeignKey(verbose_name="默契测试", to="TacitRecord", null=True, on_delete=models.CASCADE)
     user = models.ForeignKey(verbose_name="被浏览的用户", to="UserInfo", related_name="tacit_reply_write",null=True,blank=True,on_delete=models.CASCADE)
     viewer_user = models.ForeignKey(verbose_name="浏览的用户", to="UserInfo", related_name="viewer_tacit_reply_write",null=True,blank=True, on_delete=models.CASCADE)
     create_time = models.DateTimeField(verbose_name="用户浏览的时间",auto_now_add=True)
