@@ -176,11 +176,18 @@ class PersonalViewerPage3ScanModelSerializer(serializers.ModelSerializer):
 
     def get_viewer_user(self,obj):
         exist_write = models.TacitReplyWrite.objects.filter(tacitRecord=obj.tacitRecord,user=obj.user,viewer_user=obj.viewer_user).exists()
+
         if not exist_write:
-            return model_to_dict(obj.viewer_user, fields=['id', 'nickName', 'avatarUrl'])
+            return {"id": obj.viewer_user.id,
+                    "nickName": obj.viewer_user.nickName,
+                    "avatarUrl": obj.viewer_user.avatarUrl,
+                    "if_status_name": None}
         obj_reply = models.TacitReplyRecord.objects.filter(tacitRecord=obj.tacitRecord).first()
         if obj_reply.if_status is 0:
-            return model_to_dict(obj.viewer_user, fields=['id', 'nickName', 'avatarUrl'])
+            return {"id": obj.viewer_user.id,
+                    "nickName": obj.viewer_user.nickName,
+                    "avatarUrl": obj.viewer_user.avatarUrl,
+                    "if_status_name": None}
         else:
             nickName = getRandomName()
             avatarUrl = getMosaic()
@@ -252,7 +259,10 @@ class PersonalViewerPage3SubmitModelSerializer(serializers.ModelSerializer):
     def get_viewer_user(self,obj):
         obj_reply = models.TacitReplyRecord.objects.filter(tacitRecord=obj.tacitRecord).first()
         if obj_reply.if_status is 0:
-            return model_to_dict(obj.viewer_user, fields=['id', 'nickName', 'avatarUrl'])
+            return {"id": obj.viewer_user.id,
+                    "nickName": obj.viewer_user.nickName,
+                    "avatarUrl": obj.viewer_user.avatarUrl,
+                    "if_status_name": None}
         else:
             nickName = getRandomName()
             avatarUrl = getMosaic()
