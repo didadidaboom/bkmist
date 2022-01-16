@@ -250,10 +250,6 @@ class PersonalViewerPage3SubmitModelSerializer(serializers.ModelSerializer):
                     return str(second) + "秒前"
 
     def get_viewer_user(self,obj):
-        exist_write = models.TacitReplyWrite.objects.filter(tacitRecord=obj.tacitRecord, user=obj.user,
-                                                            viewer_user=obj.viewer_user).exists()
-        if not exist_write:
-            return model_to_dict(obj.viewer_user, fields=['id', 'nickName', 'avatarUrl'])
         obj_reply = models.TacitReplyRecord.objects.filter(tacitRecord=obj.tacitRecord).first()
         if obj_reply.if_status is 0:
             return model_to_dict(obj.viewer_user, fields=['id', 'nickName', 'avatarUrl'])
