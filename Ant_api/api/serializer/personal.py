@@ -1,9 +1,11 @@
 from math import floor,ceil
 from django.forms.models import model_to_dict
+from django.conf import settings
 
 from rest_framework import serializers
 
 from api import models
+from utils.randomName import getNameAvatarlist,getMosaic,getRandomName,getRandomAvatar
 
 class PersonalInfoModelSerializer(serializers.ModelSerializer):
     create_date = serializers.SerializerMethodField(read_only=True)
@@ -173,7 +175,20 @@ class PersonalViewerPage3ScanModelSerializer(serializers.ModelSerializer):
                     return str(second) + "秒前"
 
     def get_viewer_user(self,obj):
-        return model_to_dict(obj.viewer_user, fields=['id', 'nickName', 'avatarUrl'])
+        exist_write = models.TacitReplyWrite.objects.filter(tacitRecord=obj.tacitRecord,user=obj.user,viewer_user=obj.viewer_user).exists()
+        if not exist_write:
+            return model_to_dict(obj.viewer_user, fields=['id', 'nickName', 'avatarUrl'])
+        obj_reply = models.TacitReplyRecord.objects.filter(tacitRecord=obj.tacitRecord).first()
+        if obj_reply.if_status is 0:
+            return model_to_dict(obj.viewer_user, fields=['id', 'nickName', 'avatarUrl'])
+        else:
+            nickName = getRandomName()
+            avatarUrl = getMosaic()
+            if_status_name = '条'
+            user_id = None
+            if obj_reply.favor_count > settings.MAX_FAVOR_COUNT_IF_STATUS:
+                user_id = obj.viewer_user.id
+            return {"id": user_id, "nickName": nickName, "avatarUrl": avatarUrl, "if_status_name": if_status_name}
 
     def get_create_date(self,obj):
         create_date = obj.create_time
@@ -235,7 +250,21 @@ class PersonalViewerPage3SubmitModelSerializer(serializers.ModelSerializer):
                     return str(second) + "秒前"
 
     def get_viewer_user(self,obj):
-        return model_to_dict(obj.viewer_user, fields=['id', 'nickName', 'avatarUrl'])
+        exist_write = models.TacitReplyWrite.objects.filter(tacitRecord=obj.tacitRecord, user=obj.user,
+                                                            viewer_user=obj.viewer_user).exists()
+        if not exist_write:
+            return model_to_dict(obj.viewer_user, fields=['id', 'nickName', 'avatarUrl'])
+        obj_reply = models.TacitReplyRecord.objects.filter(tacitRecord=obj.tacitRecord).first()
+        if obj_reply.if_status is 0:
+            return model_to_dict(obj.viewer_user, fields=['id', 'nickName', 'avatarUrl'])
+        else:
+            nickName = getRandomName()
+            avatarUrl = getMosaic()
+            if_status_name = '条'
+            user_id = None
+            if obj_reply.favor_count > settings.MAX_FAVOR_COUNT_IF_STATUS:
+                user_id = obj.viewer_user.id
+            return {"id": user_id, "nickName": nickName, "avatarUrl": avatarUrl, "if_status_name": if_status_name}
 
     def get_create_date(self,obj):
         create_date = obj.create_time
