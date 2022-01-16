@@ -141,10 +141,36 @@ class PersonalViewerPage3ModelSerializer(serializers.ModelSerializer):
 class PersonalViewerPage3ScanModelSerializer(serializers.ModelSerializer):
     create_date = serializers.SerializerMethodField()
     viewer_user = serializers.SerializerMethodField()
+    tacit_date = serializers.SerializerMethodField()
     class Meta:
         model = models.TacitReplyViewer
         #fields = "__all__"
-        fields = ["viewer_user","viewer_count","create_date","source"]
+        fields = ["tacit_date","viewer_user","viewer_count","create_date","source"]
+
+    def get_tacit_date(self,obj):
+        create_date = obj.tacitRecord.create_date
+        a = create_date
+        b = create_date.now()
+        delta = b - a
+        second = delta.seconds
+        minute_ori = second / 60
+        minute_ceil = ceil(minute_ori)
+        minute_floor = floor(minute_ori)
+        hour_ori = minute_ori / 60
+        hour_ceil = ceil(hour_ori)
+        hour_floor = floor(hour_ori)
+        day_ori = delta.days
+        day = day_ori + 1
+        if (day_ori):
+            return str(day) + "天前"
+        else:
+            if (hour_ori > 1):
+                return str(hour_ceil) + "小时前"
+            else:
+                if (minute_ori > 1):
+                    return str(minute_ceil) + "分钟前"
+                else:
+                    return str(second) + "秒前"
 
     def get_viewer_user(self,obj):
         return model_to_dict(obj.viewer_user, fields=['id', 'nickName', 'avatarUrl'])
