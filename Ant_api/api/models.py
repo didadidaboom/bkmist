@@ -227,7 +227,7 @@ class MomentViewerRecord(models.Model):
     瞬间浏览记录
     '''
     moment = models.ForeignKey(verbose_name="浏览的瞬间",to="Moment",on_delete=models.CASCADE)
-    viewer_user = models.ForeignKey(verbose_name="浏览用户",to="UserInfo",null= True,blank=True,on_delete=models.SET_NULL)
+    viewer_user = models.ForeignKey(verbose_name="浏览用户",to="UserInfo",on_delete=models.CASCADE)
     create_time = models.DateTimeField(verbose_name="最近浏览日期", auto_now=True)
     viewer_count = models.PositiveIntegerField(verbose_name="浏览次数", default=0)
 
@@ -241,7 +241,7 @@ class MomentFavorRecord(models.Model):
     瞬间的喜欢记录
     '''
     moment = models.ForeignKey(verbose_name="被喜欢的瞬间",to="Moment",on_delete=models.CASCADE)
-    user = models.ForeignKey(verbose_name="喜欢瞬间的用户", to="UserInfo", null=True, blank=True, on_delete=models.SET_NULL)
+    user = models.ForeignKey(verbose_name="喜欢瞬间的用户", to="UserInfo", on_delete=models.CASCADE)
     create_date = models.DateTimeField(verbose_name="瞬间喜欢时间",auto_now_add=True)
 
     class Meta:
@@ -251,7 +251,7 @@ class MomentFavorRecord(models.Model):
 
 class MomentShareRecord(models.Model):
     moment = models.ForeignKey(verbose_name="被分享的瞬间",to="Moment",on_delete=models.CASCADE)
-    user = models.ForeignKey(verbose_name="分享瞬间的用户", to="UserInfo", null=True, blank=True, on_delete=models.SET_NULL)
+    user = models.ForeignKey(verbose_name="分享瞬间的用户", to="UserInfo",on_delete=models.CASCADE)
     create_date = models.DateTimeField(verbose_name="瞬间喜欢时间",auto_now_add=True)
 
     class Meta:
@@ -287,7 +287,7 @@ class CommentRecord(models.Model):
 class CommentFavorRecord(models.Model):
     commentRecord = models.ForeignKey(verbose_name="被赞的评论", to="CommentRecord", on_delete=models.CASCADE)
     create_date = models.DateTimeField(verbose_name="评论被赞的时间", auto_now_add=True)
-    user = models.ForeignKey(verbose_name="赞评论的用户", to="UserInfo", null=True, blank=True, on_delete=models.SET_NULL)
+    user = models.ForeignKey(verbose_name="赞评论的用户", to="UserInfo", on_delete=models.CASCADE)
 
     class Meta:
         db_table = "comment_favor_record"
@@ -379,7 +379,7 @@ class TacitReplyFavorRecord(models.Model):
     瞬间的喜欢记录
     '''
     tacitReplyRecord = models.ForeignKey(verbose_name="回复默契测试记录",to="TacitReplyRecord",on_delete=models.CASCADE)
-    user = models.ForeignKey(verbose_name="喜欢好友回复评论的用户", to="UserInfo", null=True, blank=True, on_delete=models.SET_NULL)
+    user = models.ForeignKey(verbose_name="喜欢好友回复评论的用户", to="UserInfo",on_delete=models.CASCADE)
     create_date = models.DateTimeField(verbose_name="瞬间喜欢时间",auto_now_add=True)
 
     class Meta:
