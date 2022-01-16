@@ -8,7 +8,8 @@ class TopicSerializer(ModelSerializer):
     """话题数据序列化器"""
     class Meta:
         model = TopicInfo
-        fields = '__all__'
+        fields=["id","title","description"]
+        #fields = '__all__'
         extra_kwargs = {
             'title':{'required':True}
         }

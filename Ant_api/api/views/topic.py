@@ -13,7 +13,7 @@ from api.serializer.topic import TopicSerializer,FocusTopicModelSerializer
 from api.serializer import moment,topic
 
 from utils.auth import UserAuthentication,GeneralAuthentication
-from utils import pagination,filter
+from utils import pagination,filter,auth
 
 
 '''话题模块'''
@@ -21,6 +21,7 @@ class TopicView(ListAPIView,CreateAPIView):
     #queryset = TopicInfo.objects.all().order_by("-id")
     queryset = TopicInfo.objects
     serializer_class = TopicSerializer
+
     def get_queryset(self):
         queryset_ori = TopicInfo.objects.all()
         queryset = queryset_ori
