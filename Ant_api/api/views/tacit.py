@@ -74,13 +74,13 @@ class ReplyTacitView(RetrieveAPIView):
         object = self.get_object()
         if int(object.user.id) is int(request.user.id):
             return self.retrieve(request, *args, **kwargs)
-        viewer_object = models.TacitReplyViewer.objects.filter(user=object.user, viewer_user=self.request.user,tacitRecord=object.id)
+        viewer_object = models.TacitReplyViewer.objects.filter(user=object.user, viewer_user=self.request.user,tacitRecord=object)
         exists = viewer_object.exists()
         if exists:
             viewer_object.update(viewer_count=F("viewer_count") + 1, create_time=timezone.now())
             models.UserInfo.objects.filter(id=object.user.id).update(tacit_viewer_count=F("tacit_viewer_count") + 1)
             return self.retrieve(request, *args, **kwargs)
-        viewer_object.create(user=object.user, viewer_user=self.request.user, viewer_count=1, create_time=timezone.now(),source="默契测试")
+        viewer_object.create(user=object.user, viewer_user=self.request.user,tacitRecord=object, viewer_count=1, create_time=timezone.now(),source="默契测试")
         models.UserInfo.objects.filter(id=object.user.id).update(tacit_viewer_count=F("tacit_viewer_count") + 1)
         return self.retrieve(request, *args, **kwargs)
 
@@ -92,13 +92,13 @@ class ReplyTacitSaveView(CreateAPIView):
     authentication_classes = [UserAuthentication, ]
     def perform_create(self, serializer):
         obj=serializer.save(user=self.request.user)
-        viewer_object = models.TacitReplyWrite.objects.filter(user=obj.tacitRecord.user, viewer_user=self.request.user,tacitRecord=obj.id)
+        viewer_object = models.TacitReplyWrite.objects.filter(user=obj.tacitRecord.user, viewer_user=self.request.user,tacitRecord=obj)
         exists = viewer_object.exists()
         if exists:
             viewer_object.update(write_count=F("write_count") + 1, create_time=timezone.now())
             models.UserInfo.objects.filter(id=obj.tacitRecord.user_id).update(tacit_write_count=F("tacit_write_count") + 1)
             return obj
-        viewer_object.create(user=obj.tacitRecord.user, viewer_user=self.request.user, write_count=1, create_time=timezone.now(),source="默契测试")
+        viewer_object.create(user=obj.tacitRecord.user, viewer_user=self.request.user,tacitRecord=obj, write_count=1, create_time=timezone.now(),source="默契测试")
         models.UserInfo.objects.filter(id=obj.tacitRecord.user_id).update(tacit_write_count=F("tacit_write_count") + 1)
         return obj
     def post(self, request, *args, **kwargs):
