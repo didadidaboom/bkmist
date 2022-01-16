@@ -92,13 +92,13 @@ class ReplyTacitSaveView(CreateAPIView):
     authentication_classes = [UserAuthentication, ]
     def perform_create(self, serializer):
         obj=serializer.save(user=self.request.user)
-        viewer_object = models.TacitReplyWrite.objects.filter(user=obj.tacitRecord.user, viewer_user=self.request.user,tacitRecord=obj)
+        viewer_object = models.TacitReplyWrite.objects.filter(user=obj.tacitRecord.user, viewer_user=self.request.user,tacitRecord=obj.tacitRecord)
         exists = viewer_object.exists()
         if exists:
             viewer_object.update(write_count=F("write_count") + 1, create_time=timezone.now())
             models.UserInfo.objects.filter(id=obj.tacitRecord.user_id).update(tacit_write_count=F("tacit_write_count") + 1)
             return obj
-        viewer_object.create(user=obj.tacitRecord.user, viewer_user=self.request.user,tacitRecord=obj, write_count=1, create_time=timezone.now(),source="默契测试")
+        viewer_object.create(user=obj.tacitRecord.user, viewer_user=self.request.user,tacitRecord=obj.tacitRecord, write_count=1, create_time=timezone.now(),source="默契测试")
         models.UserInfo.objects.filter(id=obj.tacitRecord.user_id).update(tacit_write_count=F("tacit_write_count") + 1)
         return obj
     def post(self, request, *args, **kwargs):
