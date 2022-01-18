@@ -15,12 +15,12 @@ class TopicSerializer(ModelSerializer):
         }
 
 class GetTopicDetailModelSerializer(ModelSerializer):
-    user = serializers.SerializerMethodField()
+    #user = serializers.SerializerMethodField()
     is_focused = serializers.SerializerMethodField()
 
     class Meta:
         model = TopicInfo
-        fields = ["title","focus_count","viewer_count","cited_count","create_date"]
+        fields = ["title","focus_count","viewer_count","cited_count","create_date","is_focused"]
 
     # def get_user(self,obj):
     #     return {"id":obj.user.id,"nickName":obj.user.nickName,"avatarUrl":obj.user.avatarUrl}
