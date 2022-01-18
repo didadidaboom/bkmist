@@ -54,22 +54,26 @@ class FocusMomentView(ListAPIView):
     filter_backends = [filter.MinFilterBackend,filter.MaxFilterBackend]
     authentication_classes = [UserAuthentication,]
     def get_queryset(self):
-        #user_obj = models.UserInfo.objects.filter(id=self.request.user.id).first()
+        user_obj = models.UserInfo.objects.filter(id=self.request.user.id).first()
+        if user_obj.focus_count > 5:
+            queryset = models.Moment.objects.filter(
+                moment_status=0
+            ).filter(
+                ~Q(user_id=self.request.user.id)
+            ).filter(
+                Q(user__user_focus__focus_user_id=self.request.user.id)
+            ).all().distinct().order_by('-id')
+            return queryset
+        #less than 5
         queryset = models.Moment.objects.filter(
             moment_status=0
         ).filter(
             ~Q(user_id=self.request.user.id)
         ).filter(
             Q(user__user_focus__focus_user_id=self.request.user.id)
-        ).annotate(
-            fcount = Count('user__user_focus', distinct=True)
-        ).filter(Q(fcount__gt=3)
+        ).filter(Q(if_status=0)|Q(favor_count__gt = settings.MAX_FAVOR_COUNT_IF_STATUS)
         ).all().distinct().order_by('-id')
         return queryset
-
-# .filter(Q(if_status=0)|Q(favor_count__gt = settings.MAX_FAVOR_COUNT_IF_STATUS)|
-#                  Q(Q(if_status=1)&Q(fcount__gt=3))
-#         )
 
 class FocusMomentTopicView(ListAPIView):
     serializer_class = topic.FocusMomentTopicModelSerializer
