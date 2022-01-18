@@ -54,7 +54,7 @@ class FocusMomentView(ListAPIView):
     filter_backends = [filter.MinFilterBackend,filter.MaxFilterBackend]
     authentication_classes = [UserAuthentication,]
     def get_queryset(self):
-        focus_count = Count('user_focus_record', filter=Q(user_focus_record_focus_user_id=self.request.user.id))
+        focus_count = Count('user__focus_user_focus__user', filter=Q(user__user_focus__focus_user_id=self.request.user.id))
         queryset = models.Moment.objects.filter(
             moment_status=0
         ).filter(
