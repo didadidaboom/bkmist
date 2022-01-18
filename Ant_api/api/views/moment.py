@@ -55,7 +55,7 @@ class FocusMomentView(ListAPIView):
     authentication_classes = [UserAuthentication,]
     def get_queryset(self):
         user_obj = models.UserInfo.objects.filter(id=self.request.user.id).first()
-        if user_obj.focus_count > 5:
+        if user_obj.focus_count > settings.MAX_FOCUS_USERS:
             queryset = models.Moment.objects.filter(
                 moment_status=0
             ).filter(
