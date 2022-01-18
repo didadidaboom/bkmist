@@ -182,7 +182,7 @@ class PersonalViewerPage3ScanModelSerializer(serializers.ModelSerializer):
                     "nickName": obj.viewer_user.nickName,
                     "avatarUrl": obj.viewer_user.avatarUrl,
                     "if_status_name": None}
-        obj_reply = models.TacitReplyRecord.objects.filter(tacitRecord=obj.tacitRecord).first()
+        obj_reply = models.TacitReplyRecord.objects.filter(tacitRecord=obj.tacitRecord,user=obj.viewer_user).first()
         if obj_reply.if_status is 0:
             return {"id": obj.viewer_user.id,
                     "nickName": obj.viewer_user.nickName,
@@ -257,7 +257,7 @@ class PersonalViewerPage3SubmitModelSerializer(serializers.ModelSerializer):
                     return str(second) + "秒前"
 
     def get_viewer_user(self,obj):
-        obj_reply = models.TacitReplyRecord.objects.filter(tacitRecord=obj.tacitRecord).first()
+        obj_reply = models.TacitReplyRecord.objects.filter(tacitRecord=obj.tacitRecord,user=obj.viewer_user).first()
         if obj_reply.if_status is 0:
             return {"id": obj.viewer_user.id,
                     "nickName": obj.viewer_user.nickName,
