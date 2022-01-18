@@ -61,10 +61,8 @@ class FocusMomentView(ListAPIView):
             ~Q(user_id=self.request.user.id)
         ).filter(
             Q(user__user_focus__focus_user_id=self.request.user.id)
-        ).annotate(
-            fcount=Count("user__focus_user_focus__user")
         ).filter(Q(if_status=0)|Q(favor_count__gt = settings.MAX_FAVOR_COUNT_IF_STATUS)|
-                 Q(Q(if_status=1)&Q(fcount__gt=3))
+                 Q(Q(if_status=1)&Q(user__user_focus__focus_user__focus_count__gte=3))
         ).all().distinct().order_by('-id')
         return queryset
 
