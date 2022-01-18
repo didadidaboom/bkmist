@@ -22,8 +22,8 @@ class GetTopicDetailModelSerializer(ModelSerializer):
         model = TopicInfo
         fields = ["title","focus_count","viewer_count","cited_count","create_date"]
 
-    def get_user(self,obj):
-        return {"id":obj.user.id,"nickName":obj.user.nickName,"avatarUrl":obj.user.avatarUrl}
+    # def get_user(self,obj):
+    #     return {"id":obj.user.id,"nickName":obj.user.nickName,"avatarUrl":obj.user.avatarUrl}
 
     def get_is_focused(self,obj):
         request = self.context.get("request")
