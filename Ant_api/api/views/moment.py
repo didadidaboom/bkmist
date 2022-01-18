@@ -62,7 +62,7 @@ class FocusMomentView(ListAPIView):
         ).filter(
             Q(user__user_focus__focus_user_id=self.request.user.id)
         ).annotate(
-            fcount = Count('user__focus_user_focus', distinct=True)
+            fcount = Count('user__user_focus', distinct=True)
         ).filter(Q(fcount__gt=3)
         ).all().distinct().order_by('-id')
         return queryset
