@@ -20,8 +20,7 @@ class GetTopicDetailModelSerializer(ModelSerializer):
 
     class Meta:
         model = TopicInfo
-        exclude = ["user"]
-        #fields = '__all__'
+        fields = ["title","focus_count","viewer_count","cited_count","create_date"]
 
     def get_user(self,obj):
         return {"id":obj.user.id,"nickName":obj.user.nickName,"avatarUrl":obj.user.avatarUrl}

@@ -5,7 +5,7 @@ from rest_framework.generics import ListAPIView,CreateAPIView,RetrieveAPIView
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-from django.db.models import Q,F
+from django.db.models import Q,F,Count
 
 from api.serializer import moment,topic,address
 from api.models import Moment
@@ -54,16 +54,17 @@ class FocusMomentView(ListAPIView):
     filter_backends = [filter.MinFilterBackend,filter.MaxFilterBackend]
     authentication_classes = [UserAuthentication,]
     def get_queryset(self):
-        topic_obj = models.TopicFocusRecord.objects.filter(user=self.request.user).all()
+        focus_count = Count('user_focus_record', filter=Q(user_focus_record_focus_user_id=self.request.user.id))
         queryset = models.Moment.objects.filter(
             moment_status=0
-        ).filter(Q(if_status=0)|Q(
-            Q(favor_count__gt = settings.MAX_FAVOR_COUNT_IF_STATUS)|
-            Q(comment_count__gt = settings.MAX_COMMENT_COUNT_IF_STATUS))
         ).filter(
             ~Q(user_id=self.request.user.id)
         ).filter(
             Q(user__user_focus__focus_user_id=self.request.user.id)
+        ).annotate(
+            focus_count=focus_count
+        ).filter(Q(if_status=0)|Q(favor_count__gt = settings.MAX_FAVOR_COUNT_IF_STATUS)|
+                 Q(Q(if_status=1)&Q(focus_count__gt=5))
         ).all().distinct().order_by('-id')
         return queryset
 
