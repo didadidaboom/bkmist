@@ -24,6 +24,7 @@ class UserInfo(models.Model):
     phone = models.CharField(verbose_name="手机号", max_length=11,null=True,blank=True)
     token = models.CharField(verbose_name="用户TOKEN", max_length=64, null=True, blank=True)
     create_date=models.DateTimeField(verbose_name="用户注册时间",auto_now_add=True)
+    last_login = models.DateTimeField(verbose_name="最近登陆",auto_now=True)
     focus_count = models.PositiveIntegerField(verbose_name="关注次数", default=0)
     focused_count = models.PositiveIntegerField(verbose_name="被关注次数", default=0)
     viewer_count = models.PositiveIntegerField(verbose_name="被看次数", default=0)
