@@ -72,8 +72,14 @@ class GetMomentModelSerializer(ModelSerializer):
             if obj.favor_count > settings.MAX_FAVOR_COUNT_IF_STATUS:
                 user_id = obj.user.id
                 if_status_name = "裂"
+            if obj.user.id is request.user.id:
+                nickName = nickName+"(我)"
             return {"id":user_id,"nickName":nickName,"avatarUrl":avatarUrl,"if_status_name":if_status_name}
-        return {"id":obj.user.id,"nickName":obj.user.nickName,"avatarUrl":obj.user.avatarUrl,"if_status_name":None}
+        nickName = obj.user.nickName
+        avatarUrl = obj.user.avatarUrl
+        if obj.user.id is request.user.id:
+            nickName = nickName + "(我)"
+        return {"id":obj.user.id,"nickName":nickName,"avatarUrl":avatarUrl,"if_status_name":None}
 
     def get_topic(self,obj):
         exist = TopicCitedRecord.objects.filter(moment=obj).exists()
