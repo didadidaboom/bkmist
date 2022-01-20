@@ -64,6 +64,7 @@ class GetMomentModelSerializer(ModelSerializer):
         return {"id":address_obj.address.id,"name":address}
 
     def get_user(self,obj):
+        request = self.context.get("request")
         if obj.if_status:
             nickName = getRandomName()
             avatarUrl = getMosaic()
