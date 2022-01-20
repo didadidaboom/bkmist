@@ -38,7 +38,6 @@ class CreateCommentView(CreateAPIView):
             serializer.save(user=self.request.user, nickName=nickName, avatarUrl=avatarUrl)
             moment_id = serializer.data.get("moment")
             models.Moment.objects.filter(id=moment_id).update(comment_count=F('comment_count') + 1)
-
         else:
             obj_0 = models.CommentRecord.objects.filter(
                 user=self.request.user,
@@ -59,6 +58,10 @@ class CreateCommentView(CreateAPIView):
             serializer.save(user=self.request.user, nickName=nickName, avatarUrl=avatarUrl)
             moment_id = serializer.data.get("moment")
             models.Moment.objects.filter(id=moment_id).update(comment_count=F('comment_count') + 1)
+        # obj=self.get_object()
+        # if int(obj.depth) is 1:
+        #     models.Notification.objects.create(notificationType=2,fromUser=self.request.user,toUser=obj.moment.user,moment=obj.moment,comment=obj)
+
 
 
 

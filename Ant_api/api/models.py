@@ -422,3 +422,19 @@ class TacitReplyCitedRecord(models.Model):
         db_table = "tacit_reply_cited_record"
         verbose_name = "回复默契引用记录"
         verbose_name_plural = verbose_name
+
+class Notification(models.Model):
+    # 1,like 2,comment 3,follow 4,reply tacit
+    notificationType = models.IntegerField()
+    toUser = models.ForeignKey(verbose_name="to user",to="UserInfo",related_name="notification_to",null=True,on_delete=models.CASCADE)
+    fromUser = models.ForeignKey(verbose_name="from user",to="UserInfo",related_name="notification_from",null=True,on_delete=models.CASCADE)
+    moment = models.ForeignKey(verbose_name="瞬间的一级评论",to="Moment",related_name="+",null=True,blank=True,on_delete=models.CASCADE)
+    comment = models.ForeignKey(verbose_name="回复评论",to="CommentRecord",related_name="+",null=True,blank=True,on_delete=models.CASCADE)
+    tacit = models.ForeignKey(verbose_name="回复默契测试",to="TacitRecord",related_name="+",null=True,blank=True,on_delete=models.CASCADE)
+    create_time = models.DateTimeField(verbose_name="创建时间",auto_now_add=True)
+    useHasChecked = models.BooleanField(default=False)
+
+    class Meta:
+        db_table = "notification"
+        verbose_name = "消息通知"
+        verbose_name_plural = verbose_name
