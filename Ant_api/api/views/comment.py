@@ -35,7 +35,7 @@ class CreateCommentView(CreateAPIView):
             else:
                 nickName = getRandomName()
                 avatarUrl = getMosaic()
-            serializer.save(user=self.request.user, nickName=nickName, avatarUrl=avatarUrl)
+            com_obj = serializer.save(user=self.request.user, nickName=nickName, avatarUrl=avatarUrl)
             moment_id = serializer.data.get("moment")
             models.Moment.objects.filter(id=moment_id).update(comment_count=F('comment_count') + 1)
         else:
@@ -55,12 +55,11 @@ class CreateCommentView(CreateAPIView):
                     avatarUrl = moment_obj.user.avatarUrl
                 else:
                     nickName, avatarUrl = getNameAvatarlist()
-            serializer.save(user=self.request.user, nickName=nickName, avatarUrl=avatarUrl)
+            com_obj = serializer.save(user=self.request.user, nickName=nickName, avatarUrl=avatarUrl)
             moment_id = serializer.data.get("moment")
             models.Moment.objects.filter(id=moment_id).update(comment_count=F('comment_count') + 1)
-        # obj=self.get_object()
-        # if int(obj.depth) is 1:
-        #     models.Notification.objects.create(notificationType=2,fromUser=self.request.user,toUser=obj.moment.user,moment=obj.moment,comment=obj)
+        if int(com_obj.depth) is 1:
+            models.Notification.objects.create(notificationType=2,fromUser=self.request.user,toUser=com_obj.moment.user,moment=com_obj.moment)
 
 
 
