@@ -73,7 +73,7 @@ class CreateCommentView(CreateAPIView):
                     models.Notification.objects.create(notificationType=2, fromUser=self.request.user,
                                                        toUser=com_obj.moment.user,
                                                        moment=com_obj.moment, comment=com_obj)
-            
+
         else:
             # 通知发瞬间的楼主
             if self.request.user.id is not com_obj.moment.user.id:

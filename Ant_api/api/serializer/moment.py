@@ -172,11 +172,14 @@ class GetMomentDetailModelSerializer(MomentSerializer):
             avatarUrl = getMosaic()
             user_id = None
             if_status_name = '条'
+            is_focused_tmp = False
             if obj.favor_count > settings.MAX_FAVOR_COUNT_IF_STATUS:
                 user_id = obj.user.id
                 if_status_name = "裂"
+                is_focused_tmp = is_focused
             if obj.user.id is request.user.id:
                 nickName = nickName+"(我)"
+            is_focused = is_focused_tmp
             return {"id":user_id,"nickName":nickName,"avatarUrl":avatarUrl,"if_status_name":if_status_name,"is_focused":is_focused}
         nickName = obj.user.nickName
         avatarUrl = obj.user.avatarUrl
