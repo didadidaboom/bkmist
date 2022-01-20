@@ -59,14 +59,17 @@ class CreateCommentView(CreateAPIView):
             moment_id = serializer.data.get("moment")
             models.Moment.objects.filter(id=moment_id).update(comment_count=F('comment_count') + 1)
         #通知发瞬间的楼主
-        models.Notification.objects.create(notificationType=2, fromUser=self.request.user, toUser=com_obj.moment.user,
+        if self.request.user.id is not com_obj.moment.user.id:
+            models.Notification.objects.create(notificationType=2, fromUser=self.request.user, toUser=com_obj.moment.user,
                                            moment=com_obj.moment, comment=com_obj)
         #如果存在回复的人，通知回复的人；同时通知这一层楼主
         if com_obj.reply:
-            models.Notification.objects.create(notificationType=2,fromUser=self.request.user,toUser=com_obj.reply.user,
+            if self.request.user.id is not com_obj.reply.user.id:
+                models.Notification.objects.create(notificationType=2,fromUser=self.request.user,toUser=com_obj.reply.user,
                                                moment=com_obj.moment,comment=com_obj)
             if com_obj.depth > 2:
-                models.Notification.objects.create(notificationType=2, fromUser=self.request.user,
+                if self.request.user.id is not com_obj.root.user.id:
+                    models.Notification.objects.create(notificationType=2, fromUser=self.request.user,
                                                    toUser=com_obj.root.user,
                                                    moment=com_obj.moment, comment=com_obj)
 
