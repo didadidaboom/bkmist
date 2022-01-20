@@ -334,6 +334,8 @@ class GetMomentDetailModelSerializer(MomentSerializer):
             #显示自己身份
             if item["user_id"] == request.user.id:
                 item['nickName'] = item['nickName']+'(我)'
+            if item['reply__user_id'] ==request.user.id:
+                item['reply__nickName'] = item['reply__nickName']+'(我)'
             #-------------------------
             if item["user_id"] != obj.user.id:
                 item["status"] = {

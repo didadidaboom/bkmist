@@ -15,17 +15,30 @@ class CreateCommentSerializer(ModelSerializer):
     #user__avatarUrl = serializers.SerializerMethodField(read_only=True)
     reply_id = serializers.IntegerField(source="reply.id",read_only=True)
     reply__user_id = serializers.IntegerField(source="reply.user.id",read_only=True)
-    reply__nickName = serializers.CharField(source="reply.nickName",read_only=True)
-    #reply__user__nickName = serializers.SerializerMethodField(read_only=True)
+    #reply__nickName = serializers.CharField(source="reply.nickName",read_only=True)
+    reply__nickName = serializers.SerializerMethodField(read_only=True)
     #create_date = serializers.DateTimeField(format=("%Y-%m-%d %H:%M:%S"),read_only=True)
     create_date = serializers.SerializerMethodField()
     root_id = serializers.IntegerField(source="root.id",read_only=True)
     favor_count = serializers.IntegerField(read_only=True)
     status = serializers.SerializerMethodField(read_only=True)
+    nickName = serializers.SerializerMethodField()
 
     class Meta:
         model = models.CommentRecord
         exclude = ["user"]
+
+    def get_nickName(self,obj):
+        request = self.context.get("request")
+        if obj.user.id == request.user.id:
+            return obj.nickName+'(我)'
+        return obj.nickName
+
+    def get_reply__nickName(self,obj):
+        request = self.context.get("request")
+        if obj.reply.user.id == request.user.id:
+            return obj.reply.nickName+('我')
+        return obj.reply.nickName
 
     def get_status(self, obj):
         '''
