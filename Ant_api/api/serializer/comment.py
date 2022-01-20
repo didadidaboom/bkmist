@@ -36,7 +36,7 @@ class CreateCommentSerializer(ModelSerializer):
 
     def get_reply__nickName(self,obj):
         request = self.context.get("request")
-        if obj.replys.user.id == request.user.id:
+        if obj.replys.user_id == request.user.id:
             return obj.replys.nickName+('我')
         return obj.replys.nickName
 
