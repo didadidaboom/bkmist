@@ -38,10 +38,9 @@ class CreateCommentSerializer(ModelSerializer):
         request = self.context.get("request")
         if not obj.reply:
             return None
-        com_obj = obj.reply
-        if com_obj.user.id == request.user.id:
-            return com_obj.nickName+('我')
-        return com_obj.nickName
+        if obj.reply.user.id == request.user.id:
+            return obj.reply.nickName+('(我)')
+        return obj.reply.nickName
 
     def get_status(self, obj):
         '''
