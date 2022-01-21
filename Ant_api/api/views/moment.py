@@ -136,8 +136,14 @@ class MomentFavorView(APIView):
         exists = momentfavor_object.exists()
         if exists:
             momentfavor_object.delete()
-            models.Moment.objects.filter(id=moment_object.id).update(favor_count=F("favor_count") - 1)
+            moment_obj = models.Moment.objects.filter(id=moment_object.id).update(favor_count=F("favor_count") - 1)
+            models.Notification.objects.filter(notificationType=11, fromUser=self.request.user,
+                                               toUser=moment_obj.user,
+                                               moment=moment_object, userHasChecked=True).delete()
             return Response({},status=status.HTTP_200_OK)
         models.MomentFavorRecord.objects.create(user = request.user,moment=moment_object)
-        models.Moment.objects.filter(id=moment_object.id).update(favor_count = F("favor_count")+1)
+        moment_obj = models.Moment.objects.filter(id=moment_object.id).update(favor_count = F("favor_count")+1)
+        models.Notification.objects.create(notificationType=11, fromUser=self.request.user,
+                                           toUser=moment_obj.user,
+                                           moment=moment_object, userHasChecked=True)
         return Response({},status=status.HTTP_201_CREATED)
