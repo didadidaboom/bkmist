@@ -17,11 +17,12 @@ class GetNotificationModelSerializer(ModelSerializer):
     fromUser = serializers.SerializerMethodField()
     create_time = serializers.SerializerMethodField()
     moment_id = serializers.IntegerField(source='moment.id',read_only=True)
+    tacit_id = serializers.IntegerField(source='tacit.id',read_only=True)
     comment_content = serializers.CharField(source="comment.content",read_only=True)
 
     class Meta:
         model = models.Notification
-        fields = ["id","notificationType","fromUser","userHasChecked","create_time","moment_id","comment_content"]
+        fields = ["id","notificationType","fromUser","userHasChecked","create_time","moment_id","tacit_id","comment_content"]
         #fields="__all__"
         #fields = ["id","content","topic","address","user","create_date","imageList"]
 
@@ -44,6 +45,8 @@ class GetNotificationModelSerializer(ModelSerializer):
             if obj.comment.user.id is request.user.id:
                 nickName = nickName + "(我)"
             return {"id": obj.comment.user.id, "nickName": nickName, "avatarUrl": avatarUrl, "if_status_name": None}
+        else:
+            return {"id": obj.toUser.id, "nickName": obj.toUser.nickName, "avatarUrl": obj.toUser.avatarUrl, "if_status_name": None}
 
     def get_create_time(self,obj):
         create_time = obj.create_time
