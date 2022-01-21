@@ -7,6 +7,11 @@ from rest_framework import serializers
 from api import models
 from utils.randomName import getRandomName,getMosaic
 
+class GetNotificationFlagModelSerializer(ModelSerializer):
+    class Meta:
+        model = models.Notification
+        fields = ["useHasChecked"]
+
 class GetNotificationModelSerializer(ModelSerializer):
     '''首页第一次加载时 瞬间的序列化器'''
     fromUser = serializers.SerializerMethodField()
