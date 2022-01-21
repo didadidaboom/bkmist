@@ -23,6 +23,7 @@ urlpatterns = [
     #通知
     url(r'^notification_flag/$', notify.NotificationFlagView.as_view()),
     url(r'^notification_page1/$', notify.NotificationPage1View.as_view()),
+    url(r'^notificationStatus/(?P<pk>\d+)/$', notify.NotificationStatusView.as_view()),
 
     #话题相关
     url(r'^topic/$', topic.TopicView.as_view()),

@@ -1,4 +1,4 @@
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView,UpdateAPIView,RetrieveAPIView
 
 from api import models
 from api.serializer import notify
@@ -24,3 +24,11 @@ class NotificationPage1View(ListAPIView):
     def get_queryset(self):
         queryset = models.Notification.objects.filter(toUser=self.request.user).all().order_by('-id')
         return queryset
+
+class NotificationStatusView(UpdateAPIView):
+    queryset = models.Notification.objects
+    serializer_class = notify.GetNotificationFlagModelSerializer
+    authentication_classes = [auth.UserAuthentication, ]
+
+    def put(self, request, *args, **kwargs):
+        return self.partial_update(request, *args, **kwargs)
