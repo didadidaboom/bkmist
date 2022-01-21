@@ -18,6 +18,7 @@ class GetNotificationModelSerializer(ModelSerializer):
     create_time = serializers.SerializerMethodField()
     moment_id = serializers.IntegerField(source='moment.id',read_only=True)
     tacit_id = serializers.IntegerField(source='tacit.id',read_only=True)
+    tacit_user_id = serializers.IntegerField(source="tacit.user.id",read_only=True)
     comment_content = serializers.CharField(source="comment.content",read_only=True)
 
     class Meta:
