@@ -29,7 +29,7 @@ class GetNotificationModelSerializer(ModelSerializer):
         request = self.context.get("request")
         if obj.notificationType is 21 or obj.notificationType is 22 or obj.notificationType is 23:
             if obj.comment.comment_status:
-                nickName = getRandomName()
+                nickName = obj.comment.nickName
                 avatarUrl = getMosaic()
                 if_status_name = '条'
                 user_id = None
