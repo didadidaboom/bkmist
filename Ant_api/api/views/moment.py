@@ -146,7 +146,7 @@ class MomentFavorView(APIView):
                 notify_obj.delete()
             else:
                 models.Notification.objects.create(notificationType=61, fromUser=self.request.user,
-                                                   toUser=moment_obj.first().user,
+                                                   toUser=moment_obj.user,
                                                    moment=moment_object, userHasChecked=True)
             return Response({},status=status.HTTP_200_OK)
         models.MomentFavorRecord.objects.create(user = request.user,moment=moment_object)
