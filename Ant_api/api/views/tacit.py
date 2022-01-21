@@ -100,6 +100,8 @@ class ReplyTacitSaveView(CreateAPIView):
             return obj
         viewer_object.create(user=obj.tacitRecord.user, viewer_user=self.request.user,tacitRecord=obj.tacitRecord, write_count=1, create_time=timezone.now(),source="默契测试")
         models.UserInfo.objects.filter(id=obj.tacitRecord.user_id).update(tacit_write_count=F("tacit_write_count") + 1)
+        models.Notification.objects.create(notificationType=41, fromUser=self.request.user,
+                                           toUser=obj.tacitRecord.user, tacit=obj.tacitRecord, userHasChecked=True)
         return obj
     def post(self, request, *args, **kwargs):
         tacitRecord = request.data.get("tacitRecord")

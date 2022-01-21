@@ -72,9 +72,18 @@ class FocusUserView(APIView):
             serializer.save(focus_user=self.request.user)
             user_obj.filter(id=serializer.validated_data.get("user").id).update(focused_count=F("focused_count")+1)
             user_obj.filter(id=self.request.user.id).update(focus_count=F("focus_count")+1)
+            models.Notification.objects.create(notificationType=31, fromUser=self.request.user,
+                                               toUser_id=serializer.validated_data.get("user").id, userHasChecked=True)
             return Response({},status=status.HTTP_201_CREATED)
         user_obj.filter(id=request.data.get("user")).update(focused_count=F("focused_count")-1)
         user_obj.filter(id=self.request.user.id).update(focus_count=F("focus_count")-1)
         obj.delete()
+        notify_obj = models.Notification.objects.filter(notificationType=31, fromUser=self.request.user,
+                                           toUser_id=request.data.get("user"), userHasChecked=True)
+        if notify_obj.exists():
+            notify_obj.delete()
+        else:
+            models.Notification.objects.create(notificationType=32, fromUser=self.request.user,
+                                               toUser_id=serializer.validated_data.get("user").id, userHasChecked=True)
         return Response({}, status=status.HTTP_200_OK)
 

@@ -85,8 +85,24 @@ class personalTacitReplyFavorView(APIView):
         exists = tacitReplyRecordfavor_object.exists()
         if exists:
             tacitReplyRecordfavor_object.delete()
-            models.TacitReplyRecord.objects.filter(id=tacitReplyRecord_object.id).update(favor_count=F("favor_count") - 1)
+            tacitreply_obj = models.TacitReplyRecord.objects.filter(id=tacitReplyRecord_object.id)
+            tacitreply_obj.update(favor_count=F("favor_count") - 1)
+            tacitreply_obj = tacitreply_obj.first()
+            notify_obj = models.Notification.objects.filter(notificationType=13, fromUser=self.request.user,
+                                                            toUser=tacitreply_obj.user,
+                                                            tacit=tacitreply_obj.tacitRecord, userHasChecked=True)
+            if notify_obj.exists():
+                notify_obj.delete()
+            else:
+                models.Notification.objects.create(notificationType=63, fromUser=self.request.user,
+                                                   toUser=tacitreply_obj.user,
+                                                   tacit=tacitreply_obj.tacitRecord, userHasChecked=True)
             return Response({},status=status.HTTP_200_OK)
         models.TacitReplyFavorRecord.objects.create(user = request.user,tacitReplyRecord=tacitReplyRecord_object)
-        models.TacitReplyRecord.objects.filter(id=tacitReplyRecord_object.id).update(favor_count = F("favor_count")+1)
+        tacitreply_obj = models.TacitReplyRecord.objects.filter(id=tacitReplyRecord_object.id)
+        tacitreply_obj.update(favor_count = F("favor_count")+1)
+        tacitreply_obj = tacitreply_obj.filter()
+        models.Notification.objects.create(notificationType=13, fromUser=self.request.user,
+                                           toUser=tacitreply_obj.user,
+                                           tacit=tacitreply_obj.tacitRecord, userHasChecked=True)
         return Response({},status=status.HTTP_201_CREATED)
