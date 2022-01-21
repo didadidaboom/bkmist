@@ -11,8 +11,8 @@ class GetNotificationModelSerializer(ModelSerializer):
     '''首页第一次加载时 瞬间的序列化器'''
     fromUser = serializers.SerializerMethodField()
     create_time = serializers.SerializerMethodField()
-    moment_id = serializers.SerializerMethodField(source='moment.id',read_only=True)
-    comment_content = serializers.SerializerMethodField(source="comment.content",read_only=True)
+    moment_id = serializers.IntegerField(source='moment.id',read_only=True)
+    comment_content = serializers.CharField(source="comment.content",read_only=True)
 
     class Meta:
         model = models.Notification
