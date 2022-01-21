@@ -132,10 +132,20 @@ class CommentFavorView(APIView):
         exist = commentFavorRecord_object.exists()
         if exist:
             commentFavorRecord_object.delete()
-            models.CommentRecord.objects.filter(id = commentRecord_object.id).update(favor_count=F('favor_count')-1)
+            com_obj = models.CommentRecord.objects.filter(id = commentRecord_object.id)
+            com_obj.update(favor_count=F('favor_count')-1)
+            com_obj = com_obj.first()
+            models.Notification.objects.filter(notificationType=12, fromUser=self.request.user,
+                                               toUser=com_obj.user,
+                                               moment=com_obj.moment,comment=com_obj, userHasChecked=True).delete()
             return Response({}, status=status.HTTP_200_OK)
         commentFavorRecord_object.create(user=request.user,commentRecord=commentRecord_object)
-        models.CommentRecord.objects.filter(id=commentRecord_object.id).update(favor_count=F('favor_count') + 1)
+        com_obj = models.CommentRecord.objects.filter(id=commentRecord_object.id)
+        com_obj.update(favor_count=F('favor_count') + 1)
+        com_obj = com_obj.first()
+        models.Notification.objects.create(notificationType=12, fromUser=self.request.user,
+                                           toUser=com_obj.user,
+                                           moment=com_obj.moment,comment=com_obj, userHasChecked=True)
         return Response({}, status=status.HTTP_201_CREATED)
 '''
     def put(self,request,pk):
