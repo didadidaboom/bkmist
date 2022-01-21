@@ -61,29 +61,25 @@ class CreateCommentView(CreateAPIView):
         #如果存在回复的人，通知回复的人；同时通知这一层楼主
         if com_obj.reply:
             if self.request.user.id is not com_obj.reply.user.id:
-                models.Notification.objects.create(notificationType=2,fromUser=self.request.user,toUser=com_obj.reply.user,
+                models.Notification.objects.create(notificationType=21,fromUser=self.request.user,toUser=com_obj.reply.user,
                                                moment=com_obj.moment,comment=com_obj,useHasChecked=True)
             if com_obj.depth > 2:
                 if self.request.user.id is not com_obj.root.user.id and com_obj.root.user.id is not com_obj.reply.user.id:
-                    models.Notification.objects.create(notificationType=2, fromUser=self.request.user,
+                    models.Notification.objects.create(notificationType=22, fromUser=self.request.user,
                                                    toUser=com_obj.root.user,
                                                    moment=com_obj.moment, comment=com_obj,useHasChecked=True)
             if self.request.user.id is not com_obj.moment.user.id:
                 if com_obj.moment.user.id is not com_obj.reply.user.id and com_obj.moment.user.id is not com_obj.root.user.id:
-                    models.Notification.objects.create(notificationType=2, fromUser=self.request.user,
+                    models.Notification.objects.create(notificationType=23, fromUser=self.request.user,
                                                        toUser=com_obj.moment.user,
                                                        moment=com_obj.moment, comment=com_obj,useHasChecked=True)
 
         else:
             # 通知发瞬间的楼主
             if self.request.user.id is not com_obj.moment.user.id:
-                models.Notification.objects.create(notificationType=2, fromUser=self.request.user,
+                models.Notification.objects.create(notificationType=23, fromUser=self.request.user,
                                                 toUser=com_obj.moment.user,
                                                 moment=com_obj.moment, comment=com_obj,useHasChecked=True)
-
-
-
-
 
 class exampleCreateCommentView(APIView):
     def post(self, request, *args, **kwargs):

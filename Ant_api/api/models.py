@@ -424,7 +424,11 @@ class TacitReplyCitedRecord(models.Model):
         verbose_name_plural = verbose_name
 
 class Notification(models.Model):
-    # 1,like 2,comment 3,follow 4,reply tacit
+    # 11 like moment, 12 like comment, 13 like taict reply
+    # 21 comment reply, 22 comment root, 23 comment moment
+    # 31 follow you, 32 follow
+    # 41 reply tacit,
+    # 51 invite publish moment, 52 invite publish tacit
     notificationType = models.IntegerField()
     toUser = models.ForeignKey(verbose_name="to user",to="UserInfo",related_name="notification_to",null=True,on_delete=models.CASCADE)
     fromUser = models.ForeignKey(verbose_name="from user",to="UserInfo",related_name="notification_from",null=True,on_delete=models.CASCADE)
