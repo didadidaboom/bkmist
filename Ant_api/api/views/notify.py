@@ -12,7 +12,7 @@ class NotificationFlagView(ListAPIView):
     authentication_classes = [auth.UserAuthentication, ]
 
     def get_queryset(self):
-        queryset = models.Notification.objects.filter(toUser=self.request.user,useHasChecked=True).all().order_by('-id')
+        queryset = models.Notification.objects.filter(toUser=self.request.user,userHasChecked=True).all().order_by('-id')
         return queryset
 
 class NotificationPage1View(ListAPIView):

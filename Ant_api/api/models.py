@@ -436,7 +436,7 @@ class Notification(models.Model):
     comment = models.ForeignKey(verbose_name="回复评论",to="CommentRecord",related_name="+",null=True,blank=True,on_delete=models.CASCADE)
     tacit = models.ForeignKey(verbose_name="回复默契测试",to="TacitRecord",related_name="+",null=True,blank=True,on_delete=models.CASCADE)
     create_time = models.DateTimeField(verbose_name="创建时间",auto_now_add=True)
-    useHasChecked = models.BooleanField(default=False)
+    userHasChecked = models.BooleanField(default=False)
 
     class Meta:
         db_table = "notification"
