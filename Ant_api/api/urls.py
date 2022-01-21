@@ -6,7 +6,7 @@ from api.views import topic,address
 from api.views import publish
 from api.views import moment
 from api.views import comment
-from api.views import login
+from api.views import login,notify
 from api.views import personalMoment,personalTacit
 from api.views import personal,other,otherTacit
 from api.views import tacit
@@ -19,6 +19,9 @@ urlpatterns = [
     #openID 登陆
     url(r'^loginOpenid/$', login.LoginOpenidView.as_view()),
     url(r'^getAccessToken/$', login.getAccessView.as_view()),
+
+    #通知
+    url(r'^notification_page1/$', notify.NotificationPage1View.as_view()),
 
     #话题相关
     url(r'^topic/$', topic.TopicView.as_view()),
