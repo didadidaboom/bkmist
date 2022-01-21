@@ -23,7 +23,7 @@ class GetNotificationModelSerializer(ModelSerializer):
 
     class Meta:
         model = models.Notification
-        fields = ["id","notificationType","fromUser","userHasChecked","create_time","moment_id","tacit_id","comment_content"]
+        fields = ["id","notificationType","fromUser","userHasChecked","create_time","moment_id","tacit_id","tacit_user_id","comment_content"]
         #fields="__all__"
         #fields = ["id","content","topic","address","user","create_date","imageList"]
 
