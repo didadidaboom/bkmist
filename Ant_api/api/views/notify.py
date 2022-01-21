@@ -6,7 +6,7 @@ from api.serializer import notify
 from utils import pagination,filter,auth
 
 
-class TopicMomentTimeView(ListAPIView):
+class NotificationPage1View(ListAPIView):
     serializer_class = notify.GetNotificationModelSerializer
     pagination_class = pagination.Pagination
     filter_backends = [filter.MinFilterBackend,filter.MaxFilterBackend]
