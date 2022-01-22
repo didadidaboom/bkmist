@@ -9,9 +9,11 @@ class PersonalMomentModelSerializer(serializers.ModelSerializer):
     topic = serializers.SerializerMethodField()
     create_date = serializers.DateTimeField(format=("%Y-%m-%d %H:%M:%S"))
     address = serializers.SerializerMethodField()
+    new_momentviewers = serializers.SerializerMethodField(read_only=True)
+
     class Meta:
         model = models.Moment
-        fields = ["id","content","create_date","imageList","address","topic","if_status","moment_status"]
+        fields = ["id","content","create_date","imageList","address","topic","if_status","moment_status","new_momentviewers"]
 
     def get_address(self, obj):
         address_obj_ori = models.MomentCiteAddressRecord.objects.filter(moment=obj)
@@ -38,6 +40,10 @@ class PersonalMomentModelSerializer(serializers.ModelSerializer):
     def get_imageList(self,obj):
         current_obj = models.MomentDetail.objects.filter(moment=obj).all()
         return [model_to_dict(row,["id","path"]) for row in current_obj]
+
+    def get_new_momentviewers(self,obj):
+        momentviewer_obj = models.MomentViewerNotification.objects.filter(moment=obj).first()
+        return momentviewer_obj.momentviewer_count
 
 class UpdatePersonalMomentModelSerializer(serializers.ModelSerializer):
     class Meta:

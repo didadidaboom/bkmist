@@ -9,10 +9,11 @@ from utils.randomName import getNameAvatarlist,getMosaic,getRandomName,getRandom
 
 class PersonalInfoModelSerializer(serializers.ModelSerializer):
     create_date = serializers.SerializerMethodField(read_only=True)
+    new_viewers = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = models.UserInfo
-        fields = ["focus_count","focused_count","viewer_count","create_date","viewer_count_page2","viewer_count_page3","tacit_viewer_count","tacit_write_count"]
+        fields = ["focus_count","focused_count","viewer_count","create_date","viewer_count_page2","viewer_count_page3","tacit_viewer_count","tacit_write_count","new_viewers"]
 
     def get_create_date(self,obj):
         create_date = obj.create_date
@@ -21,6 +22,15 @@ class PersonalInfoModelSerializer(serializers.ModelSerializer):
         delta = b - a
         day_ori = delta.days
         return day_ori
+
+    def get_new_viewers(self,obj):
+        viewer_obj = models.ViewerNotification.objects.filter(toUser=obj).first()
+        return {"viewer_count_page1":viewer_obj.viewer_count_page1,
+                "viewer_count_page2": viewer_obj.viewer_count_page2,
+                "viewer_count_page3": viewer_obj.viewer_count_page3,
+                "tacit_viewer_count": viewer_obj.tacit_viewer_count,
+                "tacit_write_count": viewer_obj.tacit_write_count,
+                }
 
 class UpdateNamePersonalModelSerializer(serializers.ModelSerializer):
     class Meta:
@@ -35,6 +45,7 @@ class UpdateAvatarPersonalModelSerializer(serializers.ModelSerializer):
 class PersonalViewerPage1ModelSerializer(serializers.ModelSerializer):
     create_date = serializers.SerializerMethodField()
     viewer_user = serializers.SerializerMethodField()
+
     class Meta:
         model = models.UserViewerRecord
         #fields = "__all__"
