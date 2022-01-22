@@ -99,7 +99,7 @@ class FocusUserView(APIView):
                                                toUser_id=serializer.validated_data.get("user").id, userHasChecked=True)
         # viewer notify
         viewernotify_obj = models.ViewerNotification.objects.filter(toUser_id=request.data.get("user"))
-        if viewernotify_obj.exists() and viewernotify_obj>0:
+        if viewernotify_obj.exists() and viewernotify_obj.focused_count>0:
             viewernotify_obj.update(focused_count=F("focused_count") - 1)
         return Response({}, status=status.HTTP_200_OK)
 
