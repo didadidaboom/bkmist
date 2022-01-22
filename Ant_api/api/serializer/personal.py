@@ -29,7 +29,9 @@ class PersonalInfoModelSerializer(serializers.ModelSerializer):
             return None
         else:
             viewer_obj = viewer_obj_ori.first()
-            return {"viewer_count_page1":viewer_obj.viewer_count_page1,
+            return {
+                    "focused_count":viewer_obj.focused_count,
+                    "viewer_count_page1":viewer_obj.viewer_count_page1,
                     "viewer_count_page2": viewer_obj.viewer_count_page2,
                     "viewer_count_page3": viewer_obj.viewer_count_page3,
                     "tacit_viewer_count": viewer_obj.tacit_viewer_count,
