@@ -64,6 +64,7 @@ class PersonalViewerPage1View(ListAPIView):
     serializer_class = PersonalViewerPage1ModelSerializer
     authentication_classes = [UserAuthentication]
     def get_queryset(self):
+        models.ViewerNotification.objects.filter(toUser=self.request.user).update(viewer_count_page1=0)
         queryset = models.UserViewerRecord.objects.filter(user=self.request.user).order_by("-create_time")[0:10]
         return queryset
 
@@ -71,6 +72,7 @@ class PersonalViewerPage2View(ListAPIView):
     serializer_class = PersonalViewerPage2ModelSerializer
     authentication_classes = [UserAuthentication]
     def get_queryset(self):
+        models.ViewerNotification.objects.filter(toUser=self.request.user).update(viewer_count_page2=0)
         queryset = models.UserViewerRecordPage2.objects.filter(user=self.request.user).order_by("-create_time")[0:10]
         return queryset
 
@@ -78,6 +80,7 @@ class PersonalViewerPage3View(ListAPIView):
     serializer_class = PersonalViewerPage3ModelSerializer
     authentication_classes = [UserAuthentication]
     def get_queryset(self):
+        models.ViewerNotification.objects.filter(toUser=self.request.user).update(viewer_count_page3=0)
         queryset = models.UserViewerRecordPage3.objects.filter(user=self.request.user).order_by("-create_time")[0:10]
         return queryset
 
@@ -85,6 +88,7 @@ class PersonalViewerPage3ScanView(ListAPIView):
     serializer_class = PersonalViewerPage3ScanModelSerializer
     authentication_classes = [UserAuthentication]
     def get_queryset(self):
+        models.ViewerNotification.objects.filter(toUser=self.request.user).update(tacit_viewer_count=0)
         queryset = models.TacitReplyViewer.objects.filter(user=self.request.user).order_by("-create_time")[0:10]
         return queryset
 
@@ -92,6 +96,7 @@ class PersonalViewerPage3SubmitView(ListAPIView):
     serializer_class = PersonalViewerPage3SubmitModelSerializer
     authentication_classes = [UserAuthentication]
     def get_queryset(self):
+        models.ViewerNotification.objects.filter(toUser=self.request.user).update(tacit_write_count=0)
         queryset = models.TacitReplyWrite.objects.filter(user=self.request.user).order_by("-create_time")[0:10]
         return queryset
 
@@ -100,6 +105,7 @@ class PersonalMomentViewerView(ListAPIView):
     authentication_classes = [UserAuthentication]
     def get_queryset(self):
         moment_id = self.request.query_params.get('moment_id')
+        models.MomentViewerNotification.objects.filter(moment_id=moment_id).update(momentviewer_count=0)
         queryset = models.MomentViewerRecord.objects.filter(moment=int(moment_id)).order_by("-create_time")[0:10]
         return queryset
 
@@ -114,6 +120,7 @@ class PersonalFocusedListView(ListAPIView):
     serializer_class = PersonalFocusedListModelSerializer
     authentication_classes = [UserAuthentication]
     def get_queryset(self):
+        models.ViewerNotification.objects.filter(toUser=self.request.user).update(focused_count=0)
         queryset = models.UserFocusRecord.objects.filter(user=self.request.user,).order_by("-create_time")[0:10]
         return queryset
 

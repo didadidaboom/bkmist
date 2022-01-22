@@ -32,3 +32,20 @@ class NotificationStatusView(UpdateAPIView):
 
     def put(self, request, *args, **kwargs):
         return self.partial_update(request, *args, **kwargs)
+
+class ViewerNotificationView(RetrieveAPIView):
+    serializer_class = notify.ViewerNotificationModelSerializer
+    authentication_classes = [auth.UserAuthentication,]
+
+    def get_object(self):
+        obj = models.ViewerNotification.objects.filter(toUser=self.request.user).first()
+        return obj
+
+class MomentViewerNotificationView(RetrieveAPIView):
+    queryset = models.MomentViewerNotification.objects
+    serializer_class = notify.MomentViewerNotificationModelSerializer
+    authentication_classes = [auth.UserAuthentication,]
+
+
+
+

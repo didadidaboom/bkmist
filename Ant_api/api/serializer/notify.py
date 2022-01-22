@@ -73,3 +73,15 @@ class GetNotificationModelSerializer(ModelSerializer):
                     return str(minute_ceil) + "分钟前"
                 else:
                     return str(second) + "秒前"
+
+class ViewerNotificationModelSerializer(ModelSerializer):
+
+    class Meta:
+        model = models.ViewerNotification
+        fields = ["id","focused_count","viewer_count_page1","viewer_count_page2","viewer_count_page3","tacit_viewer_count","tacit_write_count"]
+
+
+class MomentViewerNotificationModelSerializer(ModelSerializer):
+    class Meta:
+        model = models.MomentViewerNotification
+        fields = ["id", "momentviewer_count"]
