@@ -28,6 +28,13 @@ class OtherTacitsView(ListAPIView):
         if int(user_id) is int(request.user.id):
             return self.list(request, *args, **kwargs)
         viewer_object = models.UserViewerRecordPage2.objects.filter(user_id=user_id, viewer_user=request.user)
+        # viewer notify
+        viewernotify_obj = models.ViewerNotification.objects.filter(toUser_id=user_id)
+        if viewernotify_obj.exists():
+            viewernotify_obj.update(viewer_count_page2=F("viewer_count_page2") + 1)
+        else:
+            viewernotify_obj.create(toUser_id=user_id, viewer_count_page2=1)
+
         exists = viewer_object.exists()
         if exists:
             viewer_object.update(viewer_count=F("viewer_count") + 1, create_time=timezone.now())
@@ -53,9 +60,15 @@ class OtherTacitsReplyView(ListAPIView):
         if not request.user:
             return self.list(request, *args, **kwargs)
         if int(user_id) is int(request.user.id):
-            print(2222)
             return self.list(request, *args, **kwargs)
         viewer_object = models.UserViewerRecordPage3.objects.filter(user_id=user_id, viewer_user=request.user)
+        # viewer notify
+        viewernotify_obj = models.ViewerNotification.objects.filter(toUser_id=user_id)
+        if viewernotify_obj.exists():
+            viewernotify_obj.update(viewer_count_page3=F("viewer_count_page3") + 1)
+        else:
+            viewernotify_obj.create(toUser_id=user_id, viewer_count_page3=1)
+
         exists = viewer_object.exists()
         if exists:
             viewer_object.update(viewer_count=F("viewer_count") + 1, create_time=timezone.now())

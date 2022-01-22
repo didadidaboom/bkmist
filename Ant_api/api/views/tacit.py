@@ -75,6 +75,13 @@ class ReplyTacitView(RetrieveAPIView):
         if int(object.user.id) is int(request.user.id):
             return self.retrieve(request, *args, **kwargs)
         viewer_object = models.TacitReplyViewer.objects.filter(user=object.user, viewer_user=self.request.user,tacitRecord=object)
+        # viewer notify
+        viewernotify_obj = models.ViewerNotification.objects.filter(toUser=object.user)
+        if viewernotify_obj.exists():
+            viewernotify_obj.update(tacit_viewer_count=F("tacit_viewer_count") + 1)
+        else:
+            viewernotify_obj.create(toUser=object.user, tacit_viewer_count=1)
+
         exists = viewer_object.exists()
         if exists:
             viewer_object.update(viewer_count=F("viewer_count") + 1, create_time=timezone.now())
@@ -93,6 +100,13 @@ class ReplyTacitSaveView(CreateAPIView):
     def perform_create(self, serializer):
         obj=serializer.save(user=self.request.user)
         viewer_object = models.TacitReplyWrite.objects.filter(user=obj.tacitRecord.user, viewer_user=self.request.user,tacitRecord=obj.tacitRecord)
+        # viewer notify
+        viewernotify_obj = models.ViewerNotification.objects.filter(toUser=obj.tacitRecord.user)
+        if viewernotify_obj.exists():
+            viewernotify_obj.update(tacit_write_count=F("tacit_write_count") + 1)
+        else:
+            viewernotify_obj.create(toUser=obj.tacitRecord.user, tacit_write_count=1)
+
         exists = viewer_object.exists()
         if exists:
             viewer_object.update(write_count=F("write_count") + 1, create_time=timezone.now())

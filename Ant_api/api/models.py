@@ -443,3 +443,26 @@ class Notification(models.Model):
         db_table = "notification"
         verbose_name = "消息通知"
         verbose_name_plural = verbose_name
+
+class ViewerNotification(models.Model):
+    toUser = models.ForeignKey(verbose_name="to user", to="UserInfo", related_name="viewernotification_to", null=True,blank=True,on_delete=models.CASCADE)
+    focused_count = models.PositiveIntegerField(verbose_name="自己被关注次数", default=0)
+    viewer_count_page1 = models.PositiveIntegerField(verbose_name="个人瞬间页被看次数", default=0)
+    viewer_count_page2 = models.PositiveIntegerField(verbose_name="我的独白被看次数", default=0)
+    viewer_count_page3 = models.PositiveIntegerField(verbose_name="朋友眼中的我被看次数", default=0)
+    tacit_viewer_count = models.PositiveIntegerField(verbose_name="好友测试扫码次数", default=0)
+    tacit_write_count = models.PositiveIntegerField(verbose_name="好友测试填写次数", default=0)
+
+    class Meta:
+        db_table = "viewernotification"
+        verbose_name = "个人浏览通知"
+        verbose_name_plural = verbose_name
+
+class MomentViewerNotification(models.Model):
+    moment = models.ForeignKey(verbose_name="瞬间的一级评论", to="Moment", related_name="+", null=True, blank=True,on_delete=models.CASCADE)
+    momentviewer_count = models.PositiveIntegerField(verbose_name="瞬间浏览量", default=0)
+
+    class Meta:
+        db_table = "momentviewernotification"
+        verbose_name = "瞬间浏览通知"
+        verbose_name_plural = verbose_name

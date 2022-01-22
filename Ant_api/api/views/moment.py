@@ -107,6 +107,13 @@ class MomentDetailView(RetrieveAPIView):
         if int(moment_object.user.id) is int(request.user.id):
             return response
         viewer_object=models.MomentViewerRecord.objects.filter(moment=moment_object,viewer_user=request.user)
+        # viewer notify
+        momentviewernotify_obj = models.MomentViewerNotification.objects.filter(moment=moment_object)
+        if momentviewernotify_obj.exists():
+            momentviewernotify_obj.update(momentviewer_count=F("momentviewer_count") + 1)
+        else:
+            momentviewernotify_obj.create(moment=moment_object, momentviewer_count=1)
+
         exists = viewer_object.exists()
         if exists:
             viewer_object.update(viewer_count=F("viewer_count")+1,create_time=timezone.now())

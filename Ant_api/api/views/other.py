@@ -25,6 +25,12 @@ class OtherDetailsView(RetrieveAPIView):
         if int(user_object.id) is int(request.user.id):
             return response
         viewer_object=models.UserViewerRecord.objects.filter(user=user_object,viewer_user=request.user)
+        #viewer notify
+        viewernotify_obj = models.ViewerNotification.objects.filter(toUser=user_object)
+        if viewernotify_obj.exists():
+            viewernotify_obj.update(viewer_count_page1=F("viewer_count_page1")+1)
+        else:
+            viewernotify_obj.create(toUser=user_object,viewer_count_page1=1)
         exists = viewer_object.exists()
         if exists:
             viewer_object.update(viewer_count=F("viewer_count")+1,create_time=timezone.now())
@@ -67,6 +73,13 @@ class FocusUserView(APIView):
             focus_user = self.request.user
         )
         user_obj = models.UserInfo.objects
+        # viewer notify
+        viewernotify_obj = models.ViewerNotification.objects.filter(toUser=user_obj.first())
+        if viewernotify_obj.exists():
+            viewernotify_obj.update(focused_count=F("focused_count") + 1)
+        else:
+            viewernotify_obj.create(toUser=user_obj.first(), focused_count=1)
+
         exists = obj.exists()
         if not exists:
             serializer.save(focus_user=self.request.user)
