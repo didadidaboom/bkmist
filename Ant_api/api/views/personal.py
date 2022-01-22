@@ -1,3 +1,5 @@
+from django.utils import timezone
+
 from rest_framework.generics import RetrieveAPIView,UpdateAPIView
 from rest_framework.generics import ListAPIView,DestroyAPIView
 from rest_framework.views import APIView
@@ -20,7 +22,9 @@ class PersonalInfoView(RetrieveAPIView):
     authentication_classes = [UserAuthentication,]
 
     def get_object(self):
-        return models.UserInfo.objects.get(id=self.request.user.id)
+        obj = models.UserInfo.objects.filter(id=self.request.user.id)
+        obj.update(last_login=timezone.now())
+        return obj.first()
 
 class UpdateNamePersonalView(UpdateAPIView):
     queryset = models.UserInfo.objects

@@ -1,6 +1,7 @@
 import datetime
 from math import floor, ceil
 import collections
+from django.utils import timezone
 
 from rest_framework.serializers import ModelSerializer
 from rest_framework import serializers
@@ -65,6 +66,9 @@ class GetMomentModelSerializer(ModelSerializer):
 
     def get_user(self,obj):
         request = self.context.get("request")
+        #checked whether is or is not under login and update the late_login time in Userinfo
+        if request.user:
+            models.UserInfo.objects.filter(id=request.user.id).update(last_login=timezone.now())
         if obj.if_status:
             nickName = getRandomName()
             avatarUrl = getMosaic()
