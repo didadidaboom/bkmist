@@ -24,13 +24,17 @@ class PersonalInfoModelSerializer(serializers.ModelSerializer):
         return day_ori
 
     def get_new_viewers(self,obj):
-        viewer_obj = models.ViewerNotification.objects.filter(toUser=obj).first()
-        return {"viewer_count_page1":viewer_obj.viewer_count_page1,
-                "viewer_count_page2": viewer_obj.viewer_count_page2,
-                "viewer_count_page3": viewer_obj.viewer_count_page3,
-                "tacit_viewer_count": viewer_obj.tacit_viewer_count,
-                "tacit_write_count": viewer_obj.tacit_write_count,
-                }
+        viewer_obj_ori = models.ViewerNotification.objects.filter(toUser=obj)
+        if not viewer_obj_ori.exists():
+            return None
+        else:
+            viewer_obj = viewer_obj_ori.first()
+            return {"viewer_count_page1":viewer_obj.viewer_count_page1,
+                    "viewer_count_page2": viewer_obj.viewer_count_page2,
+                    "viewer_count_page3": viewer_obj.viewer_count_page3,
+                    "tacit_viewer_count": viewer_obj.tacit_viewer_count,
+                    "tacit_write_count": viewer_obj.tacit_write_count,
+                    }
 
 class UpdateNamePersonalModelSerializer(serializers.ModelSerializer):
     class Meta:

@@ -42,8 +42,14 @@ class PersonalMomentModelSerializer(serializers.ModelSerializer):
         return [model_to_dict(row,["id","path"]) for row in current_obj]
 
     def get_new_momentviewers(self,obj):
-        momentviewer_obj = models.MomentViewerNotification.objects.filter(moment=obj).first()
-        return momentviewer_obj.momentviewer_count
+        momentviewer_obj_ori = models.MomentViewerNotification.objects.filter(moment=obj)
+        momentviewer_obj = momentviewer_obj_ori.first()
+        if not momentviewer_obj_ori.exists():
+            return None
+        elif momentviewer_obj.momentviewer_count is 0:
+            return None
+        else:
+            return momentviewer_obj.momentviewer_count
 
 class UpdatePersonalMomentModelSerializer(serializers.ModelSerializer):
     class Meta:
