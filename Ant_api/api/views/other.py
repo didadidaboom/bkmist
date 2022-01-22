@@ -74,11 +74,11 @@ class FocusUserView(APIView):
         )
         user_obj = models.UserInfo.objects
         # viewer notify
-        viewernotify_obj = models.ViewerNotification.objects.filter(toUser=user_obj.first())
+        viewernotify_obj = models.ViewerNotification.objects.filter(toUser_id=request.data.get("user"))
         if viewernotify_obj.exists():
             viewernotify_obj.update(focused_count=F("focused_count") + 1)
         else:
-            viewernotify_obj.create(toUser=user_obj.first(), focused_count=1)
+            viewernotify_obj.create(toUser_id=request.data.get("user"), focused_count=1)
 
         exists = obj.exists()
         if not exists:
