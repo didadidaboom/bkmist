@@ -73,13 +73,6 @@ class FocusUserView(APIView):
             focus_user = self.request.user
         )
         user_obj = models.UserInfo.objects
-        # viewer notify
-        viewernotify_obj = models.ViewerNotification.objects.filter(toUser_id=request.data.get("user"))
-        if viewernotify_obj.exists():
-            viewernotify_obj.update(focused_count=F("focused_count") + 1)
-        else:
-            viewernotify_obj.create(toUser_id=request.data.get("user"), focused_count=1)
-
         exists = obj.exists()
         if not exists:
             serializer.save(focus_user=self.request.user)
@@ -87,6 +80,12 @@ class FocusUserView(APIView):
             user_obj.filter(id=self.request.user.id).update(focus_count=F("focus_count")+1)
             models.Notification.objects.create(notificationType=31, fromUser=self.request.user,
                                                toUser_id=serializer.validated_data.get("user").id, userHasChecked=True)
+            # viewer notify
+            viewernotify_obj = models.ViewerNotification.objects.filter(toUser_id=serializer.validated_data.get("user").id)
+            if viewernotify_obj.exists():
+                viewernotify_obj.update(focused_count=F("focused_count") + 1)
+            else:
+                viewernotify_obj.create(toUser_id=serializer.validated_data.get("user").id, focused_count=1)
             return Response({},status=status.HTTP_201_CREATED)
         user_obj.filter(id=request.data.get("user")).update(focused_count=F("focused_count")-1)
         user_obj.filter(id=self.request.user.id).update(focus_count=F("focus_count")-1)
@@ -98,5 +97,9 @@ class FocusUserView(APIView):
         else:
             models.Notification.objects.create(notificationType=32, fromUser=self.request.user,
                                                toUser_id=serializer.validated_data.get("user").id, userHasChecked=True)
+        # viewer notify
+        viewernotify_obj = models.ViewerNotification.objects.filter(toUser_id=request.data.get("user"))
+        if viewernotify_obj.exists() and viewernotify_obj>0:
+            viewernotify_obj.update(focused_count=F("focused_count") - 1)
         return Response({}, status=status.HTTP_200_OK)
 
