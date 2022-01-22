@@ -2,6 +2,7 @@ import json
 import uuid
 import requests
 import base64
+from django.utils import timezone
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -47,10 +48,12 @@ class LoginOpenidView(APIView):
         results = requests.get(url,params=data)
         openid = results.json().get("openid")
         nickName, avatarUrl = getRegisterNameAvatarlist()
-        userobj = models.UserInfo.objects.filter(openID=openid).first()
-        exists = models.UserInfo.objects.filter(openID=openid).exists()
+        userobj_ori = models.UserInfo.objects.filter(openID=openid)
+        exists = userobj_ori.exists()
+        userobj = userobj_ori.first()
         if exists:
             ser = LoginOpenidModelSerializer(instance=userobj)
+            userobj_ori.update(last_login=timezone.now())
             return Response(ser.data,status=status.HTTP_200_OK)
         info = {
             "nickName": nickName,
