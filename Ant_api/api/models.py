@@ -466,3 +466,8 @@ class MomentViewerNotification(models.Model):
         db_table = "momentviewernotification"
         verbose_name = "瞬间浏览通知"
         verbose_name_plural = verbose_name
+
+class SystemNotification(models.Model):
+    type = models.IntegerField()
+    content = models.CharField(verbose_name="通知内容")
+    
