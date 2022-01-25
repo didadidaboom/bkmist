@@ -37,5 +37,5 @@ class FocusUserModelSerializer(serializers.ModelSerializer):
 class OtherInviteTacitsModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Notification
-        fields = ["toUser","notificationType"]
+        fields = ["toUser","notificationType","userHasChecked"]
 
