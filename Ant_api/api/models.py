@@ -467,7 +467,23 @@ class MomentViewerNotification(models.Model):
         verbose_name = "瞬间浏览通知"
         verbose_name_plural = verbose_name
 
-class SystemNotification(models.Model):
+class PreSystem(models.Model):
+    # 10001: 没登陆的时候的系统消息
+    # 20001: 登陆后的第一条系统消息
+    # 30001: 自由
     type = models.IntegerField()
     content = models.CharField(verbose_name="通知内容")
-    
+    class Meta:
+        db_table = "presystem"
+        verbose_name = "系统消息"
+        verbose_name_plural = verbose_name
+
+class SystemNotification(models.Model):
+    toUser = models.ForeignKey(verbose_name="to user", to="UserInfo", related_name="system_notification_to", null=True, on_delete=models.CASCADE)
+    PreSystem = models.ForeignKey(verbose_name="系统消息",null=True,on_delete=models.CASCADE)
+    userHasChecked = models.BooleanField(default=False)
+
+    class Meta:
+        db_table = "systemnotification"
+        verbose_name = "系统消息通知"
+        verbose_name_plural = verbose_name
