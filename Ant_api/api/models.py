@@ -482,6 +482,7 @@ class SystemNotification(models.Model):
     toUser = models.ForeignKey(verbose_name="to user", to="UserInfo", related_name="system_notification_to", null=True, on_delete=models.CASCADE)
     preSystem = models.ForeignKey(verbose_name="系统消息",to="PreSystem",null=True,on_delete=models.CASCADE)
     userHasChecked = models.BooleanField(default=False)
+    create_time = models.DateTimeField(verbose_name="创建时间", auto_now_add=True)
 
     class Meta:
         db_table = "systemnotification"

@@ -104,6 +104,33 @@ class GetPreSystemNotificationModelSerializer(ModelSerializer):
 class GetSystemNotificationModelSerializer(ModelSerializer):
     type = serializers.IntegerField(source="preSystem.type",read_only=True)
     content =serializers.CharField(source="preSystem.content",read_only=True)
+    create_time = serializers.SerializerMethodField()
+
     class Meta:
         model = models.SystemNotification
-        fields=["id","type","content","userHasChecked"]
+        fields=["id","type","content","userHasChecked","create_time"]
+
+    def get_create_time(self,obj):
+        create_time = obj.create_time
+        a = create_time
+        b = create_time.now()
+        delta = b - a
+        second = delta.seconds
+        minute_ori = second / 60
+        minute_ceil = ceil(minute_ori)
+        minute_floor = floor(minute_ori)
+        hour_ori = minute_ori / 60
+        hour_ceil = ceil(hour_ori)
+        hour_floor = floor(hour_ori)
+        day_ori = delta.days
+        day = day_ori + 1
+        if (day_ori):
+            return str(day) + "天前"
+        else:
+            if (hour_ori > 1):
+                return str(hour_ceil) + "小时前"
+            else:
+                if (minute_ori > 1):
+                    return str(minute_ceil) + "分钟前"
+                else:
+                    return str(second) + "秒前"
