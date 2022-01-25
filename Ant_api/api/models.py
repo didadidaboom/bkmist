@@ -472,7 +472,7 @@ class PreSystem(models.Model):
     # 20001: 登陆后的第一条系统消息
     # 30001: 自由
     type = models.IntegerField()
-    content = models.CharField(verbose_name="通知内容",max_length=5055)
+    content = models.CharField(verbose_name="通知内容",max_length=500)
     class Meta:
         db_table = "presystem"
         verbose_name = "系统消息"
