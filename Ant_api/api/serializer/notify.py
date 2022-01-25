@@ -102,6 +102,8 @@ class GetPreSystemNotificationModelSerializer(ModelSerializer):
         fields=["type","content"]
 
 class GetSystemNotificationModelSerializer(ModelSerializer):
+    type = serializers.IntegerField(source="preSystem.type",read_only=True)
+    content =serializers.CharField(source="preSystem.content",read_only=True)
     class Meta:
         model = models.SystemNotification
         fields=["id","type","content","userHasChecked"]

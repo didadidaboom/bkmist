@@ -86,7 +86,7 @@ class SystemNotificationView(ListAPIView):
     authentication_classes = [auth.UserAuthentication, ]
 
     def get_queryset(self):
-        queryset = models.SystemNotification.objects.filter(type__gt=20000).all().order_by("-id")
+        queryset = models.SystemNotification.objects.filter(toUser=self.request.user).all().order_by("-id")
         return queryset
 
 
