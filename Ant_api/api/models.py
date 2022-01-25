@@ -480,7 +480,7 @@ class PreSystem(models.Model):
 
 class SystemNotification(models.Model):
     toUser = models.ForeignKey(verbose_name="to user", to="UserInfo", related_name="system_notification_to", null=True, on_delete=models.CASCADE)
-    PreSystem = models.ForeignKey(verbose_name="系统消息",null=True,on_delete=models.CASCADE)
+    preSystem = models.ForeignKey(verbose_name="系统消息",to="PreSystem",null=True,on_delete=models.CASCADE)
     userHasChecked = models.BooleanField(default=False)
 
     class Meta:
