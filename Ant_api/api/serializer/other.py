@@ -34,3 +34,8 @@ class FocusUserModelSerializer(serializers.ModelSerializer):
         model = models.UserFocusRecord
         fields = ["user"]
 
+class OtherInviteTacitsModelSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = models.Notification
+        fields = ["toUser","notificationType"]
+

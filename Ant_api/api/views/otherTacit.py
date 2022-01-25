@@ -1,11 +1,12 @@
 from django.utils import timezone
 from django.db.models import Q,F
 
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView,CreateAPIView
 
 from api import models
 from api.serializer.personalTacit import PersonalTacitModelSerializer
 from api.serializer.personalTacit import PersonalTacitReplyModelSerializer
+from api.serializer.other import OtherInviteTacitsModelSerializer
 
 from utils.auth import UserAuthentication
 from utils.filter import MinFilterBackend,MaxFilterBackend
@@ -77,3 +78,10 @@ class OtherTacitsReplyView(ListAPIView):
         viewer_object.create(user_id=user_id, viewer_user=request.user, viewer_count=1, create_time=timezone.now())
         models.UserInfo.objects.filter(id=user_id).update(viewer_count_page3=F("viewer_count_page3") + 1)
         return self.list(request, *args, **kwargs)
+
+class OtherInviteTacitsView(CreateAPIView):
+    serializer_class = OtherInviteTacitsModelSerializer
+    authentication_classes = [UserAuthentication,]
+
+    def perform_create(self, serializer):
+        serializer.save(fromUser=self.request.user)

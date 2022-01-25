@@ -93,6 +93,7 @@ urlpatterns = [
     url(r'^focusUser/$', other.FocusUserView.as_view()),
     url(r'^otherTacits/$', otherTacit.OtherTacitsView.as_view()),
     url(r'^otherTacitsReply/$', otherTacit.OtherTacitsReplyView.as_view()),
+    url(r'^otherInviteSelf/$', otherTacit.OtherInviteTacitsView.as_view()),
 
     #好友默契测试
     url(r'^tacit/$', tacit.TacitView.as_view()),
