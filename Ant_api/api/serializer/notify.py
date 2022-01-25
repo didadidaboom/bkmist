@@ -86,6 +86,11 @@ class MomentViewerNotificationModelSerializer(ModelSerializer):
         model = models.MomentViewerNotification
         fields = ["id", "momentviewer_count"]
 
+class GetPreSystemNotificationFlagModelSerializer(ModelSerializer):
+    class Meta:
+        model = models.PreSystem
+        fields = ["content"]
+
 class GetSystemNotificationFlagModelSerializer(ModelSerializer):
     class Meta:
         model = models.SystemNotification

@@ -33,17 +33,24 @@ class NotificationStatusView(UpdateAPIView):
     def put(self, request, *args, **kwargs):
         return self.partial_update(request, *args, **kwargs)
 
-class SystemNotificationFlagView(ListAPIView):
-    serializer_class = notify.GetSystemNotificationFlagModelSerializer
+class PreSystemNotificationFlagView(ListAPIView):
+    serializer_class = notify.GetPreSystemNotificationFlagModelSerializer
     pagination_class = pagination.Pagination
     filter_backends = [filter.MinFilterBackend, filter.MaxFilterBackend]
     authentication_classes = [auth.GeneralAuthentication, ]
 
     def get_queryset(self):
-        if not self.request.user:
-            queryset = models.PreSystem.objects.filter(type__lt=20000).all().order_by('-id')
-        else:
-            queryset = models.SystemNotification.objects.filter(userHasChecked=True).all().order_by('id')
+        queryset = models.PreSystem.objects.filter(type__lt=20000).all().order_by('id')
+        return queryset
+
+class SystemNotificationFlagView(ListAPIView):
+    serializer_class = notify.GetSystemNotificationFlagModelSerializer
+    pagination_class = pagination.Pagination
+    filter_backends = [filter.MinFilterBackend, filter.MaxFilterBackend]
+    authentication_classes = [auth.UserAuthentication, ]
+
+    def get_queryset(self):
+        queryset = models.SystemNotification.objects.filter(userHasChecked=True).all().order_by('id')
         return queryset
 
 

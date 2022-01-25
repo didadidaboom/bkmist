@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^notificationStatus/(?P<pk>\d+)/$', notify.NotificationStatusView.as_view()),
 
     #系统通知
+    url(r'^presystemnotification_flag/$', notify.PreSystemNotificationFlagView.as_view()),
     url(r'^systemnotification_flag/$', notify.SystemNotificationFlagView.as_view()),
     url(r'^systemnotification/$', notify.SystemNotificationView.as_view()),
 
