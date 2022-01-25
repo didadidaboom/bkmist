@@ -89,6 +89,14 @@ class SystemNotificationView(ListAPIView):
         queryset = models.SystemNotification.objects.filter(toUser=self.request.user).all().order_by("-id")
         return queryset
 
+class SystemNotificationStatusView(UpdateAPIView):
+    queryset = models.SystemNotification.objects
+    serializer_class = notify.GetSystemNotificationFlagModelSerializer
+    authentication_classes = [auth.UserAuthentication, ]
+
+    def put(self, request, *args, **kwargs):
+        return self.partial_update(request, *args, **kwargs)
+
 
 
 
