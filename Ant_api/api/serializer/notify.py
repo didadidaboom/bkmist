@@ -96,6 +96,11 @@ class GetSystemNotificationFlagModelSerializer(ModelSerializer):
         model = models.SystemNotification
         fields = ["userHasChecked"]
 
+class GetPreSystemNotificationModelSerializer(ModelSerializer):
+    class Meta:
+        model = models.PreSystem
+        fields=["type","content"]
+
 class GetSystemNotificationModelSerializer(ModelSerializer):
     class Meta:
         model = models.SystemNotification
