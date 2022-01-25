@@ -47,7 +47,7 @@ class GetNotificationModelSerializer(ModelSerializer):
                 nickName = nickName + "(我)"
             return {"id": obj.comment.user.id, "nickName": nickName, "avatarUrl": avatarUrl, "if_status_name": None}
         else:
-            return {"id": obj.toUser.id, "nickName": obj.toUser.nickName, "avatarUrl": obj.toUser.avatarUrl, "if_status_name": None}
+            return {"id": obj.fromUser.id, "nickName": obj.fromUser.nickName, "avatarUrl": obj.fromUser.avatarUrl, "if_status_name": None}
 
     def get_create_time(self,obj):
         create_time = obj.create_time
