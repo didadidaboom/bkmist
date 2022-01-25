@@ -50,7 +50,20 @@ class SystemNotificationFlagView(ListAPIView):
     authentication_classes = [auth.UserAuthentication, ]
 
     def get_queryset(self):
-        queryset = models.SystemNotification.objects.filter(userHasChecked=True).all().order_by('id')
+        if self.request.user:
+            exist = models.PreSystem.objects.filter(type__gt=20000).exists()
+            if exist:
+                obj = models.SystemNotification.objects.filter(toUser=self.request.user)
+                exist1 = obj.exists()
+                if exist1:
+                    queryset = obj.filter(userHasChecked=True).all().order_by('id')
+                else:
+                    models.SystemNotification.objects.create(toUser=self.request.user,userHasChecked=True)
+                    queryset = models.SystemNotification.objects.filter(toUser=self.request.user,userHasChecked=True).all().order_by('id')
+            else:
+                queryset = None
+        else:
+            queryset = None
         return queryset
 
 
