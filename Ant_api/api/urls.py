@@ -32,6 +32,7 @@ urlpatterns = [
     url(r'^presystemnotification/$', notify.PreSystemNotificationView.as_view()),
     url(r'^systemnotificationStatus/(?P<pk>\d+)/$', notify.SystemNotificationStatusView.as_view()),
     url(r'^systemmessage/$', system.SystemmessageView.as_view()),
+    url(r'^presystemList/$', system.PreSystemListView.as_view()),
 
     #话题相关
     url(r'^topic/$', topic.TopicView.as_view()),

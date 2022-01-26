@@ -17,3 +17,8 @@ class SystemmessageModelSerializer(ModelSerializer):
         else:
             obj = obj_ori.create(type=type,content=content)
             return obj
+
+class GetPreSystemListModelSerializer(ModelSerializer):
+    class Meta:
+        model = models.PreSystem
+        fields=["id","type","content"]
