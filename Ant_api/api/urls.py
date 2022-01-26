@@ -6,7 +6,7 @@ from api.views import topic,address
 from api.views import publish
 from api.views import moment
 from api.views import comment
-from api.views import login,notify
+from api.views import login,notify,system
 from api.views import personalMoment,personalTacit
 from api.views import personal,other,otherTacit
 from api.views import tacit
@@ -31,7 +31,7 @@ urlpatterns = [
     url(r'^systemnotification/$', notify.SystemNotificationView.as_view()),
     url(r'^presystemnotification/$', notify.PreSystemNotificationView.as_view()),
     url(r'^systemnotificationStatus/(?P<pk>\d+)/$', notify.SystemNotificationStatusView.as_view()),
-    url(r'^systemmessage/$', notify.SystemmessageView.as_view()),
+    url(r'^systemmessage/$', system.SystemmessageView.as_view()),
 
     #话题相关
     url(r'^topic/$', topic.TopicView.as_view()),
