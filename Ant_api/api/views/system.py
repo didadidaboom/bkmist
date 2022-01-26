@@ -1,4 +1,4 @@
-from rest_framework.generics import UpdateAPIView,CreateAPIView,ListAPIView
+from rest_framework.generics import DestroyAPIView,CreateAPIView,ListAPIView
 from rest_framework.views import APIView
 
 from api import models
@@ -20,3 +20,7 @@ class PreSystemListView(ListAPIView):
     def get_queryset(self):
         queryset = models.PreSystem.objects.all().order_by("-id")
         return queryset
+
+class DelPreSystemView(DestroyAPIView):
+    queryset = models.PreSystem.objects
+    authentication_classes = [auth.GeneralAuthentication,]

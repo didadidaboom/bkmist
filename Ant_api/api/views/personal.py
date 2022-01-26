@@ -57,7 +57,6 @@ class DeletePersonalView(DestroyAPIView):
     queryset = models.UserInfo.objects
     authentication_classes = [UserAuthentication, ]
     def get_object(self):
-        print(123)
         return models.UserInfo.objects.get(id=self.request.user.id)
 
 class PersonalViewerPage1View(ListAPIView):
