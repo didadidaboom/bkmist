@@ -51,18 +51,15 @@ class SystemNotificationFlagView(ListAPIView):
 
     def get_queryset(self):
         if self.request.user:
-            pre_obj_ori = models.PreSystem.objects.filter(type__gt=20000)
-            exist = pre_obj_ori.exists()
+            pre_obj_all = models.PreSystem.objects.filter(type__gt=20000)
+            exist = pre_obj_all.exists()
             if exist:
-                obj = models.SystemNotification.objects.filter(toUser=self.request.user)
-                exist1 = obj.exists()
-                if exist1:
-                    queryset = obj.filter(userHasChecked=True).all().order_by('id')
-                else:
-                    pre_obj = pre_obj_ori.all()
-                    for pre in pre_obj:
-                        models.SystemNotification.objects.create(toUser=self.request.user,preSystem=pre,userHasChecked=True)
-                    queryset = models.SystemNotification.objects.filter(toUser=self.request.user,userHasChecked=True).all().order_by('id')
+                for pre in pre_obj_all.all():
+                    obj = models.SystemNotification.objects.filter(toUser=self.request.user,preSystem__type=pre.type)
+                    exist1 = obj.exists()
+                    if not exist1:
+                        obj.create(toUser=self.request.user,preSystem=pre,userHasChecked=True)
+                queryset = models.SystemNotification.objects.filter(toUser=self.request.user,userHasChecked=True).all().order_by('id')
             else:
                 queryset = None
         else:
