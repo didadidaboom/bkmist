@@ -25,7 +25,7 @@ class PersonalMomentView(ListAPIView):
         if obj.exists():
             obj.update(count=F("count") + 1,latest_time=timezone.now())
         else:
-            obj.create(curUser=self.request.user,type=1001,count=F("count") + 1,latest_time=timezone.now())
+            obj.create(curUser=self.request.user,type=1001,count=1,latest_time=timezone.now())
 
         queryset = models.Moment.objects.filter(user = self.request.user).order_by("-id").all()
         return queryset

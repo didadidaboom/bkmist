@@ -31,7 +31,7 @@ class PersonalTacitView(ListAPIView):
         if obj.exists():
             obj.update(count=F("count") + 1, latest_time=timezone.now())
         else:
-            obj.create(curUser=self.request.user, type=2001, count=F("count") + 1, latest_time=timezone.now())
+            obj.create(curUser=self.request.user, type=2001, count=1, latest_time=timezone.now())
 
         queryset = models.TacitRecord.objects.filter(user=self.request.user).order_by("-id").all()
         return queryset
@@ -78,7 +78,7 @@ class PersonalTacitReplyView(ListAPIView):
         if obj.exists():
             obj.update(count=F("count") + 1, latest_time=timezone.now())
         else:
-            obj.create(curUser=self.request.user, type=3001, count=F("count") + 1, latest_time=timezone.now())
+            obj.create(curUser=self.request.user, type=3001, count= 1, latest_time=timezone.now())
         queryset = models.TacitRecord.objects.filter(user=self.request.user).order_by("-id").all()
         return queryset
 
