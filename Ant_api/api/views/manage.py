@@ -16,7 +16,7 @@ class getAllChongOpenidUsedListView(ListAPIView):
         return queryset
 
 
-class UpdateChongopenidView(UpdateAPIView):
+class UpdateOpenidView(UpdateAPIView):
     queryset = models.UserInfo.objects
     serializer_class = manage.UpdateopenidModelSerializer
 

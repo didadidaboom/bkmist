@@ -37,7 +37,7 @@ urlpatterns = [
     url(r'^presystemList/$', system.PreSystemListView.as_view()),
     url(r'^delPresystem/(?P<pk>\d+)/$', system.DelPreSystemView.as_view()),
     url(r'^getAllChongOpenidUsedList/', manage.getAllChongOpenidUsedListView.as_view()),
-    url(r'^updateChongOpenid/(?P<pk>\d+)/', manage.UpdateChongopenidView.as_view()),
+    url(r'^updateOpenid/(?P<pk>\d+)/', manage.UpdateOpenidView.as_view()),
 
     #话题相关
     url(r'^topic/$', topic.TopicView.as_view()),
