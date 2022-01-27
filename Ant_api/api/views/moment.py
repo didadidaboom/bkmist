@@ -48,6 +48,9 @@ class MomentView(ListAPIView):
     pagination_class = pagination.Pagination
     filter_backends = [filter.MinFilterBackend,filter.MaxFilterBackend]
 
+    def get(self, request, *args, **kwargs):
+        return self.list(request, *args, **kwargs)
+
 class FocusMomentView(ListAPIView):
     serializer_class = moment.GetMomentModelSerializer
     pagination_class = pagination.Pagination

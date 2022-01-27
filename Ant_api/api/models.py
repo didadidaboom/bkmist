@@ -489,7 +489,7 @@ class SystemNotification(models.Model):
         verbose_name = "系统消息通知"
         verbose_name_plural = verbose_name
 
-class personalData(models.Model):
+class PersonalData(models.Model):
     #p-page1:1001; p-viewer1:1002; p-focus:1003; p-focused:1004; p-moment:1005; p-setting:1006
     #p-page2:2001; p-viewer2:2002
     #p-page3:3001; p-viewer3:3002; p-scan:3003; p-submit:3004
@@ -504,7 +504,7 @@ class personalData(models.Model):
         verbose_name_plural = verbose_name
 
 
-class pagesData(models.Model):
+class PagesData(models.Model):
     #o-index:5001; o-focus:5002; o-friend:5003; o-publish:5004; o-play:5005; o-tacit:5006
     #o-mail1:6001; o-mail2:6002
     #o-topic1:7001; o-topic2:7002; o-topic3:7003; o-topic4:7004
