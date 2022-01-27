@@ -5,6 +5,21 @@ from api.serializer import manage
 
 from utils import pagination,filter,auth
 
+class getAllOpenidUsedListView(ListAPIView):
+    serializer_class = manage.getAllOpenidUsedListModelSerializer
+    pagination_class = pagination.Pagination
+    filter_backends = [filter.MinFilterBackend, filter.MaxFilterBackend]
+    authentication_classes = [auth.GeneralAuthentication, ]
+
+    def get_queryset(self):
+        queryset = models.UserInfo.objects\
+            .filter(openID__istartswith="oCKHr4gWMcH8ql0MPh7eE74llRpc")\
+            .filter(openID__istartswith="oCKHr4nB-yw3eAapHjGUFxGmEzj4")\
+            .filter(openID__istartswith="olwGA5IMdGhdv2FD0n7GvEBo7_iY")\
+            .filter(openID__istartswith="olwGA5KXfu6-WpOLTsrwnu_0Q1kw")\
+            .all().order_by("-id")
+        return queryset
+
 class getAllChongOpenidUsedListView(ListAPIView):
     serializer_class = manage.getAllOpenidUsedListModelSerializer
     pagination_class = pagination.Pagination

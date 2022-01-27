@@ -40,6 +40,9 @@ urlpatterns = [
     url(r'^getAllCHOpenidUsedList/', manage.getAllCHOpenidUsedListView.as_view()),
     url(r'^updateOpenid/(?P<pk>\d+)/', manage.UpdateOpenidView.as_view()),
 
+    #数据分析
+    url(r'^getAllOpenidUsedList/', manage.getAllOpenidUsedListView.as_view()),
+
     #话题相关
     url(r'^topic/$', topic.TopicView.as_view()),
     url(r'^topicMomentTime/$', topic.TopicMomentTimeView.as_view()),
