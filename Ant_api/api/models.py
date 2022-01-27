@@ -488,3 +488,34 @@ class SystemNotification(models.Model):
         db_table = "systemnotification"
         verbose_name = "系统消息通知"
         verbose_name_plural = verbose_name
+
+class personalData(models.Model):
+    #p-page1:1001; p-viewer1:1002; p-focus:1003; p-focused:1004; p-moment:1005; p-setting:1006
+    #p-page2:2001; p-viewer2:2002
+    #p-page3:3001; p-viewer3:3002; p-scan:3003; p-submit:3004
+    curUser = models.ForeignKey(verbose_name="current user", to="UserInfo", null=True,on_delete=models.CASCADE)
+    type = models.IntegerField()
+    count = models.PositiveIntegerField(verbose_name="次数", default=0)
+    latest_time = models.DateTimeField(verbose_name="最近时间", auto_now_add=True)
+
+    class Meta:
+        db_table = "personaldata"
+        verbose_name = "个人页数据"
+        verbose_name_plural = verbose_name
+
+
+class pagesData(models.Model):
+    #o-index:5001; o-focus:5002; o-friend:5003; o-publish:5004; o-play:5005; o-tacit:5006
+    #o-mail1:6001; o-mail2:6002
+    #o-topic1:7001; o-topic2:7002; o-topic3:7003; o-topic4:7004
+    #o-addr1:8001; o-addr2:8002
+    #o-page1:9001; o-page2:9002; o-page3:9003
+    curUser = models.ForeignKey(verbose_name="current user", to="UserInfo", null=True, on_delete=models.CASCADE)
+    type = models.IntegerField()
+    count = models.PositiveIntegerField(verbose_name="次数", default=0)
+    latest_time = models.DateTimeField(verbose_name="最近时间", auto_now_add=True)
+
+    class Meta:
+        db_table = "pagesdata"
+        verbose_name = "不同页数据"
+        verbose_name_plural = verbose_name
