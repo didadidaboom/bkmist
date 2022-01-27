@@ -63,6 +63,15 @@ class PersonalViewerPage1View(ListAPIView):
     serializer_class = PersonalViewerPage1ModelSerializer
     authentication_classes = [UserAuthentication]
     def get_queryset(self):
+        # collect data for data analysis
+        from django.utils import timezone
+        from django.db.models import F
+        obj = models.PersonalData.objects.filter(curUser=self.request.user, type=1002)
+        if obj.exists():
+            obj.update(count=F("count") + 1, latest_time=timezone.now())
+        else:
+            obj.create(curUser=self.request.user, type=1002, count=1, latest_time=timezone.now())
+
         models.ViewerNotification.objects.filter(toUser=self.request.user).update(viewer_count_page1=0)
         queryset = models.UserViewerRecord.objects.filter(user=self.request.user).order_by("-create_time")[0:10]
         return queryset
@@ -71,6 +80,15 @@ class PersonalViewerPage2View(ListAPIView):
     serializer_class = PersonalViewerPage2ModelSerializer
     authentication_classes = [UserAuthentication]
     def get_queryset(self):
+        # collect data for data analysis
+        from django.utils import timezone
+        from django.db.models import F
+        obj = models.PersonalData.objects.filter(curUser=self.request.user, type=2002)
+        if obj.exists():
+            obj.update(count=F("count") + 1, latest_time=timezone.now())
+        else:
+            obj.create(curUser=self.request.user, type=2002, count=1, latest_time=timezone.now())
+
         models.ViewerNotification.objects.filter(toUser=self.request.user).update(viewer_count_page2=0)
         queryset = models.UserViewerRecordPage2.objects.filter(user=self.request.user).order_by("-create_time")[0:10]
         return queryset
@@ -79,6 +97,15 @@ class PersonalViewerPage3View(ListAPIView):
     serializer_class = PersonalViewerPage3ModelSerializer
     authentication_classes = [UserAuthentication]
     def get_queryset(self):
+        # collect data for data analysis
+        from django.utils import timezone
+        from django.db.models import F
+        obj = models.PersonalData.objects.filter(curUser=self.request.user, type=3002)
+        if obj.exists():
+            obj.update(count=F("count") + 1, latest_time=timezone.now())
+        else:
+            obj.create(curUser=self.request.user, type=3002, count=1, latest_time=timezone.now())
+
         models.ViewerNotification.objects.filter(toUser=self.request.user).update(viewer_count_page3=0)
         queryset = models.UserViewerRecordPage3.objects.filter(user=self.request.user).order_by("-create_time")[0:10]
         return queryset
@@ -87,6 +114,15 @@ class PersonalViewerPage3ScanView(ListAPIView):
     serializer_class = PersonalViewerPage3ScanModelSerializer
     authentication_classes = [UserAuthentication]
     def get_queryset(self):
+        # collect data for data analysis
+        from django.utils import timezone
+        from django.db.models import F
+        obj = models.PersonalData.objects.filter(curUser=self.request.user, type=3003)
+        if obj.exists():
+            obj.update(count=F("count") + 1, latest_time=timezone.now())
+        else:
+            obj.create(curUser=self.request.user, type=3003, count=1, latest_time=timezone.now())
+
         models.ViewerNotification.objects.filter(toUser=self.request.user).update(tacit_viewer_count=0)
         queryset = models.TacitReplyViewer.objects.filter(user=self.request.user).order_by("-create_time")[0:10]
         return queryset
@@ -95,6 +131,15 @@ class PersonalViewerPage3SubmitView(ListAPIView):
     serializer_class = PersonalViewerPage3SubmitModelSerializer
     authentication_classes = [UserAuthentication]
     def get_queryset(self):
+        # collect data for data analysis
+        from django.utils import timezone
+        from django.db.models import F
+        obj = models.PersonalData.objects.filter(curUser=self.request.user, type=3004)
+        if obj.exists():
+            obj.update(count=F("count") + 1, latest_time=timezone.now())
+        else:
+            obj.create(curUser=self.request.user, type=3004, count=1, latest_time=timezone.now())
+
         models.ViewerNotification.objects.filter(toUser=self.request.user).update(tacit_write_count=0)
         queryset = models.TacitReplyWrite.objects.filter(user=self.request.user).order_by("-create_time")[0:10]
         return queryset
@@ -103,6 +148,15 @@ class PersonalMomentViewerView(ListAPIView):
     serializer_class = PersonalMomentViewerViewModelSerializer
     authentication_classes = [UserAuthentication]
     def get_queryset(self):
+        # collect data for data analysis
+        from django.utils import timezone
+        from django.db.models import F
+        obj = models.PersonalData.objects.filter(curUser=self.request.user, type=1005)
+        if obj.exists():
+            obj.update(count=F("count") + 1, latest_time=timezone.now())
+        else:
+            obj.create(curUser=self.request.user, type=1005, count=1, latest_time=timezone.now())
+
         moment_id = self.request.query_params.get('moment_id')
         models.MomentViewerNotification.objects.filter(moment_id=moment_id).update(momentviewer_count=0)
         queryset = models.MomentViewerRecord.objects.filter(moment=int(moment_id)).order_by("-create_time")[0:10]
@@ -112,6 +166,15 @@ class PersonalFocusListView(ListAPIView):
     serializer_class = PersonalFocusListModelSerializer
     authentication_classes = [UserAuthentication]
     def get_queryset(self):
+        # collect data for data analysis
+        from django.utils import timezone
+        from django.db.models import F
+        obj = models.PersonalData.objects.filter(curUser=self.request.user, type=1003)
+        if obj.exists():
+            obj.update(count=F("count") + 1, latest_time=timezone.now())
+        else:
+            obj.create(curUser=self.request.user, type=1003, count=1, latest_time=timezone.now())
+
         queryset = models.UserFocusRecord.objects.filter(focus_user=self.request.user).order_by("-create_time")[0:10]
         return queryset
 
@@ -119,6 +182,15 @@ class PersonalFocusedListView(ListAPIView):
     serializer_class = PersonalFocusedListModelSerializer
     authentication_classes = [UserAuthentication]
     def get_queryset(self):
+        # collect data for data analysis
+        from django.utils import timezone
+        from django.db.models import F
+        obj = models.PersonalData.objects.filter(curUser=self.request.user, type=1004)
+        if obj.exists():
+            obj.update(count=F("count") + 1, latest_time=timezone.now())
+        else:
+            obj.create(curUser=self.request.user, type=1004, count=1, latest_time=timezone.now())
+
         models.ViewerNotification.objects.filter(toUser=self.request.user).update(focused_count=0)
         queryset = models.UserFocusRecord.objects.filter(user=self.request.user,).order_by("-create_time")[0:10]
         return queryset
@@ -127,6 +199,15 @@ class PersonalFriendListView(ListAPIView):
     serializer_class = PersonalFocusedListModelSerializer
     authentication_classes = [UserAuthentication]
     def get_queryset(self):
+        # collect data for data analysis
+        from django.utils import timezone
+        from django.db.models import F
+        obj = models.PersonalData.objects.filter(curUser=self.request.user, type=1007)
+        if obj.exists():
+            obj.update(count=F("count") + 1, latest_time=timezone.now())
+        else:
+            obj.create(curUser=self.request.user, type=1007, count=1, latest_time=timezone.now())
+
         queryset = models.UserFocusRecord.objects.filter(
             user=self.request.user
         ).filter(
