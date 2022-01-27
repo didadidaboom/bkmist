@@ -22,6 +22,15 @@ class NotificationPage1View(ListAPIView):
     authentication_classes = [auth.UserAuthentication,]
 
     def get_queryset(self):
+        # collect data for data analysis
+        from django.utils import timezone
+        from django.db.models import F
+        obj = models.PersonalData.objects.filter(curUser=self.request.user, type=4001)
+        if obj.exists():
+            obj.update(count=F("count") + 1, latest_time=timezone.now())
+        else:
+            obj.create(curUser=self.request.user, type=4001, count=1, latest_time=timezone.now())
+
         queryset = models.Notification.objects.filter(toUser=self.request.user).all().order_by('-id')
         return queryset
 
@@ -76,11 +85,11 @@ class PreSystemNotificationView(ListAPIView):
         # collect data for data analysis
         from django.utils import timezone
         from django.db.models import F
-        obj = models.PersonalData.objects.filter(curUser=self.request.user, type=4002)
+        obj = models.PersonalData.objects.filter(curUser=self.request.user, type=4003)
         if obj.exists():
             obj.update(count=F("count") + 1, latest_time=timezone.now())
         else:
-            obj.create(curUser=self.request.user, type=4002, count=1, latest_time=timezone.now())
+            obj.create(curUser=self.request.user, type=4003, count=1, latest_time=timezone.now())
 
         queryset = models.PreSystem.objects.filter(type__lt=20000).all().order_by("-id")
         return queryset
@@ -95,11 +104,11 @@ class SystemNotificationView(ListAPIView):
         # collect data for data analysis
         from django.utils import timezone
         from django.db.models import F
-        obj = models.PersonalData.objects.filter(curUser=self.request.user, type=4001)
+        obj = models.PersonalData.objects.filter(curUser=self.request.user, type=4002)
         if obj.exists():
             obj.update(count=F("count") + 1, latest_time=timezone.now())
         else:
-            obj.create(curUser=self.request.user, type=4001, count=1, latest_time=timezone.now())
+            obj.create(curUser=self.request.user, type=4002, count=1, latest_time=timezone.now())
 
         queryset = models.SystemNotification.objects.filter(toUser=self.request.user).all().order_by("-id")
         return queryset

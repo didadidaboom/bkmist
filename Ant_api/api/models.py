@@ -493,7 +493,7 @@ class PersonalData(models.Model):
     #p-page1:1001; p-viewer1:1002; p-focus:1003; p-focused:1004; p-moment:1005; p-setting:1006; p-friend:1007; p-focuspage:1008
     #p-page2:2001; p-viewer2:2002
     #p-page3:3001; p-viewer3:3002; p-scan:3003; p-submit:3004
-    #p-mail1:4001; p-mail2:4002
+    #p-mail1:4001; p-mail2:4002; p-mail3:4003
     curUser = models.ForeignKey(verbose_name="current user", to="UserInfo", null=True,on_delete=models.CASCADE)
     type = models.IntegerField()
     count = models.PositiveIntegerField(verbose_name="次数", default=0)
