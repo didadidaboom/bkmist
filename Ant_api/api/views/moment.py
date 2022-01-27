@@ -57,6 +57,15 @@ class FocusMomentView(ListAPIView):
     filter_backends = [filter.MinFilterBackend,filter.MaxFilterBackend]
     authentication_classes = [UserAuthentication,]
     def get_queryset(self):
+        # collect data for data analysis
+        from django.utils import timezone
+        from django.db.models import F
+        obj = models.PersonalData.objects.filter(curUser=self.request.user, type=1008)
+        if obj.exists():
+            obj.update(count=F("count") + 1, latest_time=timezone.now())
+        else:
+            obj.create(curUser=self.request.user, type=1008, count=1, latest_time=timezone.now())
+
         user_obj = models.UserInfo.objects.filter(id=self.request.user.id).first()
         if user_obj.focus_count > settings.MAX_FOCUS_USERS:
             queryset = models.Moment.objects.filter(
