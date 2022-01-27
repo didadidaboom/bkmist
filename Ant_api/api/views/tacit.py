@@ -21,7 +21,7 @@ class TacitView(ListAPIView,CreateAPIView):
     pagination_class = Pagination
     authentication_classes = [GeneralAuthentication,]
 
-    def post(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):
         # collect data for data analysis
         if self.request.user:
             from django.utils import timezone
@@ -30,8 +30,11 @@ class TacitView(ListAPIView,CreateAPIView):
             if obj.exists():
                 obj.update(count=F("count") + 1, latest_time=timezone.now())
             else:
-                obj.create(curUser=self.request.user, type=5004, count=1, latest_time=timezone.now())
+                obj.create(curUser=self.request.user, type=5004, count=1, latest_time=timezone.now()
 
+        return self.list(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
         del request.data["id"]
         del request.data["selected_answer"]
         if not request.data.get("title"):
