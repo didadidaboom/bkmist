@@ -39,7 +39,7 @@ class getAllOpenidUsedListModelSerializer(ModelSerializer):
                     return str(second) + "秒前"
 
     def get_create_date(self,obj):
-        create_date = obj.last_login
+        create_date = obj.create_date
         a = create_date
         b = create_date.now()
         delta = b - a
