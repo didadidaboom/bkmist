@@ -24,6 +24,16 @@ class AddressMomentDistanceView(ListAPIView):
     filter_backends = [filter.MinFilterBackend,filter.MaxFilterBackend]
 
     def get_queryset(self):
+        # collect data for data analysis
+        if self.request.user:
+            from django.utils import timezone
+            from django.db.models import F
+            obj = models.PagesData.objects.filter(curUser=self.request.user, type=7001)
+            if obj.exists():
+                obj.update(count=F("count") + 1, latest_time=timezone.now())
+            else:
+                obj.create(curUser=self.request.user, type=7001, count=1, latest_time=timezone.now())
+
         address_id = self.request.query_params.get("address_id")
         address_obj = models.Address.objects.get(id=address_id)
         queryset = models.AddressGeohash.objects.filter(
@@ -50,6 +60,16 @@ class AddressMomentTimeView(ListAPIView):
     filter_backends = [filter.MinFilterBackend,filter.MaxFilterBackend]
 
     def get_queryset(self):
+        # collect data for data analysis
+        if self.request.user:
+            from django.utils import timezone
+            from django.db.models import F
+            obj = models.PagesData.objects.filter(curUser=self.request.user, type=7002)
+            if obj.exists():
+                obj.update(count=F("count") + 1, latest_time=timezone.now())
+            else:
+                obj.create(curUser=self.request.user, type=7002, count=1, latest_time=timezone.now())
+
         address_id = self.request.query_params.get("address_id")
         address_obj = models.Address.objects.get(id=address_id)
         address_geohash_obj = models.AddressGeohash.objects.filter(

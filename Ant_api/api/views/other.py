@@ -46,6 +46,16 @@ class OtherMomentsView(ListAPIView):
     filter_backends = [MinFilterBackend,MaxFilterBackend]
 
     def get_queryset(self):
+        # collect data for data analysis
+        if self.request.user:
+            from django.utils import timezone
+            from django.db.models import F
+            obj = models.PagesData.objects.filter(curUser=self.request.user, type=8001)
+            if obj.exists():
+                obj.update(count=F("count") + 1, latest_time=timezone.now())
+            else:
+                obj.create(curUser=self.request.user, type=8001, count=1, latest_time=timezone.now())
+
         queryset = models.Moment.objects.filter(
             user_id=self.request.query_params.get("user_id"),
             moment_status__in=[0, 1]).filter(Q(if_status=0)|Q(

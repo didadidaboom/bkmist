@@ -18,6 +18,16 @@ class OtherTacitsView(ListAPIView):
     filter_backends = [MinFilterBackend, MaxFilterBackend]
 
     def get_queryset(self):
+        # collect data for data analysis
+        if self.request.user:
+            from django.utils import timezone
+            from django.db.models import F
+            obj = models.PagesData.objects.filter(curUser=self.request.user, type=8002)
+            if obj.exists():
+                obj.update(count=F("count") + 1, latest_time=timezone.now())
+            else:
+                obj.create(curUser=self.request.user, type=8002, count=1, latest_time=timezone.now())
+
         queryset = models.TacitRecord.objects.filter(
             user_id=self.request.query_params.get("user_id"),
             tacit_status__in=[0, 1]).order_by('-id')
@@ -51,6 +61,16 @@ class OtherTacitsReplyView(ListAPIView):
     filter_backends = [MinFilterBackend, MaxFilterBackend]
 
     def get_queryset(self):
+        # collect data for data analysis
+        if self.request.user:
+            from django.utils import timezone
+            from django.db.models import F
+            obj = models.PagesData.objects.filter(curUser=self.request.user, type=8003)
+            if obj.exists():
+                obj.update(count=F("count") + 1, latest_time=timezone.now())
+            else:
+                obj.create(curUser=self.request.user, type=8003, count=1, latest_time=timezone.now())
+
         queryset = models.TacitRecord.objects.filter(
             user_id=self.request.query_params.get("user_id"),
             tacit_reply_status__in=[0, 1]).order_by('-id')
@@ -84,4 +104,14 @@ class OtherInviteTacitsView(CreateAPIView):
     authentication_classes = [UserAuthentication,]
 
     def perform_create(self, serializer):
+        # collect data for data analysis
+        if self.request.user:
+            from django.utils import timezone
+            from django.db.models import F
+            obj = models.PagesData.objects.filter(curUser=self.request.user, type=8004)
+            if obj.exists():
+                obj.update(count=F("count") + 1, latest_time=timezone.now())
+            else:
+                obj.create(curUser=self.request.user, type=8004, count=1, latest_time=timezone.now())
+
         serializer.save(fromUser=self.request.user)

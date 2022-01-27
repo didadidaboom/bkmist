@@ -22,6 +22,16 @@ class TacitView(ListAPIView,CreateAPIView):
     authentication_classes = [GeneralAuthentication,]
 
     def post(self, request, *args, **kwargs):
+        # collect data for data analysis
+        if self.request.user:
+            from django.utils import timezone
+            from django.db.models import F
+            obj = models.PagesData.objects.filter(curUser=self.request.user, type=5004)
+            if obj.exists():
+                obj.update(count=F("count") + 1, latest_time=timezone.now())
+            else:
+                obj.create(curUser=self.request.user, type=5004, count=1, latest_time=timezone.now())
+
         del request.data["id"]
         del request.data["selected_answer"]
         if not request.data.get("title"):

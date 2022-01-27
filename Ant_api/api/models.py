@@ -506,10 +506,10 @@ class PersonalData(models.Model):
 
 
 class PagesData(models.Model):
-    #o-index:5001; o-focus:5002; o-friend:5003; o-publish:5004; o-play:5005; o-tacit:5006
-    #o-topic1:7001; o-topic2:7002; o-topic3:7003; o-topic4:7004
-    #o-addr1:8001; o-addr2:8002
-    #o-page1:9001; o-page2:9002; o-page3:9003
+    #o-index:5001; o-publish:5002; o-play:5003; o-tacit:5004
+    #o-topic1:6001; o-topic2:6002; o-topic3:6003; o-topic4:6004
+    #o-addr1:7001; o-addr2:7002
+    #o-otherpage1:8001; o-otherpage2:8002; o-otherpage3:8003; o-otherinvite:8004
     curUser = models.ForeignKey(verbose_name="current user", to="UserInfo", null=True, on_delete=models.CASCADE)
     type = models.IntegerField()
     count = models.PositiveIntegerField(verbose_name="次数", default=0)

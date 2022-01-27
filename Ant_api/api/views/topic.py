@@ -51,6 +51,16 @@ class TopicMomentTimeView(ListAPIView):
     filter_backends = [filter.MinFilterBackend,filter.MaxFilterBackend]
 
     def get_queryset(self):
+        # collect data for data analysis
+        if self.request.user:
+            from django.utils import timezone
+            from django.db.models import F
+            obj = models.PagesData.objects.filter(curUser=self.request.user, type=6001)
+            if obj.exists():
+                obj.update(count=F("count") + 1, latest_time=timezone.now())
+            else:
+                obj.create(curUser=self.request.user, type=6001, count=1, latest_time=timezone.now())
+
         topic_id = self.request.query_params.get("topic_id")
         queryset = models.Moment.objects.filter(moment_status=0,topiccitedrecord__topic=int(topic_id)).all().order_by('-id')
         return queryset
@@ -68,6 +78,16 @@ class TopicMomentHotViewView(ListAPIView):
     filter_backends = [filter.MinFilterBackend,filter.MaxFilterBackend]
 
     def get_queryset(self):
+        # collect data for data analysis
+        if self.request.user:
+            from django.utils import timezone
+            from django.db.models import F
+            obj = models.PagesData.objects.filter(curUser=self.request.user, type=6002)
+            if obj.exists():
+                obj.update(count=F("count") + 1, latest_time=timezone.now())
+            else:
+                obj.create(curUser=self.request.user, type=6002, count=1, latest_time=timezone.now())
+
         topic_id = self.request.query_params.get("topic_id")
         queryset = models.Moment.objects.filter(moment_status=0,topiccitedrecord__topic=int(topic_id)).all().order_by('-viewer_count')
         return queryset
@@ -85,6 +105,16 @@ class TopicMomentHotCommentView(ListAPIView):
     filter_backends = [filter.MinFilterBackend,filter.MaxFilterBackend]
 
     def get_queryset(self):
+        # collect data for data analysis
+        if self.request.user:
+            from django.utils import timezone
+            from django.db.models import F
+            obj = models.PagesData.objects.filter(curUser=self.request.user, type=6003)
+            if obj.exists():
+                obj.update(count=F("count") + 1, latest_time=timezone.now())
+            else:
+                obj.create(curUser=self.request.user, type=6003, count=1, latest_time=timezone.now())
+
         topic_id = self.request.query_params.get("topic_id")
         queryset = models.Moment.objects.filter(moment_status=0,topiccitedrecord__topic=int(topic_id)).all().order_by('-comment_count')
         return queryset
@@ -102,6 +132,16 @@ class TopicMomentHotFavorView(ListAPIView):
     filter_backends = [filter.MinFilterBackend,filter.MaxFilterBackend]
 
     def get_queryset(self):
+        # collect data for data analysis
+        if self.request.user:
+            from django.utils import timezone
+            from django.db.models import F
+            obj = models.PagesData.objects.filter(curUser=self.request.user, type=6004)
+            if obj.exists():
+                obj.update(count=F("count") + 1, latest_time=timezone.now())
+            else:
+                obj.create(curUser=self.request.user, type=6004, count=1, latest_time=timezone.now())
+
         topic_id = self.request.query_params.get("topic_id")
         queryset = models.Moment.objects.filter(moment_status=0,topiccitedrecord__topic=int(topic_id)).all().order_by('-favor_count')
         return queryset
