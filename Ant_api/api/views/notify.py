@@ -82,15 +82,6 @@ class PreSystemNotificationView(ListAPIView):
     authentication_classes = [auth.GeneralAuthentication, ]
 
     def get_queryset(self):
-        # collect data for data analysis
-        from django.utils import timezone
-        from django.db.models import F
-        obj = models.PersonalData.objects.filter(curUser=self.request.user, type=4003)
-        if obj.exists():
-            obj.update(count=F("count") + 1, latest_time=timezone.now())
-        else:
-            obj.create(curUser=self.request.user, type=4003, count=1, latest_time=timezone.now())
-
         queryset = models.PreSystem.objects.filter(type__lt=20000).all().order_by("-id")
         return queryset
 
