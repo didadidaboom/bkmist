@@ -170,7 +170,7 @@ class Moment(models.Model):
     '''
     瞬间
     '''
-    content = models.CharField(verbose_name="瞬间内容",max_length=255)
+    content = models.CharField(verbose_name="瞬间内容",max_length=500)
     #topic = models.ForeignKey(verbose_name="话题",to="TopicInfo", null=True,blank=True,on_delete=models.SET_NULL)
     #address = models.CharField(verbose_name="瞬间发布的位置",max_length=100,null=True,blank=True)
     #addressName = models.CharField(verbose_name="瞬间发布的位置名称", max_length=100, null=True, blank=True)
