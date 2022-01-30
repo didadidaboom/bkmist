@@ -128,6 +128,7 @@ class MomentDetailView(RetrieveAPIView):
         moment_object = self.get_object()
         if int(moment_object.user.id) is int(request.user.id):
             return response
+        models.Moment.objects.filter(id=moment_object.id).update(viewer_count=F("viewer_count") + 1)
         viewer_object=models.MomentViewerRecord.objects.filter(moment=moment_object,viewer_user=request.user)
         # viewer notify
         momentviewernotify_obj = models.MomentViewerNotification.objects.filter(moment=moment_object)
@@ -139,10 +140,8 @@ class MomentDetailView(RetrieveAPIView):
         exists = viewer_object.exists()
         if exists:
             viewer_object.update(viewer_count=F("viewer_count")+1,create_time=timezone.now())
-            models.Moment.objects.filter(id=moment_object.id).update(viewer_count=F("viewer_count") + 1)
             return response
         viewer_object.create(viewer_user=request.user,moment=moment_object,create_time=timezone.now(),viewer_count=1)
-        models.Moment.objects.filter(id=moment_object.id).update(viewer_count=1)
         return response
 
 class MomentFavorView(APIView):
