@@ -164,14 +164,13 @@ class TopicDetailView(RetrieveAPIView):
         topic_object = self.get_object()
         if int(topic_object.user.id) is int(request.user.id):
             return response
+        models.TopicInfo.objects.filter(id=topic_object.id).update(viewer_count=F("viewer_count") + 1)
         viewer_object=models.TopicViewerRecord.objects.filter(topic=topic_object,viewer_user=request.user)
         exists = viewer_object.exists()
         if exists:
             viewer_object.update(viewer_count=F("viewer_count")+1,create_time=timezone.now())
-            models.TopicInfo.objects.filter(id=topic_object.id).update(viewer_count=F("viewer_count") + 1)
             return response
         viewer_object.create(viewer_user=request.user,topic=topic_object,create_time=timezone.now(),viewer_count=1)
-        models.TopicInfo.objects.filter(id=topic_object.id).update(viewer_count=1)
         return response
 
 class FocusTopicView(APIView):
