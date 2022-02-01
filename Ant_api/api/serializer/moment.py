@@ -121,7 +121,7 @@ class GetMomentModelSerializer(ModelSerializer):
         hour_ceil = ceil(hour_ori)
         hour_floor = floor(hour_ori)
         day_ori = delta.days
-        day = day_ori + 1
+        day = day_ori #+ 1
         if (day_ori):
             return str(day) + "天前"
         else:
