@@ -304,10 +304,10 @@ class GetMomentDetailModelSerializer(MomentSerializer):
                     create_date = str(day) + "天前"
                 else:
                     if (hour_ori > 1):
-                        create_date = str(hour_ceil) + "小时前"
+                        create_date = str(hour_floor) + "小时前"
                     else:
                         if (minute_ori > 1):
-                            create_date = str(minute_ceil) + "分钟前"
+                            create_date = str(minute_floor) + "分钟前"
                         else:
                             create_date = str(second) + "秒前"
                 item["create_date"] = create_date
@@ -409,15 +409,15 @@ class GetMomentDetailModelSerializer(MomentSerializer):
             hour_ceil = ceil(hour_ori)
             hour_floor = floor(hour_ori)
             day_ori = delta.days
-            day = day_ori + 1
+            day = day_ori
             if (day_ori):
                 create_date = str(day) + "天前"
             else:
                 if (hour_ori > 1):
-                    create_date = str(hour_ceil) + "小时前"
+                    create_date = str(hour_floor) + "小时前"
                 else:
                     if (minute_ori > 1):
-                        create_date = str(minute_ceil) + "分钟前"
+                        create_date = str(minute_floor) + "分钟前"
                     else:
                         create_date = str(second) + "秒前"
             item["create_date"] = create_date
@@ -450,15 +450,15 @@ class GetMomentDetailModelSerializer(MomentSerializer):
         hour_ceil = ceil(hour_ori)
         hour_floor = floor(hour_ori)
         day_ori = delta.days
-        day = day_ori + 1
+        day = day_ori
         if (day_ori):
             return str(day) + "天前"
         else:
             if (hour_ori > 1):
-                return str(hour_ceil) + "小时前"
+                return str(hour_floor) + "小时前"
             else:
                 if (minute_ori > 1):
-                    return str(minute_ceil) + "分钟前"
+                    return str(minute_floor) + "分钟前"
                 else:
                     return str(second) + "秒前"
 
