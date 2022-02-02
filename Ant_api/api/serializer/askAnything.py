@@ -6,4 +6,4 @@ class CreateAskAnythingModelSerializer(ModelSerializer):
 
     class Meta:
         model = models.TacitRecord
-        fields = ["id","type"]
+        fields = ["id","type","avatarUrlFlag"]
