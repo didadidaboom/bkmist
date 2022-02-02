@@ -344,6 +344,31 @@ class TacitRecord(models.Model):
         verbose_name = "默契记录"
         verbose_name_plural = verbose_name
 
+class AskAnythingRecord(models.Model):
+    '''
+    坦白局记录
+    '''
+    tacitrecord = models.ForeignKey(verbose_name="我的独白记录",to="TacitRecord",on_delete=models.CASCADE)
+    content = models.CharField(verbose_name="提问内容",max_length=255)
+    user = models.ForeignKey(verbose_name="提问用户",to="UserInfo",null=True,blank=True,on_delete=models.CASCADE)
+    nickName = models.CharField(verbose_name="随机名字",max_length=255,null=True,blank=True)
+    avatarUrl = models.CharField(verbose_name="随机头像", max_length=1000,null=True,blank=True)
+    reply = models.ForeignKey(verbose_name="回复评论ID",to="self",null=True,blank=True,related_name="replys",on_delete=models.CASCADE)
+    depth = models.PositiveIntegerField(verbose_name="评论深度",default=1)
+    root = models.ForeignKey(verbose_name="评论根ID",to="self",null=True,blank=True,related_name="roots",on_delete=models.CASCADE)
+    create_date = models.DateTimeField(verbose_name="评论时间", auto_now_add=True)
+    comment_status_choice = (
+        (0, "显示"),
+        (1, "条件隐身")
+    )
+    comment_status = models.SmallIntegerField(verbose_name="评论状态",default=0,choices=comment_status_choice)
+    favor_count = models.PositiveIntegerField(verbose_name="评论赞数",default=0)
+
+    class Meta:
+        db_table = "ask_anything_record"
+        verbose_name = "坦白局"
+        verbose_name_plural = verbose_name
+
 class TacitCitedRecord(models.Model):
     tacitRecord = models.ForeignKey(verbose_name="默契测试记录",to="TacitRecord",on_delete=models.CASCADE)
     tacitTestDatabase = models.ForeignKey(verbose_name="默契测试题库",to="TacitTestDatabase",on_delete=models.CASCADE)

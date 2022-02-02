@@ -44,7 +44,6 @@ class TopicView(ListAPIView,CreateAPIView):
         headers = self.get_success_headers(serializer.data)
         return Response(serializer.data,status=status.HTTP_201_CREATED,headers=headers)
 
-
 class TopicMomentTimeView(ListAPIView):
     serializer_class = moment.GetMomentModelSerializer
     pagination_class = pagination.Pagination
@@ -162,8 +161,8 @@ class TopicDetailView(RetrieveAPIView):
         if not request.user:
             return response
         topic_object = self.get_object()
-        if int(topic_object.user.id) is int(request.user.id):
-            return response
+        # if int(topic_object.user.id) is int(request.user.id):
+        #     return response
         models.TopicInfo.objects.filter(id=topic_object.id).update(viewer_count=F("viewer_count") + 1)
         viewer_object=models.TopicViewerRecord.objects.filter(topic=topic_object,viewer_user=request.user)
         exists = viewer_object.exists()

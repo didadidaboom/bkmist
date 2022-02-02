@@ -9,7 +9,7 @@ from api.views import comment
 from api.views import login,notify,system,manage
 from api.views import personalMoment,personalTacit
 from api.views import personal,other,otherTacit
-from api.views import tacit
+from api.views import tacit,askAnything
 
 urlpatterns = [
     url(r'^login/$', autho.LoginView.as_view()),
@@ -112,4 +112,7 @@ urlpatterns = [
     url(r'^tacitRandomOne/$', tacit.TacitRandomOneView.as_view()),
     url(r'^replyTacit/(?P<pk>\d+)/$', tacit.ReplyTacitView.as_view()),
     url(r'^replyTacitSave/$', tacit.ReplyTacitSaveView.as_view()),
+
+    #坦白局
+    url(r'^createAskAnything/$', askAnything.CreateAskAnythingView.as_view()),
 ]
