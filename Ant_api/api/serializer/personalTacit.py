@@ -12,22 +12,25 @@ class PersonalTacitModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.TacitRecord
         #fields = "__all__"
-        fields = ["id", "create_date", "avatarUrlFlag", "tacit_status","tacitDataList"]
+        fields = ["id", "create_date", "avatarUrlFlag", "tacit_status","tacitDataList","type"]
     def get_tacitDataList(self,obj):
-        obj_list = models.TacitCitedRecord.objects.filter(tacitRecord=obj).all()
-        #results = [model_to_dict(
-        #    row.tacitTestDatabase, ["title", "answer1", "answer2", "answer3", "answer4", "answer5"]) for row in
-        #    obj_list]
-        results = [{
-            "title":row.tacitTestDatabase.title,
-            "answer1":row.tacitTestDatabase.answer1,
-            "answer2":row.tacitTestDatabase.answer2,
-            "answer3":row.tacitTestDatabase.answer3,
-            "answer4":row.tacitTestDatabase.answer4,
-            "answer5":row.tacitTestDatabase.answer5,
-            "selected_answer":row.selected_answer
-        } for row in obj_list]
-        return results
+        if obj.type is 10001:
+            obj_list = models.TacitCitedRecord.objects.filter(tacitRecord=obj,type=10001).all()
+            #results = [model_to_dict(
+            #    row.tacitTestDatabase, ["title", "answer1", "answer2", "answer3", "answer4", "answer5"]) for row in
+            #    obj_list]
+            results = [{
+                "title":row.tacitTestDatabase.title,
+                "answer1":row.tacitTestDatabase.answer1,
+                "answer2":row.tacitTestDatabase.answer2,
+                "answer3":row.tacitTestDatabase.answer3,
+                "answer4":row.tacitTestDatabase.answer4,
+                "answer5":row.tacitTestDatabase.answer5,
+                "selected_answer":row.selected_answer
+            } for row in obj_list]
+            return results
+        else:
+            return None
 
 class UpdatePersonalTacitModelSerializer(serializers.ModelSerializer):
     class Meta:
