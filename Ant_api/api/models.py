@@ -311,7 +311,7 @@ class TacitTestDatabase(models.Model):
 
 class TacitRecord(models.Model):
     #10001 好友测试问答; 20001 坦白局
-    type = models.IntegerField()
+    type = models.IntegerField(null=True,blank=True)
     user = models.ForeignKey(verbose_name="好友测试创建者", to="UserInfo",on_delete=models.CASCADE)
     comment_count = models.PositiveIntegerField(verbose_name="评论次数", default=0)
     bonus_choice = (

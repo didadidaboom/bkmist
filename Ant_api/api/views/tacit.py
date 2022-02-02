@@ -51,7 +51,7 @@ class TacitSaveView(CreateAPIView):
     authentication_classes = [UserAuthentication,]
 
     def perform_create(self, serializer):
-        obj=serializer.save(user=self.request.user)
+        obj=serializer.save(user=self.request.user,type=10001)
         return obj
 
 class TacitRandomOneView(RetrieveAPIView):
