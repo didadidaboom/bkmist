@@ -79,7 +79,7 @@ class PersonalTacitReplyView(ListAPIView):
             obj.update(count=F("count") + 1, latest_time=timezone.now())
         else:
             obj.create(curUser=self.request.user, type=3001, count= 1, latest_time=timezone.now())
-        queryset = models.TacitRecord.objects.filter(user=self.request.user).order_by("-id").all()
+        queryset = models.TacitRecord.objects.filter(user=self.request.user,type=10001).order_by("-id").all()
         return queryset
 
 class personalTacitReplyFavorView(APIView):
