@@ -15,7 +15,7 @@ class PersonalTacitModelSerializer(serializers.ModelSerializer):
         fields = ["id", "create_date", "avatarUrlFlag", "tacit_status","tacitDataList","type"]
     def get_tacitDataList(self,obj):
         if obj.type is 10001:
-            obj_list = models.TacitCitedRecord.objects.filter(tacitRecord=obj,type=10001).all()
+            obj_list = models.TacitCitedRecord.objects.filter(tacitRecord=obj).all()
             #results = [model_to_dict(
             #    row.tacitTestDatabase, ["title", "answer1", "answer2", "answer3", "answer4", "answer5"]) for row in
             #    obj_list]
