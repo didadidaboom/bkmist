@@ -10,3 +10,11 @@ class CreateAskAnythingView(CreateAPIView):
     def perform_create(self, serializer):
         obj=serializer.save(user=self.request.user)
         return obj
+
+class SubmitAskAnythingView(CreateAPIView):
+    serializer_class = askAnything.CreateAskAnythingModelSerializer
+    authentication_classes = [UserAuthentication,]
+
+    def perform_create(self, serializer):
+        obj=serializer.save(user=self.request.user)
+        return obj
