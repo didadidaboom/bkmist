@@ -73,7 +73,9 @@ class OtherTacitsReplyView(ListAPIView):
 
         queryset = models.TacitRecord.objects.filter(
             user_id=self.request.query_params.get("user_id"),
-            tacit_reply_status__in=[0, 1]).order_by('-id')
+            tacit_reply_status__in=[0, 1],
+            type=10001
+        ).order_by('-id')
         return queryset
 
     def get(self, request, *args, **kwargs):
