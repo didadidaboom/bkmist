@@ -4,7 +4,7 @@ from rest_framework import serializers
 from api import models
 
 class CreateAskAnythingModelSerializer(ModelSerializer):
-    user = serializers.IntegerField(read_only=True)
+    user_id = serializers.SerializerMethodField(source="user.id",read_only=True)
 
     class Meta:
         model = models.TacitRecord
