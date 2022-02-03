@@ -1,10 +1,11 @@
-from rest_framework.generics import CreateAPIView,RetrieveAPIView
+from rest_framework.generics import CreateAPIView,RetrieveAPIView,ListAPIView
 from django.db.models import F
 
 from api.serializer import askAnything
 from api import models
 from utils.auth import UserAuthentication,GeneralAuthentication
 from utils.randomName import getNameAvatarlist,getMosaic,getRandomName,getRandomAvatar
+from utils import pagination,filter
 
 class CreateAskAnythingView(CreateAPIView):
     serializer_class = askAnything.CreateAskAnythingModelSerializer
@@ -79,4 +80,15 @@ class AskMeAnythingDetailView(RetrieveAPIView):
         if int(moment_object.user.id) is int(request.user.id):
             return response
         return response
+
+class AskMeAnythingCommentView(ListAPIView):
+    queryset = models.AskAnythingRecord.objects.all().order_by('-id')
+    serializer_class = askAnything.AskMeAnythingCommentModelSerializer
+    pagination_class = pagination.Pagination
+    filter_backends = [filter.MinCommentFilterBackend, filter.MaxCommentFilterBackend]
+
+    def get_queryset(self):
+        tacitrecord_id = self.request.data.get("tacitrecord")
+        queryset = models.AskAnythingRecord.objects.filter(tacitrecord=tacitrecord_id,depth=1).all().order_by("-id")
+        return queryset
 

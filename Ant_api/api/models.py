@@ -369,6 +369,16 @@ class AskAnythingRecord(models.Model):
         verbose_name = "坦白局"
         verbose_name_plural = verbose_name
 
+class AskAnythingFavorRecord(models.Model):
+    askanythingrecord = models.ForeignKey(verbose_name="被赞的评论", to="AskAnythingRecord", on_delete=models.CASCADE)
+    create_date = models.DateTimeField(verbose_name="评论被赞的时间", auto_now_add=True)
+    user = models.ForeignKey(verbose_name="赞评论的用户", to="UserInfo", on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = "ask_anything_favor_record"
+        verbose_name = "被赞坦白局评论的记录"
+        verbose_name_plural = verbose_name
+
 class TacitCitedRecord(models.Model):
     tacitRecord = models.ForeignKey(verbose_name="默契测试记录",to="TacitRecord",on_delete=models.CASCADE)
     tacitTestDatabase = models.ForeignKey(verbose_name="默契测试题库",to="TacitTestDatabase",on_delete=models.CASCADE)
