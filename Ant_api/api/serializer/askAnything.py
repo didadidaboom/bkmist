@@ -87,3 +87,38 @@ class SubmitAskAnythingModelSerializer(ModelSerializer):
                     return str(minute_floor) + "分钟前"
                 else:
                     return str(second) + "秒前"
+
+class AskMeAnythingDetailModelSerializer(ModelSerializer):
+    user_id = serializers.IntegerField(source="user.id",read_only=True)
+    real_avatarUrl = serializers.CharField(source="user.real_avatarUrl",read_only=True)
+    real_nickName = serializers.CharField(source="user.real_nickName",read_only=True)
+    create_date = serializers.SerializerMethodField(read_only=True)
+
+    class Meta:
+        model = models.TacitRecord
+        fields = ["user_id","real_avatarUrl","real_nickName","create_date"]
+
+    def get_create_date(self,obj):
+        create_date = obj.create_date
+        a = create_date
+        b = create_date.now()
+        delta = b - a
+        second = delta.seconds
+        minute_ori = second / 60
+        minute_ceil = ceil(minute_ori)
+        minute_floor = floor(minute_ori)
+        hour_ori = minute_ori / 60
+        hour_ceil = ceil(hour_ori)
+        hour_floor = floor(hour_ori)
+        day_ori = delta.days
+        day = day_ori
+        if (day_ori):
+            return str(day) + "天前"
+        else:
+            if (hour_ori > 1):
+                return str(hour_floor) + "小时前"
+            else:
+                if (minute_ori > 1):
+                    return str(minute_floor) + "分钟前"
+                else:
+                    return str(second) + "秒前"

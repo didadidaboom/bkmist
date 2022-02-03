@@ -116,4 +116,5 @@ urlpatterns = [
     #坦白局
     url(r'^createAskAnything/$', askAnything.CreateAskAnythingView.as_view()),
     url(r'^submitAskAnything/$', askAnything.SubmitAskAnythingView.as_view()),
+    url(r'^askMeAnythingDetail/(?P<pk>\d+)/$', askAnything.AskMeAnythingDetailView.as_view()),
 ]

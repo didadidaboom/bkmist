@@ -1,9 +1,9 @@
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView,RetrieveAPIView
 from django.db.models import F
 
 from api.serializer import askAnything
 from api import models
-from utils.auth import UserAuthentication
+from utils.auth import UserAuthentication,GeneralAuthentication
 from utils.randomName import getNameAvatarlist,getMosaic,getRandomName,getRandomAvatar
 
 class CreateAskAnythingView(CreateAPIView):
@@ -60,4 +60,23 @@ class SubmitAskAnythingView(CreateAPIView):
             com_obj = serializer.save(user=self.request.user, nickName=nickName, avatarUrl=avatarUrl)
             tacitrecord_id = serializer.data.get("tacitrecord")
             models.TacitRecord.objects.filter(id=tacitrecord_id).update(comment_count=F('comment_count') + 1)
+
+class AskMeAnythingDetailView(RetrieveAPIView):
+    '''
+    获取单条瞬间详细
+    '''
+    queryset = models.TacitRecord.objects
+    authentication_classes = [GeneralAuthentication,]
+    serializer_class = askAnything.AskMeAnythingDetailModelSerializer
+
+    def get(self, request, *args, **kwargs):
+        response = super().get(self, request, *args, **kwargs)
+        #验证用户是否登入：登陆增加浏览记录，未登录不进行操作
+        #获取AUTHORIZATION
+        if not request.user:
+            return response
+        moment_object = self.get_object()
+        if int(moment_object.user.id) is int(request.user.id):
+            return response
+        return response
 
