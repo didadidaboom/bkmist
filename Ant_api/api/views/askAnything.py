@@ -25,7 +25,7 @@ class SubmitAskAnythingView(CreateAPIView):
         1.判断匿名 给定avatar
         2.
         '''
-        if (self.request.data.get("comment_status") == 1):
+        if (int(self.request.data.get("comment_status")) == 1):
             obj_1 = models.AskAnythingRecord.objects.filter(
                 user=self.request.user,
                 tacitrecord_id=self.request.data.get("tacitrecord"),
