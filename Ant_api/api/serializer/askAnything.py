@@ -257,5 +257,6 @@ class AskMeAnythingCommentModelSerializer(ModelSerializer):
 class AskAnythingFavorModelSerializer(ModelSerializer):
     class Meta:
         model = models.AskAnythingFavorRecord
-        exclude = ["user"]
+        fields = ["askAnythingRecord"]
+        # exclude = ["user"]
 
