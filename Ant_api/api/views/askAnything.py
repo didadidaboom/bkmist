@@ -88,8 +88,8 @@ class AskMeAnythingCommentView(ListAPIView):
     filter_backends = [filter.MinCommentFilterBackend, filter.MaxCommentFilterBackend]
 
     def get_queryset(self):
-        tacitrecord_id = int(self.request.data.get("tacitrecord"))
-        queryset = models.AskAnythingRecord.objects.filter(tacitrecord_id=tacitrecord_id,depth=1).all().order_by("-id")
+        tacitrecord_id = self.request.data.get("tacitrecord")
+        queryset = models.AskAnythingRecord.objects.filter(tacitrecord_id=int(tacitrecord_id),depth=1).all().order_by("-id")
         # queryset = models.AskAnythingRecord.objects.all().order_by("-id")
         return queryset
 
