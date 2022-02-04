@@ -118,15 +118,14 @@ class AskAnythingFavorView(APIView):
         askAnythingRecord_object = ser.validated_data.get("askAnythingRecord")
         if askAnythingRecord_object.user.id is request.user.id:
             return Response({}, status=status.HTTP_204_NO_CONTENT)
-        askAnythingRecord_object = models.AskAnythingFavorRecord.objects.filter(user=request.user,askAnythingRecord=askAnythingRecord_object)
-        exist = askAnythingRecord_object.exists()
+        askAnythingRecord_obj = models.AskAnythingFavorRecord.objects.filter(user=request.user,askAnythingRecord=askAnythingRecord_object)
+        exist = askAnythingRecord_obj.exists()
         if exist:
             askAnythingRecord_object.delete()
             com_obj = models.AskAnythingRecord.objects.filter(id = askAnythingRecord_object.id)
             com_obj.update(favor_count=F('favor_count')-1)
             return Response({}, status=status.HTTP_200_OK)
-        askAnythingRecord_object=askAnythingRecord_object.first()
-        askAnythingRecord_object.create(user=request.user,askAnythingRecord=askAnythingRecord_object)
+        askAnythingRecord_obj.create(user=request.user,askAnythingRecord=askAnythingRecord_object)
         com_obj = models.AskAnythingRecord.objects.filter(id=askAnythingRecord_object.id)
         com_obj.update(favor_count=F('favor_count') + 1)
         return Response({}, status=status.HTTP_201_CREATED)
