@@ -38,7 +38,7 @@ class SubmitAskAnythingView(CreateAPIView):
             else:
                 nickName = getRandomName()
                 avatarUrl = getMosaic()
-            com_obj = serializer.save(user=self.request.user, nickName=nickName, avatarUrl=avatarUrl)
+            serializer.save(user=self.request.user, nickName=nickName, avatarUrl=avatarUrl)
             tacitrecord_id = serializer.data.get("tacitrecord")
             models.TacitRecord.objects.filter(id=tacitrecord_id).update(comment_count=F('comment_count') + 1)
         else:
@@ -58,7 +58,7 @@ class SubmitAskAnythingView(CreateAPIView):
                     avatarUrl = moment_obj.user.real_avatarUrl
                 else:
                     nickName, avatarUrl = getNameAvatarlist()
-            com_obj = serializer.save(user=self.request.user, nickName=nickName, avatarUrl=avatarUrl)
+            serializer.save(user=self.request.user, nickName=nickName, avatarUrl=avatarUrl)
             tacitrecord_id = serializer.data.get("tacitrecord")
             models.TacitRecord.objects.filter(id=tacitrecord_id).update(comment_count=F('comment_count') + 1)
 
