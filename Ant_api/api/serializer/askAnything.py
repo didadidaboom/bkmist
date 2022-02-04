@@ -29,7 +29,7 @@ class SubmitAskAnythingModelSerializer(ModelSerializer):
         reply_obj_ori = models.AskAnythingRecord.objects.filter(root_id=obj.id)
         exist = reply_obj_ori.exists()
         if not exist:
-            return None
+            return {"content":None,"create_date":None}
         else:
             reply_obj = reply_obj_ori.first()
             content = reply_obj.content
@@ -166,7 +166,7 @@ class AskMeAnythingCommentModelSerializer(ModelSerializer):
         reply_obj_ori = models.AskAnythingRecord.objects.filter(root_id=obj.id)
         exist = reply_obj_ori.exists()
         if not exist:
-            return None
+            return {"content":None,"create_date":None}
         else:
             reply_obj = reply_obj_ori.first()
             content = reply_obj.content
