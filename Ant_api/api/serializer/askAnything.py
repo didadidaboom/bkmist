@@ -167,6 +167,7 @@ class AskMeAnythingCommentModelSerializer(ModelSerializer):
     def get_reply_comment(self,obj):
         reply_obj_all = models.AskAnythingRecord.objects.filter(root_id=obj.id).all().order_by("-id")
         reply_obj_query = reply_obj_all.values(
+            "id",
             "content",
             "create_date"
         )
