@@ -164,7 +164,7 @@ class AskMeAnythingCommentModelSerializer(ModelSerializer):
 
     def get_reply_comment(self,obj):
         reply = []
-        reply_obj_all = models.AskAnythingRecord.objects.filter(root_id=obj.id).all()
+        reply_obj_all = models.AskAnythingRecord.objects.filter(root_id=obj.id).all().order_by("-id")
         for reply_obj_ori in reply_obj_all:
             exist = reply_obj_ori.exists()
             if not exist:
@@ -197,7 +197,7 @@ class AskMeAnythingCommentModelSerializer(ModelSerializer):
                             tmp_create_date = str(second) + "秒前"
                 reply.append({"content":content,"create_date":tmp_create_date})
         return reply
-            
+
 
     def get_status(self, obj):
         '''
