@@ -163,37 +163,41 @@ class AskMeAnythingCommentModelSerializer(ModelSerializer):
         return True
 
     def get_reply_comment(self,obj):
-        reply_obj_ori = models.AskAnythingRecord.objects.filter(root_id=obj.id)
-        exist = reply_obj_ori.exists()
-        if not exist:
-            return {"content":None,"create_date":None}
-        else:
-            reply_obj = reply_obj_ori.first()
-            content = reply_obj.content
-            create_date = reply_obj.create_date
-            a = create_date
-            b = create_date.now()
-            delta = b - a
-            second = delta.seconds
-            minute_ori = second / 60
-            minute_ceil = ceil(minute_ori)
-            minute_floor = floor(minute_ori)
-            hour_ori = minute_ori / 60
-            hour_ceil = ceil(hour_ori)
-            hour_floor = floor(hour_ori)
-            day_ori = delta.days
-            day = day_ori
-            if (day_ori):
-                 tmp_create_date = str(day) + "天前"
+        reply = []
+        reply_obj_all = models.AskAnythingRecord.objects.filter(root_id=obj.id).all()
+        for reply_obj_ori in reply_obj_all:
+            exist = reply_obj_ori.exists()
+            if not exist:
+                reply.append({"content":None,"create_date":None})
             else:
-                if (hour_ori > 1):
-                    tmp_create_date = str(hour_floor) + "小时前"
+                reply_obj = reply_obj_ori.first()
+                content = reply_obj.content
+                create_date = reply_obj.create_date
+                a = create_date
+                b = create_date.now()
+                delta = b - a
+                second = delta.seconds
+                minute_ori = second / 60
+                minute_ceil = ceil(minute_ori)
+                minute_floor = floor(minute_ori)
+                hour_ori = minute_ori / 60
+                hour_ceil = ceil(hour_ori)
+                hour_floor = floor(hour_ori)
+                day_ori = delta.days
+                day = day_ori
+                if (day_ori):
+                     tmp_create_date = str(day) + "天前"
                 else:
-                    if (minute_ori > 1):
-                        tmp_create_date = str(minute_floor) + "分钟前"
+                    if (hour_ori > 1):
+                        tmp_create_date = str(hour_floor) + "小时前"
                     else:
-                        tmp_create_date = str(second) + "秒前"
-            return {"content":content,"create_date":tmp_create_date}
+                        if (minute_ori > 1):
+                            tmp_create_date = str(minute_floor) + "分钟前"
+                        else:
+                            tmp_create_date = str(second) + "秒前"
+                reply.append({"content":content,"create_date":tmp_create_date})
+        return reply
+            
 
     def get_status(self, obj):
         '''
