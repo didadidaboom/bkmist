@@ -164,7 +164,7 @@ class AskMeAnythingCommentModelSerializer(ModelSerializer):
 
     def get_reply_comment(self,obj):
         reply = []
-        reply_obj_all = models.AskAnythingRecord.objects.filter(root_id=obj.id).all().order_by("-id")
+        reply_obj_all = models.AskAnythingRecord.objects.filter(root_id=obj.id)
         for reply_obj_ori in reply_obj_all:
             exist = reply_obj_ori.exists()
             if not exist:
