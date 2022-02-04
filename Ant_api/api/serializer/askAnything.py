@@ -14,7 +14,7 @@ class CreateAskAnythingModelSerializer(ModelSerializer):
         fields = ["id","type","user_id"]
 
 class SubmitAskAnythingModelSerializer(ModelSerializer):
-    user_id = serializers.IntegerField(source="user.id",read_only=True)
+    # user_id = serializers.IntegerField(source="user.id",read_only=True)
     #user__nickName = serializers.CharField(source="nickName" ,read_only=True)
     #user__avatarUrl = serializers.CharField(source="avatarUrl",read_only=True)
     #user__nickName = serializers.SerializerMethodField(read_only=True)
@@ -57,12 +57,12 @@ class SubmitAskAnythingModelSerializer(ModelSerializer):
         '''
         if obj.tacitrecord.user.id != obj.user.id:
             if obj.comment_status==0:
-                return {"comment_status_user_id":obj.user.id,"comment_status_name":None}
+                return {"comment_status_user_id":obj.user.id,"comment_status_user_real_avatarUrl":obj.user.real_avatarUrl,"comment_status_name":None}
             if obj.favor_count < settings.MAX_FAVOR_COUNT_IF_STATUS_COMMENT:
-                return {"comment_status_user_id":None,"comment_status_name":"条"}
-            return {"comment_status_user_id":obj.user.id,"comment_status_name":"裂"}
+                return {"comment_status_user_id":None,"comment_status_user_real_avatarUrl":None,"comment_status_name":"条"}
+            return {"comment_status_user_id":obj.user.id,"comment_status_user_real_avatarUrl":obj.avatarUrl,"comment_status_name":"裂"}
         else:
-            return {"comment_status_user_id": obj.user.id, "comment_status_name": None}
+            return {"comment_status_user_id": obj.user.id,"comment_status_user_real_avatarUrl":obj.user.real_avatarUrl,"comment_status_name": None}
 
     def get_create_date(self,obj):
         create_date = obj.create_date
@@ -126,8 +126,7 @@ class AskMeAnythingDetailModelSerializer(ModelSerializer):
 
 class AskMeAnythingCommentModelSerializer(ModelSerializer):
     user_id = serializers.IntegerField(source="user.id",read_only=True)
-    #user__nickName = serializers.CharField(source="nickName" ,read_only=True)
-    #user__avatarUrl = serializers.CharField(source="avatarUrl",read_only=True)
+    user__real_avatarUrl = serializers.CharField(source="user.real_avatarUrl",read_only=True)
     #user__nickName = serializers.SerializerMethodField(read_only=True)
     #user__avatarUrl = serializers.SerializerMethodField(read_only=True)
     reply_id = serializers.IntegerField(source="reply.id",read_only=True)
