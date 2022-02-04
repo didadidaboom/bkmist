@@ -195,18 +195,27 @@ class AskMeAnythingCommentModelSerializer(ModelSerializer):
         3.如果状态为公开0，评论区状态显示 根据评论状态而定
         4.如果状态为条件隐身，评论区状态根据瞬间状态而定，如果瞬间受欢迎达到上线，评论区楼主状态 根据评论状态而定
         '''
+        request = self.context.get("request")
+        if not request.user:
+            is_focused = False
+        userfocus_obj = models.UserFocusRecord.objects.filter(user=obj.user, focus_user=request.user)
+        exists = userfocus_obj.exists()
+        if exists:
+            is_focused = True
+        is_focused = False
+
         if obj.tacitrecord.user.id != obj.user.id:
             if obj.comment_status == 0:
                 return {"comment_status_user_id": obj.user.id, "comment_status_user_avatarUrl": obj.user.real_avatarUrl,
-                        "comment_status_name": None}
+                        "comment_status_name": None,"is_focused":is_focused}
             if obj.favor_count < settings.MAX_FAVOR_COUNT_IF_STATUS_COMMENT:
                 return {"comment_status_user_id": None, "comment_status_user_avatarUrl": obj.avatarUrl,
-                        "comment_status_name": "条"}
+                        "comment_status_name": "条","is_focused":None}
             return {"comment_status_user_id": obj.user.id, "comment_status_user_avatarUrl": obj.avatarUrl,
-                    "comment_status_name": "裂"}
+                    "comment_status_name": "裂","is_focused":is_focused}
         else:
             return {"comment_status_user_id": obj.user.id, "comment_status_user_avatarUrl": obj.user.real_avatarUrl,
-                    "comment_status_name": None}
+                    "comment_status_name": None,"is_focused":is_focused}
 
     def get_is_favor(self,obj):
         request = self.context.get("request")
