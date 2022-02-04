@@ -210,7 +210,7 @@ class AskMeAnythingCommentModelSerializer(ModelSerializer):
                         "comment_status_name": None,"is_focused":is_focused}
             if obj.favor_count < settings.MAX_FAVOR_COUNT_IF_STATUS_COMMENT:
                 return {"comment_status_user_id": None, "comment_status_user_avatarUrl": obj.avatarUrl,
-                        "comment_status_name": "条","is_focused":None}
+                        "comment_status_name": "条","is_focused":False}
             return {"comment_status_user_id": obj.user.id, "comment_status_user_avatarUrl": obj.avatarUrl,
                     "comment_status_name": "裂","is_focused":is_focused}
         else:
