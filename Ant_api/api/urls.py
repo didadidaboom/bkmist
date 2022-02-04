@@ -118,4 +118,5 @@ urlpatterns = [
     url(r'^submitAskAnything/$', askAnything.SubmitAskAnythingView.as_view()),
     url(r'^askMeAnythingDetail/(?P<pk>\d+)/$', askAnything.AskMeAnythingDetailView.as_view()),
     url(r'^askMeAnythingComment/$', askAnything.AskMeAnythingCommentView.as_view()),
+    url(r'^askAnythingFavor/$', askAnything.AskAnythingFavorView.as_view()),
 ]

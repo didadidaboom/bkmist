@@ -370,7 +370,7 @@ class AskAnythingRecord(models.Model):
         verbose_name_plural = verbose_name
 
 class AskAnythingFavorRecord(models.Model):
-    askanythingrecord = models.ForeignKey(verbose_name="被赞的评论", to="AskAnythingRecord", on_delete=models.CASCADE)
+    askAnythingRecord = models.ForeignKey(verbose_name="被赞的评论", to="AskAnythingRecord", on_delete=models.CASCADE)
     create_date = models.DateTimeField(verbose_name="评论被赞的时间", auto_now_add=True)
     user = models.ForeignKey(verbose_name="赞评论的用户", to="UserInfo", on_delete=models.CASCADE)
 

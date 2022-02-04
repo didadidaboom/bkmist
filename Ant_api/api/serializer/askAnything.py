@@ -223,7 +223,7 @@ class AskMeAnythingCommentModelSerializer(ModelSerializer):
         request = self.context.get("request")
         if not request.user:
             return False
-        askanythingfavor_object = models.AskAnythingFavorRecord.objects.filter(user=request.user,askanythingrecord=obj)
+        askanythingfavor_object = models.AskAnythingFavorRecord.objects.filter(user=request.user,askAnythingRecord=obj)
         exists = askanythingfavor_object.exists()
         if exists:
             return True
@@ -253,3 +253,9 @@ class AskMeAnythingCommentModelSerializer(ModelSerializer):
                     return str(minute_floor) + "分钟前"
                 else:
                     return str(second) + "秒前"
+
+class AskAnythingFavorModelSerializer(ModelSerializer):
+    class Meta:
+        model = models.AskAnythingFavorRecord
+        exclude = ["user"]
+

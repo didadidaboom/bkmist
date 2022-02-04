@@ -1,5 +1,8 @@
+from rest_framework.views import APIView
 from rest_framework.generics import CreateAPIView,RetrieveAPIView,ListAPIView
 from django.db.models import F
+from rest_framework.response import Response
+from rest_framework import status
 
 from api.serializer import askAnything
 from api import models
@@ -93,3 +96,36 @@ class AskMeAnythingCommentView(ListAPIView):
         # queryset = models.AskAnythingRecord.objects.all().order_by("-id")
         return queryset
 
+class AskAnythingFavorView(APIView):
+    '''
+    评论点赞更新
+    '''
+    def get_authenticators(self):
+        if self.request.method =="POST":
+            return [UserAuthentication(),]
+        return [GeneralAuthentication(),]
+
+    def post(self,request,*args,**kwargs):
+        '''
+        1.验证评论ID是否存在
+        2.获取评论ID
+        3.查看被赞评论记录是否存在当前用户记录
+        4.如果存在 删除；如果不存在 创建
+        '''
+        ser = askAnything.AskAnythingFavorModelSerializer(data=request.data)
+        if not ser.is_valid():
+            return Response({},status=status.HTTP_400_BAD_REQUEST)
+        askAnythingRecord_object = ser.validated_data.get("askAnythingRecord")
+        if askAnythingRecord_object.user.id is request.user.id:
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
+        askAnythingRecord_object = models.AskAnythingFavorRecord.objects.filter(user=request.user,askAnythingRecord=askAnythingRecord_object)
+        exist = askAnythingRecord_object.exists()
+        if exist:
+            askAnythingRecord_object.delete()
+            com_obj = models.AskAnythingRecord.objects.filter(id = askAnythingRecord_object.id)
+            com_obj.update(favor_count=F('favor_count')-1)
+            return Response({}, status=status.HTTP_200_OK)
+        askAnythingRecord_object.create(user=request.user,askAnythingRecord=askAnythingRecord_object)
+        com_obj = models.AskAnythingRecord.objects.filter(id=askAnythingRecord_object.id)
+        com_obj.update(favor_count=F('favor_count') + 1)
+        return Response({}, status=status.HTTP_201_CREATED)
