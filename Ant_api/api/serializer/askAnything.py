@@ -95,10 +95,11 @@ class AskMeAnythingDetailModelSerializer(ModelSerializer):
     real_nickName = serializers.CharField(source="user.real_nickName",read_only=True)
     create_date = serializers.SerializerMethodField(read_only=True)
     is_focused = serializers.SerializerMethodField(read_only=True)
+    is_author = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = models.TacitRecord
-        fields = ["user_id","real_avatarUrl","real_nickName","create_date","is_focused"]
+        fields = ["user_id","real_avatarUrl","real_nickName","create_date","is_focused","is_author"]
 
     def get_is_focused(self, obj):
         request = self.context.get("request")
@@ -108,6 +109,14 @@ class AskMeAnythingDetailModelSerializer(ModelSerializer):
         exists = userfocus_obj.exists()
         if exists:
             return True
+        return False
+
+    def get_is_author(self,obj):
+        request = self.context.get("request")
+        if request.user:
+            if request.user.id == obj.user.id:
+                return True
+            return False
         return False
 
     def get_create_date(self,obj):
