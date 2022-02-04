@@ -125,6 +125,7 @@ class AskAnythingFavorView(APIView):
             com_obj = models.AskAnythingRecord.objects.filter(id = askAnythingRecord_object.id)
             com_obj.update(favor_count=F('favor_count')-1)
             return Response({}, status=status.HTTP_200_OK)
+        askAnythingRecord_object=askAnythingRecord_object.first()
         askAnythingRecord_object.create(user=request.user,askAnythingRecord=askAnythingRecord_object)
         com_obj = models.AskAnythingRecord.objects.filter(id=askAnythingRecord_object.id)
         com_obj.update(favor_count=F('favor_count') + 1)
