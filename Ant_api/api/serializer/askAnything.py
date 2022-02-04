@@ -14,19 +14,7 @@ class CreateAskAnythingModelSerializer(ModelSerializer):
         fields = ["id","type","user_id"]
 
 class SubmitAskAnythingModelSerializer(ModelSerializer):
-    # user_id = serializers.IntegerField(source="user.id",read_only=True)
-    # user__real_avatarUrl = serializers.CharField(source="user.real_avatarUrl",read_only=True)
-    #user__nickName = serializers.SerializerMethodField(read_only=True)
-    #user__avatarUrl = serializers.SerializerMethodField(read_only=True)
-    reply_id = serializers.IntegerField(source="reply.id",read_only=True)
-    reply__user_id = serializers.IntegerField(source="reply.user.id",read_only=True)
-    reply__nickName = serializers.CharField(source="reply.nickName",read_only=True)
-    #create_date = serializers.DateTimeField(format=("%Y-%m-%d %H:%M:%S"),read_only=True)
     create_date = serializers.SerializerMethodField()
-    root_id = serializers.IntegerField(source="root.id",read_only=True)
-    favor_count = serializers.IntegerField(read_only=True)
-    is_favor = serializers.SerializerMethodField()
-    status = serializers.SerializerMethodField(read_only=True)
     reply_comment = serializers.SerializerMethodField(read_only=True)
     show_reply = serializers.SerializerMethodField(read_only=True)
 
@@ -69,47 +57,6 @@ class SubmitAskAnythingModelSerializer(ModelSerializer):
                     else:
                         tmp_create_date = str(second) + "秒前"
             return {"content":content,"create_date":tmp_create_date}
-
-    def get_status(self, obj):
-        '''
-        1.判断评论者是否为瞬间发布本人：如果不是评论区状态显示 根据评论状态而定
-        2.如果是本人，判断瞬间发布的状态
-        3.如果状态为公开0，评论区状态显示 根据评论状态而定
-        4.如果状态为条件隐身，评论区状态根据瞬间状态而定，如果瞬间受欢迎达到上线，评论区楼主状态 根据评论状态而定
-        '''
-        request = self.context.get("request")
-        if not request.user:
-            is_focused = False
-        else:
-            userfocus_obj = models.UserFocusRecord.objects.filter(user=obj.user, focus_user=request.user)
-            exists = userfocus_obj.exists()
-            if exists:
-                is_focused = True
-            else:
-                is_focused = False
-
-        if obj.tacitrecord.user.id != obj.user.id:
-            if obj.comment_status == 0:
-                return {"comment_status_user_id": obj.user.id, "comment_status_user_avatarUrl": obj.user.real_avatarUrl,
-                        "comment_status_name": None,"is_focused":is_focused}
-            if obj.favor_count < settings.MAX_FAVOR_COUNT_IF_STATUS_COMMENT:
-                return {"comment_status_user_id": None, "comment_status_user_avatarUrl": obj.avatarUrl,
-                        "comment_status_name": "条","is_focused":False}
-            return {"comment_status_user_id": obj.user.id, "comment_status_user_avatarUrl": obj.avatarUrl,
-                    "comment_status_name": "裂","is_focused":is_focused}
-        else:
-            return {"comment_status_user_id": obj.user.id, "comment_status_user_avatarUrl": obj.user.real_avatarUrl,
-                    "comment_status_name": None,"is_focused":is_focused}
-
-    def get_is_favor(self,obj):
-        request = self.context.get("request")
-        if not request.user:
-            return False
-        askanythingfavor_object = models.AskAnythingFavorRecord.objects.filter(user=request.user,askAnythingRecord=obj)
-        exists = askanythingfavor_object.exists()
-        if exists:
-            return True
-        return False
 
     def get_create_date(self,obj):
         create_date = obj.create_date
