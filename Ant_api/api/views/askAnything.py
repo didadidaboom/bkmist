@@ -121,7 +121,7 @@ class AskAnythingFavorView(APIView):
         askAnythingRecord_obj = models.AskAnythingFavorRecord.objects.filter(user=request.user,askAnythingRecord=askAnythingRecord_object)
         exist = askAnythingRecord_obj.exists()
         if exist:
-            askAnythingRecord_object.delete()
+            askAnythingRecord_obj.delete()
             com_obj = models.AskAnythingRecord.objects.filter(id = askAnythingRecord_object.id)
             com_obj.update(favor_count=F('favor_count')-1)
             return Response({}, status=status.HTTP_200_OK)
