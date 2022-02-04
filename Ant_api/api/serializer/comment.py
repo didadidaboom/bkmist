@@ -110,14 +110,10 @@ class GetCommentSerializer(ModelSerializer):
     favor_count = serializers.IntegerField(read_only=True)
     is_favor =serializers.SerializerMethodField()
     status = serializers.SerializerMethodField(read_only=True)
-    show_reply = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = models.CommentRecord
         exclude = ["user"]
-
-    def get_show_reply(self,obj):
-        return True
 
     def get_status(self, obj):
         '''

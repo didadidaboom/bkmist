@@ -203,10 +203,14 @@ class AskMeAnythingCommentModelSerializer(ModelSerializer):
     is_favor = serializers.SerializerMethodField()
     status = serializers.SerializerMethodField(read_only=True)
     reply_comment = serializers.SerializerMethodField(read_only=True)
+    show_reply = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = models.AskAnythingRecord
         exclude = ["user"]
+
+    def get_show_reply(self,obj):
+        return True
 
     def get_reply_comment(self,obj):
         reply_obj_ori = models.AskAnythingRecord.objects.filter(root_id=obj.id)
