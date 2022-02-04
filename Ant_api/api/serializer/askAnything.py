@@ -198,11 +198,13 @@ class AskMeAnythingCommentModelSerializer(ModelSerializer):
         request = self.context.get("request")
         if not request.user:
             is_focused = False
-        userfocus_obj = models.UserFocusRecord.objects.filter(user=obj.user, focus_user=request.user)
-        exists = userfocus_obj.exists()
-        if exists:
-            is_focused = True
-        is_focused = False
+        else:
+            userfocus_obj = models.UserFocusRecord.objects.filter(user=obj.user, focus_user=request.user)
+            exists = userfocus_obj.exists()
+            if exists:
+                is_focused = True
+            else:
+                is_focused = False
 
         if obj.tacitrecord.user.id != obj.user.id:
             if obj.comment_status == 0:
