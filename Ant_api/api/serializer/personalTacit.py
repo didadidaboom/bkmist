@@ -29,9 +29,22 @@ class PersonalTacitModelSerializer(serializers.ModelSerializer):
                 "selected_answer":row.selected_answer
             } for row in obj_list]
             return results
+        elif int(obj.type) ==20001:
+            obj_list = models.AskAnythingRecord.objects.filter(tacitrecord=obj).all()
+            results = [{
+                "content": row.content,
+                "id": row.id,
+                "create_date": row.create_date,
+                "avatarUrl": row.avatarUrl,
+                "real_avatarUrl":row.user.real_avatarUrl,
+                "user_id":row.user.id,
+                "depth": row.depth,
+                "comment_status": row.comment_status,
+                "selected_answer": row.selected_answer
+            } for row in obj_list]
+            return results
         else:
             return None
-
 class UpdatePersonalTacitModelSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.TacitRecord
