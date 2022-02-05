@@ -199,20 +199,36 @@ class PersonalViewerPage3ScanModelSerializer(serializers.ModelSerializer):
                     "nickName": obj.viewer_user.nickName,
                     "avatarUrl": obj.viewer_user.avatarUrl,
                     "if_status_name": None}
-        obj_reply = models.TacitReplyRecord.objects.filter(tacitRecord=obj.tacitRecord,user=obj.viewer_user).first()
-        if obj_reply.if_status is 0:
-            return {"id": obj.viewer_user.id,
-                    "nickName": obj.viewer_user.nickName,
-                    "avatarUrl": obj.viewer_user.avatarUrl,
-                    "if_status_name": None}
-        else:
-            nickName = getRandomName()
-            avatarUrl = getMosaic()
-            if_status_name = '条'
-            user_id = None
-            if obj_reply.favor_count > settings.MAX_FAVOR_COUNT_IF_STATUS:
-                user_id = obj.viewer_user.id
-            return {"id": user_id, "nickName": nickName, "avatarUrl": avatarUrl, "if_status_name": if_status_name}
+        if obj.tacitRecord.type == 10001:
+            obj_reply = models.TacitReplyRecord.objects.filter(tacitRecord=obj.tacitRecord,user=obj.viewer_user).first()
+            if obj_reply.if_status is 0:
+                return {"id": obj.viewer_user.id,
+                        "nickName": obj.viewer_user.nickName,
+                        "avatarUrl": obj.viewer_user.avatarUrl,
+                        "if_status_name": None}
+            else:
+                nickName = getRandomName()
+                avatarUrl = getMosaic()
+                if_status_name = '条'
+                user_id = None
+                if obj_reply.favor_count > settings.MAX_FAVOR_COUNT_IF_STATUS:
+                    user_id = obj.viewer_user.id
+                return {"id": user_id, "nickName": nickName, "avatarUrl": avatarUrl, "if_status_name": if_status_name}
+        if obj.tacitRecord.type ==20001:
+            obj_reply = models.AskAnythingRecord.objects.filter(tacitrecord=obj.tacitRecord,user=obj.viewer_user).first()
+            if obj_reply.comment_status is 0:
+                return {"id": obj.viewer_user.id,
+                        "nickName": obj.viewer_user.nickName,
+                        "avatarUrl": obj.viewer_user.avatarUrl,
+                        "if_status_name": None}
+            else:
+                nickName = getRandomName()
+                avatarUrl = getMosaic()
+                if_status_name = '条'
+                user_id = None
+                if obj_reply.favor_count > settings.MAX_FAVOR_COUNT_IF_STATUS:
+                    user_id = obj.viewer_user.id
+                return {"id": user_id, "nickName": nickName, "avatarUrl": avatarUrl, "if_status_name": if_status_name}
 
     def get_create_date(self,obj):
         create_date = obj.create_time
@@ -274,20 +290,36 @@ class PersonalViewerPage3SubmitModelSerializer(serializers.ModelSerializer):
                     return str(second) + "秒前"
 
     def get_viewer_user(self,obj):
-        obj_reply = models.TacitReplyRecord.objects.filter(tacitRecord=obj.tacitRecord,user=obj.viewer_user).first()
-        if obj_reply.if_status is 0:
-            return {"id": obj.viewer_user.id,
-                    "nickName": obj.viewer_user.nickName,
-                    "avatarUrl": obj.viewer_user.avatarUrl,
-                    "if_status_name": None}
-        else:
-            nickName = getRandomName()
-            avatarUrl = getMosaic()
-            if_status_name = '条'
-            user_id = None
-            if obj_reply.favor_count > settings.MAX_FAVOR_COUNT_IF_STATUS:
-                user_id = obj.viewer_user.id
-            return {"id": user_id, "nickName": nickName, "avatarUrl": avatarUrl, "if_status_name": if_status_name}
+        if obj.tacitRecord.type == 10001:
+            obj_reply = models.TacitReplyRecord.objects.filter(tacitRecord=obj.tacitRecord,user=obj.viewer_user).first()
+            if obj_reply.if_status is 0:
+                return {"id": obj.viewer_user.id,
+                        "nickName": obj.viewer_user.nickName,
+                        "avatarUrl": obj.viewer_user.avatarUrl,
+                        "if_status_name": None}
+            else:
+                nickName = getRandomName()
+                avatarUrl = getMosaic()
+                if_status_name = '条'
+                user_id = None
+                if obj_reply.favor_count > settings.MAX_FAVOR_COUNT_IF_STATUS:
+                    user_id = obj.viewer_user.id
+                return {"id": user_id, "nickName": nickName, "avatarUrl": avatarUrl, "if_status_name": if_status_name}
+        if obj.tacitRecord.type == 20001:
+            obj_reply = models.AskAnythingRecord.objects.filter(tacitrecord=obj.tacitRecord,user=obj.viewer_user).first()
+            if obj_reply.comment_status is 0:
+                return {"id": obj.viewer_user.id,
+                        "nickName": obj.viewer_user.nickName,
+                        "avatarUrl": obj.viewer_user.avatarUrl,
+                        "if_status_name": None}
+            else:
+                nickName = getRandomName()
+                avatarUrl = getMosaic()
+                if_status_name = '条'
+                user_id = None
+                if obj_reply.favor_count > settings.MAX_FAVOR_COUNT_IF_STATUS:
+                    user_id = obj.viewer_user.id
+                return {"id": user_id, "nickName": nickName, "avatarUrl": avatarUrl, "if_status_name": if_status_name}
 
     def get_create_date(self,obj):
         create_date = obj.create_time
