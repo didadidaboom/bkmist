@@ -143,7 +143,7 @@ class SubmitAskAnythingView(CreateAPIView):
             else:
                 nickName = getRandomName()
                 avatarUrl = getMosaic()
-            serializer.save(user=self.request.user, nickName=nickName, avatarUrl=avatarUrl)
+            obj = serializer.save(user=self.request.user, nickName=nickName, avatarUrl=avatarUrl)
             tacitrecord_id = serializer.data.get("tacitrecord")
             models.TacitRecord.objects.filter(id=tacitrecord_id).update(comment_count=F('comment_count') + 1)
         else:
@@ -163,9 +163,12 @@ class SubmitAskAnythingView(CreateAPIView):
                     avatarUrl = moment_obj.user.real_avatarUrl
                 else:
                     nickName, avatarUrl = getNameAvatarlist()
-            serializer.save(user=self.request.user, nickName=nickName, avatarUrl=avatarUrl)
+            obj=serializer.save(user=self.request.user, nickName=nickName, avatarUrl=avatarUrl)
             tacitrecord_id = serializer.data.get("tacitrecord")
             models.TacitRecord.objects.filter(id=tacitrecord_id).update(comment_count=F('comment_count') + 1)
+        # 统计浏览记录
+        models.Notification.objects.create(notificationType=43, fromUser=self.request.user,
+                                           toUser=obj.tacitrecord.user, tacit=obj.tacitrecord, userHasChecked=True)
 
 class AskMeAnythingDetailView(RetrieveAPIView):
     '''
