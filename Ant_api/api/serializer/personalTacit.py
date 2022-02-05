@@ -99,6 +99,7 @@ class PersonalTacitModelSerializer(serializers.ModelSerializer):
                         else:
                             create_date = str(second) + "秒前"
                 result["create_date"] = create_date
+                results.append(result)
             return results
         else:
             return None
