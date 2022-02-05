@@ -1,3 +1,6 @@
+import datetime
+from math import ceil,floor
+
 from rest_framework import serializers
 from rest_framework.response import Response
 from django.forms.models import model_to_dict
@@ -29,18 +32,73 @@ class PersonalTacitModelSerializer(serializers.ModelSerializer):
                 "selected_answer":row.selected_answer
             } for row in obj_list]
             return results
-        elif int(obj.type) ==20001:
-            obj_list = models.AskAnythingRecord.objects.filter(tacitrecord=obj).all()
-            results = [{
-                "content": row.content,
-                "id": row.id,
-                "create_date": row.create_date,
-                "avatarUrl": row.avatarUrl,
-                "real_avatarUrl":row.user.real_avatarUrl,
-                "user_id":row.user.id,
-                "depth": row.depth,
-                "comment_status": row.comment_status
-            } for row in obj_list]
+        elif int(obj.type) == 20001:
+            request = self.context.get("request")
+            obj_list = models.AskAnythingRecord.objects.filter(tacitrecord=obj,depth=1).order_by('-id').all()
+            results = []
+            for row in obj_list:
+                result = {
+                    "content": row.content,
+                    "comment_status": row.comment_status,
+                    "favor_count":row.favor_count
+                }
+                if row.comment_status:
+                    nickName = getRandomName()
+                    avatarUrl = getMosaic()
+                    if_status_name = '条'
+                    user_id = None
+                    if row.favor_count > settings.TACITREPLY_MAX_FAVOR_COUNT_IF_STATUS:
+                        user_id = row.user.id
+                        if_status_name = "裂"
+                else:
+                    if row.avatarUrlFlag:
+                        user_id = row.user_id
+                        nickName = row.user.real_nickName
+                        avatarUrl = row.user.real_avatarUrl
+                        if_status_name = None
+                    else:
+                        user_id = row.user_id
+                        nickName = row.user.real_nickName
+                        avatarUrl = row.user.real_avatarUrl
+                        if_status_name = None
+                result["nickName"] = nickName
+                result["avatarUrl"] = avatarUrl
+                result["if_status_name"] = if_status_name
+                result["user_id"] = user_id
+                # is_favor
+                if not request.user:
+                    result["is_favor"] = False
+                else:
+                    result["is_favor"] = False
+                    askmyanythingfavor_object = models.AskAnythingFavorRecord.objects.filter(user=request.user,
+                                                                                         askAnythingRecord=row)
+                    exists = askmyanythingfavor_object.exists()
+                    if exists:
+                        result["is_favor"] = True
+                # time
+                a = row.create_date
+                b = datetime.datetime.now()
+                delta = b - a
+                second = delta.seconds
+                minute_ori = second / 60
+                minute_ceil = ceil(minute_ori)
+                minute_floor = floor(minute_ori)
+                hour_ori = minute_ori / 60
+                hour_ceil = ceil(hour_ori)
+                hour_floor = floor(hour_ori)
+                day_ori = delta.days
+                day = day_ori + 1
+                if (day_ori):
+                    create_date = str(day) + "天前"
+                else:
+                    if (hour_ori > 1):
+                        create_date = str(hour_floor) + "小时前"
+                    else:
+                        if (minute_ori > 1):
+                            create_date = str(minute_floor) + "分钟前"
+                        else:
+                            create_date = str(second) + "秒前"
+                result["create_date"] = create_date
             return results
         else:
             return None
