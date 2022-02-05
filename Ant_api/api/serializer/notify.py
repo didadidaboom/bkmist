@@ -46,6 +46,42 @@ class GetNotificationModelSerializer(ModelSerializer):
             if obj.comment.user.id is request.user.id:
                 nickName = nickName + "(我)"
             return {"id": obj.comment.user.id, "nickName": nickName, "avatarUrl": avatarUrl, "if_status_name": None}
+        elif obj.notificationType is 41:
+            reply_obj = models.TacitReplyRecord.objects.filter(tacitRecord=obj.tacit).first()
+            if reply_obj.comment_status:
+                nickName = obj.comment.nickName
+                avatarUrl = getMosaic()
+                if_status_name = '条'
+                user_id = None
+                if reply_obj.favor_count > settings.MAX_FAVOR_COUNT_IF_STATUS:
+                    user_id = reply_obj.user.id
+                    if_status_name = "裂"
+                if reply_obj.user.id is request.user.id:
+                    nickName = nickName + "(我)"
+                return {"id": user_id, "nickName": nickName, "avatarUrl": avatarUrl, "if_status_name": if_status_name}
+            nickName = reply_obj.user.real_nickName
+            avatarUrl = reply_obj.user.real_avatarUrl
+            if reply_obj.user.id is request.user.id:
+                nickName = nickName + "(我)"
+            return {"id": reply_obj.user.id, "nickName": nickName, "avatarUrl": avatarUrl, "if_status_name": None}
+        elif obj.notificationType is 42:
+            ask_obj = models.AskAnythingRecord.objects.filter(tacitrecord = obj.tacit).first()
+            if ask_obj.comment_status:
+                nickName = obj.comment.nickName
+                avatarUrl = getMosaic()
+                if_status_name = '条'
+                user_id = None
+                if ask_obj.favor_count > settings.MAX_FAVOR_COUNT_IF_STATUS:
+                    user_id = ask_obj.user.id
+                    if_status_name = "裂"
+                if ask_obj.user.id is request.user.id:
+                    nickName = nickName + "(我)"
+                return {"id": user_id, "nickName": nickName, "avatarUrl": avatarUrl, "if_status_name": if_status_name}
+            nickName = ask_obj.user.real_nickName
+            avatarUrl = ask_obj.user.real_avatarUrl
+            if ask_obj.user.id is request.user.id:
+                nickName = nickName + "(我)"
+            return {"id": ask_obj.user.id, "nickName": nickName, "avatarUrl": avatarUrl, "if_status_name": None}
         else:
             return {"id": obj.fromUser.id, "nickName": obj.fromUser.nickName, "avatarUrl": obj.fromUser.avatarUrl, "if_status_name": None}
 
