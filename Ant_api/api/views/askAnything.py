@@ -94,6 +94,17 @@ class ReplyAskAnythingView(CreateAPIView):
             tacitrecord_id = serializer.data.get("tacitrecord")
             models.TacitRecord.objects.filter(id=tacitrecord_id).update(comment_count=F('comment_count') + 1)
 
+    def post(self, request, *args, **kwargs):
+        tacitRecord = request.data.get("tacitRecord")
+        obj = models.TacitRecord.objects.get(id=tacitRecord)
+        if int(obj.user_id) is int(request.user.id):
+            return Response({}, status=status.HTTP_204_NO_CONTENT)
+        object = models.AskAnythingRecord.objects.filter(tacitRecord=tacitRecord, user=request.user)
+        exist = object.exists()
+        if exist:
+            return Response({}, status=status.HTTP_226_IM_USED)
+        return self.create(request, *args, **kwargs)
+
 class SubmitAskAnythingView(CreateAPIView):
     '''保存评论 同时更新瞬间里面的评论数'''
     serializer_class = askAnything.SubmitAskAnythingModelSerializer
