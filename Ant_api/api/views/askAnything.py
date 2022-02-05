@@ -168,7 +168,7 @@ class SubmitAskAnythingView(CreateAPIView):
             models.TacitRecord.objects.filter(id=tacitrecord_id).update(comment_count=F('comment_count') + 1)
         # 统计浏览记录
         models.Notification.objects.create(notificationType=43, fromUser=self.request.user,
-                                           toUser=obj.tacitrecord.user, tacit=obj.tacitrecord, userHasChecked=True)
+                                           toUser=obj.user, tacit=obj.tacitrecord, userHasChecked=True)
 
 class AskMeAnythingDetailView(RetrieveAPIView):
     '''
