@@ -120,4 +120,7 @@ urlpatterns = [
     url(r'^askMeAnythingDetail/(?P<pk>\d+)/$', askAnything.AskMeAnythingDetailView.as_view()),
     url(r'^askMeAnythingComment/$', askAnything.AskMeAnythingCommentView.as_view()),
     url(r'^askAnythingFavor/$', askAnything.AskAnythingFavorView.as_view()),
+
+    #坦白局浏览记录
+    url(r'^scanAskAnything/(?P<pk>\d+)$', askAnything.ScanAskAnythingView.as_view()),
 ]

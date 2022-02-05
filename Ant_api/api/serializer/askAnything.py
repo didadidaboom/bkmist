@@ -8,6 +8,11 @@ from django.conf import settings
 
 from api import models
 
+class ScanAskAnythingModelSerializer(ModelSerializer):
+    class Meta:
+        model = models.TacitRecord
+        fields = ["id"]
+
 class CreateAskAnythingModelSerializer(ModelSerializer):
     user_id = serializers.IntegerField(source="user.id",read_only=True)
 

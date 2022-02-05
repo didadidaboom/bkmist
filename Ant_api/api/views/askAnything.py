@@ -3,6 +3,7 @@ from rest_framework.generics import CreateAPIView,RetrieveAPIView,ListAPIView
 from django.db.models import F
 from rest_framework.response import Response
 from rest_framework import status
+from django.utils import timezone
 
 from api.serializer import askAnything
 from api import models
@@ -17,6 +18,34 @@ class CreateAskAnythingView(CreateAPIView):
     def perform_create(self, serializer):
         obj=serializer.save(user=self.request.user)
         return obj
+
+class ScanAskAnythingView(RetrieveAPIView):
+    queryset = models.TacitRecord
+    serializer_class = askAnything.ScanAskAnythingModelSerializer
+    authentication_classes = [GeneralAuthentication, ]
+
+    def get(self, request, *args, **kwargs):
+        object = self.get_object()
+        if int(object.user.id) is int(request.user.id):
+            return self.retrieve(request, *args, **kwargs)
+        viewer_object = models.TacitReplyViewer.objects.filter(user=object.user, viewer_user=self.request.user,
+                                                               tacitRecord=object)
+        # viewer notify
+        viewernotify_obj = models.ViewerNotification.objects.filter(toUser=object.user)
+        if viewernotify_obj.exists():
+            viewernotify_obj.update(tacit_viewer_count=F("tacit_viewer_count") + 1)
+        else:
+            viewernotify_obj.create(toUser=object.user, tacit_viewer_count=1)
+
+        exists = viewer_object.exists()
+        if exists:
+            viewer_object.update(viewer_count=F("viewer_count") + 1, create_time=timezone.now())
+            models.UserInfo.objects.filter(id=object.user.id).update(tacit_viewer_count=F("tacit_viewer_count") + 1)
+            return self.retrieve(request, *args, **kwargs)
+        viewer_object.create(user=object.user, viewer_user=self.request.user, tacitRecord=object, viewer_count=1,
+                             create_time=timezone.now(), source="坦白局")
+        models.UserInfo.objects.filter(id=object.user.id).update(tacit_viewer_count=F("tacit_viewer_count") + 1)
+        return self.retrieve(request, *args, **kwargs)
 
 class ReplyAskAnythingView(CreateAPIView):
     '''保存评论 同时更新瞬间里面的评论数'''
