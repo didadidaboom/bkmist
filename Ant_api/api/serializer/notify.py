@@ -49,7 +49,7 @@ class GetNotificationModelSerializer(ModelSerializer):
         elif obj.notificationType is 41:
             reply_obj = models.TacitReplyRecord.objects.filter(tacitRecord=obj.tacit).first()
             if reply_obj.comment_status:
-                nickName = obj.comment.nickName
+                nickName = ask_obj.nickName
                 avatarUrl = getMosaic()
                 if_status_name = '条'
                 user_id = None
@@ -67,7 +67,7 @@ class GetNotificationModelSerializer(ModelSerializer):
         elif obj.notificationType is 42:
             ask_obj = models.AskAnythingRecord.objects.filter(tacitrecord = obj.tacit).first()
             if ask_obj.comment_status:
-                nickName = obj.comment.nickName
+                nickName = ask_obj.nickName
                 avatarUrl = getMosaic()
                 if_status_name = '条'
                 user_id = None
