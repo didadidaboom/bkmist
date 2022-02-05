@@ -64,7 +64,7 @@ class GetNotificationModelSerializer(ModelSerializer):
             if reply_obj.user.id is request.user.id:
                 nickName = nickName + "(我)"
             return {"id": reply_obj.user.id, "nickName": nickName, "avatarUrl": avatarUrl, "if_status_name": None}
-        elif obj.notificationType is 42:
+        elif obj.notificationType is 42 or obj.notificationType is 43:
             ask_obj = models.AskAnythingRecord.objects.filter(tacitrecord = obj.tacit).first()
             if ask_obj.comment_status:
                 nickName = ask_obj.nickName
