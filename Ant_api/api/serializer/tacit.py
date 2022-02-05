@@ -25,7 +25,7 @@ class TacitRecordModelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.TacitRecord
-        fields = ["id","avatarUrlFlag","bonus","correct_count","tacitList"]
+        fields = ["id","avatarUrlFlag","bonus","correct_count","tacitList","tacit_status"]
 
     def create(self, validated_data):
         bonus = getRandomBonus()

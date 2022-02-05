@@ -13,7 +13,7 @@ class CreateAskAnythingModelSerializer(ModelSerializer):
 
     class Meta:
         model = models.TacitRecord
-        fields = ["id","type","user_id"]
+        fields = ["id","type","user_id","avatarUrlFlag","tacit_status"]
 
 class SubmitAskAnythingModelSerializer(ModelSerializer):
     create_date = serializers.SerializerMethodField()
