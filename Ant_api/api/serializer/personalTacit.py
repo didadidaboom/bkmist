@@ -51,16 +51,10 @@ class PersonalTacitModelSerializer(serializers.ModelSerializer):
                         user_id = row.user.id
                         if_status_name = "裂"
                 else:
-                    if row.avatarUrlFlag:
-                        user_id = row.user_id
-                        nickName = row.user.real_nickName
-                        avatarUrl = row.user.real_avatarUrl
-                        if_status_name = None
-                    else:
-                        user_id = row.user_id
-                        nickName = row.user.real_nickName
-                        avatarUrl = row.user.real_avatarUrl
-                        if_status_name = None
+                    user_id = row.user_id
+                    nickName = row.user.real_nickName
+                    avatarUrl = row.user.real_avatarUrl
+                    if_status_name = None
                 result["nickName"] = nickName
                 result["avatarUrl"] = avatarUrl
                 result["if_status_name"] = if_status_name
