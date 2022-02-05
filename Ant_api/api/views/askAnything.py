@@ -98,27 +98,27 @@ class ReplyAskAnythingView(CreateAPIView):
             tacitrecord_id = serializer.data.get("tacitrecord")
             models.TacitRecord.objects.filter(id=tacitrecord_id).update(comment_count=F('comment_count') + 1)
         #统计浏览记录
-        viewer_object = models.TacitReplyWrite.objects.filter(user=obj.tacitRecord.user, viewer_user=self.request.user,
-                                                              tacitRecord=obj.tacitRecord)
+        viewer_object = models.TacitReplyWrite.objects.filter(user=obj.tacitrecord.user, viewer_user=self.request.user,
+                                                              tacitRecord=obj.tacitrecord)
         # viewer notify
-        viewernotify_obj = models.ViewerNotification.objects.filter(toUser=obj.tacitRecord.user)
+        viewernotify_obj = models.ViewerNotification.objects.filter(toUser=obj.tacitrecord.user)
         if viewernotify_obj.exists():
             viewernotify_obj.update(tacit_write_count=F("tacit_write_count") + 1)
         else:
-            viewernotify_obj.create(toUser=obj.tacitRecord.user, tacit_write_count=1)
+            viewernotify_obj.create(toUser=obj.tacitrecord.user, tacit_write_count=1)
 
         exists = viewer_object.exists()
         if exists:
             viewer_object.update(write_count=F("write_count") + 1, create_time=timezone.now())
-            models.UserInfo.objects.filter(id=obj.tacitRecord.user_id).update(tacit_write_count=F("tacit_write_count") + 1)
+            models.UserInfo.objects.filter(id=obj.tacitrecord.user_id).update(tacit_write_count=F("tacit_write_count") + 1)
             models.Notification.objects.create(notificationType=42, fromUser=self.request.user,
-                                               toUser=obj.tacitRecord.user, tacit=obj.tacitRecord, userHasChecked=True)
+                                               toUser=obj.tacitrecord.user, tacit=obj.tacitrecord, userHasChecked=True)
         else:
-            viewer_object.create(user=obj.tacitRecord.user, viewer_user=self.request.user, tacitRecord=obj.tacitRecord,
+            viewer_object.create(user=obj.tacitrecord.user, viewer_user=self.request.user, tacitRecord=obj.tacitrecord,
                              write_count=1, create_time=timezone.now(), source="坦白局")
-            models.UserInfo.objects.filter(id=obj.tacitRecord.user_id).update(tacit_write_count=F("tacit_write_count") + 1)
+            models.UserInfo.objects.filter(id=obj.tacitrecord.user_id).update(tacit_write_count=F("tacit_write_count") + 1)
             models.Notification.objects.create(notificationType=42, fromUser=self.request.user,
-                                           toUser=obj.tacitRecord.user, tacit=obj.tacitRecord, userHasChecked=True)
+                                           toUser=obj.tacitrecord.user, tacit=obj.tacitrecord, userHasChecked=True)
 
 class SubmitAskAnythingView(CreateAPIView):
     '''保存评论 同时更新瞬间里面的评论数'''
