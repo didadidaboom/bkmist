@@ -167,8 +167,8 @@ class SubmitAskAnythingView(CreateAPIView):
             tacitrecord_id = serializer.data.get("tacitrecord")
             models.TacitRecord.objects.filter(id=tacitrecord_id).update(comment_count=F('comment_count') + 1)
         # 统计浏览记录
-        models.Notification.objects.create(notificationType=43, fromUser=self.request.user,
-                                           toUser=obj.user, tacit=obj.tacitrecord, userHasChecked=True)
+        ask_obj = models.AskAnythingRecord.objects.get(id=self.request.data.get("root")).first()
+        models.Notification.objects.create(notificationType=43, fromUser=self.request.user,toUser=ask_obj.user, tacit=obj.tacitrecord, userHasChecked=True)
 
 class AskMeAnythingDetailView(RetrieveAPIView):
     '''
