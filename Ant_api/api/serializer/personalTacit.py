@@ -39,8 +39,7 @@ class PersonalTacitModelSerializer(serializers.ModelSerializer):
                 "real_avatarUrl":row.user.real_avatarUrl,
                 "user_id":row.user.id,
                 "depth": row.depth,
-                "comment_status": row.comment_status,
-                "selected_answer": row.selected_answer
+                "comment_status": row.comment_status
             } for row in obj_list]
             return results
         else:
