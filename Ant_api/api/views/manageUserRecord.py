@@ -1,6 +1,7 @@
 from django.utils import timezone
 import datetime
 from rest_framework.generics import ListAPIView
+from django.db.models import Q,F,Count
 
 from api.serializer import manage
 from api import models
@@ -24,7 +25,8 @@ class getAllDayOpenidUsedListView(ListAPIView):
         start_date = datetime.date(start_year, start_month, start_day)
 
         queryset = models.UserInfo.objects \
-            .filter(openID__istartswith="olwGA5IMdGhdv2FD0n7GvEBo7_iY")\
+            .filter(~Q(openID__startswith ="olwGA5IMdGhdv2FD0n7GvEBo7_iY")) \
+            .filter(~Q(openID__istartswith="olwGA5KXfu6-WpOLTsrwnu_0Q1kw")) \
             .filter(last_login__gte=start_date) \
             .filter(last_login__lte=timezone.now()).all().order_by("-id")
 
