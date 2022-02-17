@@ -33,7 +33,7 @@ class getAllDayOpenidUsedListView(ListAPIView):
             .filter(~Q(openID__startswith ="olwGA5IMdGhdv2FD0n7GvEBo7_iY")) \
             .filter(~Q(openID__istartswith="olwGA5KXfu6-WpOLTsrwnu_0Q1kw")) \
             .filter(last_login__gte=start_date) \
-            .filter(last_login__lte=timezone.now()).all().order_by("-id")
+            .filter(last_login__lte=end_date).all().order_by("-id")
 
         # queryset = models.UserInfo.objects\
         #     .filter(openID__istartswith="oCKHr4gWMcH8ql0MPh7eE74llRpc")\
