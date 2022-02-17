@@ -6,7 +6,7 @@ from api.views import topic,address
 from api.views import publish
 from api.views import moment
 from api.views import comment
-from api.views import login,notify,system,manage
+from api.views import login,notify,system,manage,manageUserRecord
 from api.views import personalMoment,personalTacit
 from api.views import personal,other,otherTacit
 from api.views import tacit,askAnything
@@ -39,6 +39,10 @@ urlpatterns = [
     url(r'^getAllChongOpenidUsedList/', manage.getAllChongOpenidUsedListView.as_view()),
     url(r'^getAllCHOpenidUsedList/', manage.getAllCHOpenidUsedListView.as_view()),
     url(r'^updateOpenid/(?P<pk>\d+)/', manage.UpdateOpenidView.as_view()),
+
+    #数据获取
+    url(r'^getAllDayOpenidUsedList/', manageUserRecord.getAllDayOpenidUsedListView.as_view()),
+    url(r'^getAllNDaysOpenidUsedList/', manageUserRecord.getAllNDaysOpenidUsedListView.as_view()),
 
     #数据分析
     url(r'^getAllOpenidUsedList/', manage.getAllOpenidUsedListView.as_view()),
