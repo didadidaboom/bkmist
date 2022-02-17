@@ -43,6 +43,8 @@ urlpatterns = [
     #数据获取
     url(r'^getAllDayOpenidUsedList/', manageUserRecord.getAllDayOpenidUsedListView.as_view()),
     url(r'^getAllNDaysOpenidUsedList/', manageUserRecord.getAllNDaysOpenidUsedListView.as_view()),
+    url(r'^getPersonalData/(?P<pk>\d+)/$', manageUserRecord.getPersonalDataView.as_view()),
+    url(r'^getPageData/(?P<pk>\d+)/$', manageUserRecord.getPageDataView.as_view()),
 
     #数据分析
     url(r'^getAllOpenidUsedList/', manage.getAllOpenidUsedListView.as_view()),

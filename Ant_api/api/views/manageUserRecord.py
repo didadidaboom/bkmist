@@ -1,6 +1,6 @@
 from django.utils import timezone
 import datetime
-from rest_framework.generics import ListAPIView
+from rest_framework.generics import ListAPIView,RetrieveAPIView
 from django.db.models import Q,F,Count
 
 from api.serializer import manageUserRecord
@@ -72,4 +72,18 @@ class getAllNDaysOpenidUsedListView(ListAPIView):
 
         return queryset
 
+class getPersonalDataView(RetrieveAPIView):
+    '''
+    获取单条瞬间详细
+    '''
+    queryset = models.PersonalData.objects
+    authentication_classes = [auth.GeneralAuthentication,]
+    serializer_class = manageUserRecord.getPersonalDataModelSerializer
 
+class getPageDataView(RetrieveAPIView):
+    '''
+    获取单条瞬间详细
+    '''
+    queryset = models.PagesData.objects
+    authentication_classes = [auth.GeneralAuthentication,]
+    serializer_class = manageUserRecord.GetMomentDetailModelSerializer
