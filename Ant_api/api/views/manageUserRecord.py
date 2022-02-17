@@ -42,7 +42,7 @@ class getAllNDaysOpenidUsedListView(ListAPIView):
     def get_queryset(self):
         day = self.request.query_params.get("day")
         if not day:
-            day = 0
+            day = 1
         cur_date = datetime.datetime.today()
         start_year = cur_date.year
         start_month = cur_date.month
