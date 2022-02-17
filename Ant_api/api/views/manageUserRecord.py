@@ -86,4 +86,4 @@ class getPageDataView(RetrieveAPIView):
     '''
     queryset = models.PagesData.objects
     authentication_classes = [auth.GeneralAuthentication,]
-    serializer_class = manageUserRecord.GetMomentDetailModelSerializer
+    serializer_class = manageUserRecord.getPageDataViewModelSerializer
