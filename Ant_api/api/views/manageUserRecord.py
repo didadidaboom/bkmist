@@ -72,18 +72,26 @@ class getAllNDaysOpenidUsedListView(ListAPIView):
 
         return queryset
 
-class getPersonalDataView(RetrieveAPIView):
+class getPersonalDataView(ListAPIView):
     '''
     获取单条瞬间详细
     '''
     queryset = models.PersonalData.objects
     authentication_classes = [auth.GeneralAuthentication,]
     serializer_class = manageUserRecord.getPersonalDataModelSerializer
+    def get_queryset(self):
+        user_id = self.request.query_params.get("user_id")
+        queryset = models.PersonalData.objects.filter(curUser_id=int(user_id))
+        return queryset
 
-class getPageDataView(RetrieveAPIView):
+class getPageDataView(ListAPIView):
     '''
     获取单条瞬间详细
     '''
     queryset = models.PagesData.objects
     authentication_classes = [auth.GeneralAuthentication,]
     serializer_class = manageUserRecord.getPageDataViewModelSerializer
+    def get_queryset(self):
+        user_id = self.request.query_params.get("user_id")
+        queryset = models.PagesData.objects.filter(curUser_id=int(user_id))
+        return queryset
