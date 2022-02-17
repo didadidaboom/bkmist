@@ -3,13 +3,13 @@ import datetime
 from rest_framework.generics import ListAPIView
 from django.db.models import Q,F,Count
 
-from api.serializer import manage
+from api.serializer import manageUserRecord
 from api import models
 
 from utils import filter,pagination,auth
 
 class getAllDayOpenidUsedListView(ListAPIView):
-    serializer_class = manage.getAllOpenidUsedListModelSerializer
+    serializer_class = manageUserRecord.getDayOpenidUsedListModelSerializer
     pagination_class = pagination.Pagination
     filter_backends = [filter.MinFilterBackend, filter.MaxFilterBackend]
     authentication_classes = [auth.GeneralAuthentication, ]
@@ -46,7 +46,7 @@ class getAllDayOpenidUsedListView(ListAPIView):
 
 
 class getAllNDaysOpenidUsedListView(ListAPIView):
-    serializer_class = manage.getAllOpenidUsedListModelSerializer
+    serializer_class = manageUserRecord.getDayOpenidUsedListModelSerializer
     pagination_class = pagination.Pagination
     filter_backends = [filter.MinFilterBackend, filter.MaxFilterBackend]
     authentication_classes = [auth.GeneralAuthentication, ]
