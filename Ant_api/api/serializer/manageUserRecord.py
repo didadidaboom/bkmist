@@ -65,7 +65,7 @@ class getDayOpenidUsedListModelSerializer(ModelSerializer):
 
 class getPersonalDataModelSerializer(ModelSerializer):
     # nickName = serializers.SerializerMethodField(source="curUser.nickName")
-    latest_time = serializers.SerializerMethodField()
+    latest_time = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = models.PersonalData
@@ -99,11 +99,11 @@ class getPersonalDataModelSerializer(ModelSerializer):
 
 class getPageDataViewModelSerializer(ModelSerializer):
     # nickName = serializers.SerializerMethodField(source="curUser.nickName")
-    latest_time = serializers.SerializerMethodField()
+    latest_time = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = models.PagesData
-        fields = ["curUser","type","count","latest_time"]
+        # fields = ["curUser","type","count","latest_time"]
         # fields = "__all__"
 
     def get_latest_time(self,obj):

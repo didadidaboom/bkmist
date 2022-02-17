@@ -82,7 +82,8 @@ class getPersonalDataView(ListAPIView):
     authentication_classes = [auth.GeneralAuthentication, ]
     def get_queryset(self):
         user_id = self.request.query_params.get("user_id")
-        queryset = models.PersonalData.objects.filter(curUser_id =int(user_id)).all()
+        user_id = int(user_id)
+        queryset = models.PersonalData.objects.filter(curUser_id = user_id).all().order_by("-id")
         return queryset
 
 class getPageDataView(ListAPIView):
@@ -95,5 +96,6 @@ class getPageDataView(ListAPIView):
     authentication_classes = [auth.GeneralAuthentication, ]
     def get_queryset(self):
         user_id = self.request.query_params.get("user_id")
-        queryset = models.PagesData.objects.filter(curUser_id=int(user_id)).all()
+        user_id = int(user_id)
+        queryset = models.PagesData.objects.filter(curUser_id = user_id).all().order_by("-id")
         return queryset
