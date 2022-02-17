@@ -77,8 +77,6 @@ class getPersonalDataView(ListAPIView):
     获取单条瞬间详细
     '''
     serializer_class = manageUserRecord.getPersonalDataModelSerializer
-    pagination_class = pagination.Pagination
-    filter_backends = [filter.MinFilterBackend, filter.MaxFilterBackend]
     authentication_classes = [auth.GeneralAuthentication, ]
     def get_queryset(self):
         user_id = self.request.query_params.get("user_id")
@@ -91,8 +89,6 @@ class getPageDataView(ListAPIView):
     获取单条瞬间详细
     '''
     serializer_class = manageUserRecord.getPageDataViewModelSerializer
-    pagination_class = pagination.Pagination
-    filter_backends = [filter.MinFilterBackend, filter.MaxFilterBackend]
     authentication_classes = [auth.GeneralAuthentication, ]
     def get_queryset(self):
         user_id = self.request.query_params.get("user_id")
