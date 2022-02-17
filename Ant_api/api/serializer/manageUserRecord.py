@@ -64,7 +64,7 @@ class getDayOpenidUsedListModelSerializer(ModelSerializer):
                     return str(second) + "秒前"
 
 class getPersonalDataModelSerializer(ModelSerializer):
-    nickName = serializers.SerializerMethodField(source="curUser.nickName")
+    nickName = serializers.CharField(source="curUser.nickName")
     latest_time = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
@@ -98,7 +98,7 @@ class getPersonalDataModelSerializer(ModelSerializer):
                     return str(second) + "秒前"
 
 class getPageDataViewModelSerializer(ModelSerializer):
-    nickName = serializers.SerializerMethodField(source="curUser.nickName")
+    nickName = serializers.CharField(source="curUser.nickName")
     latest_time = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
