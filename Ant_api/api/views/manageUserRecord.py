@@ -24,6 +24,10 @@ class getAllDayOpenidUsedListView(ListAPIView):
         start_month = cur_date.month
         start_day = cur_date.day-day
         start_date = datetime.date(start_year, start_month, start_day)
+        end_year = cur_date.year
+        end_month = cur_date.month
+        end_day = cur_date.day - day +1
+        end_date = datetime.date(end_year, end_month, end_day)
 
         queryset = models.UserInfo.objects \
             .filter(~Q(openID__startswith ="olwGA5IMdGhdv2FD0n7GvEBo7_iY")) \
@@ -48,7 +52,7 @@ class getAllNDaysOpenidUsedListView(ListAPIView):
     authentication_classes = [auth.GeneralAuthentication, ]
 
     def get_queryset(self):
-        day = self.request.query_params.get("day")
+        day = self.request.query_params.get("ndays")
         day = int(day)
         if not day:
             day = 1
