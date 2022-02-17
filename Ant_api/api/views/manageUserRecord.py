@@ -76,20 +76,23 @@ class getPersonalDataView(ListAPIView):
     '''
     获取单条瞬间详细
     '''
-    authentication_classes = [auth.GeneralAuthentication,]
     serializer_class = manageUserRecord.getPersonalDataModelSerializer
+    pagination_class = pagination.Pagination
+    filter_backends = [filter.MinFilterBackend, filter.MaxFilterBackend]
+    authentication_classes = [auth.GeneralAuthentication, ]
     def get_queryset(self):
         user_id = self.request.query_params.get("user_id")
-        queryset = models.PersonalData.objects.filter(curUser_id=int(user_id)).all()
+        queryset = models.PersonalData.objects.filter(curUser_id =int(user_id)).all()
         return queryset
 
 class getPageDataView(ListAPIView):
     '''
     获取单条瞬间详细
     '''
-    queryset = models.PagesData.objects
-    authentication_classes = [auth.GeneralAuthentication,]
     serializer_class = manageUserRecord.getPageDataViewModelSerializer
+    pagination_class = pagination.Pagination
+    filter_backends = [filter.MinFilterBackend, filter.MaxFilterBackend]
+    authentication_classes = [auth.GeneralAuthentication, ]
     def get_queryset(self):
         user_id = self.request.query_params.get("user_id")
         queryset = models.PagesData.objects.filter(curUser_id=int(user_id)).all()

@@ -64,12 +64,12 @@ class getDayOpenidUsedListModelSerializer(ModelSerializer):
                     return str(second) + "秒前"
 
 class getPersonalDataModelSerializer(ModelSerializer):
-    nickName = serializers.SerializerMethodField(source="curUser.nickName")
+    # nickName = serializers.SerializerMethodField(source="curUser.nickName")
     latest_time = serializers.SerializerMethodField()
 
     class Meta:
         model = models.PersonalData
-        fields = ["nickName", "type", "count", "latest_time"]
+        fields = ["curUser", "type", "count", "latest_time"]
         # fields = "__all__"
 
     def get_latest_time(self,obj):
@@ -98,12 +98,12 @@ class getPersonalDataModelSerializer(ModelSerializer):
                     return str(second) + "秒前"
 
 class getPageDataViewModelSerializer(ModelSerializer):
-    nickName = serializers.SerializerMethodField(source="curUser.nickName")
+    # nickName = serializers.SerializerMethodField(source="curUser.nickName")
     latest_time = serializers.SerializerMethodField()
 
     class Meta:
         model = models.PagesData
-        fields = ["nickName","type","count","latest_time"]
+        fields = ["curUser","type","count","latest_time"]
         # fields = "__all__"
 
     def get_latest_time(self,obj):
