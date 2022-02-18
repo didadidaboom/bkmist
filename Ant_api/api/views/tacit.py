@@ -83,6 +83,15 @@ class ReplyTacitView(RetrieveAPIView):
     serializer_class = ReplyTacitModelSerializer
     authentication_classes = [GeneralAuthentication,]
     def get(self, request, *args, **kwargs):
+        # collect data for data analysis
+        if self.request.user:
+            obj = models.PagesData.objects.filter(curUser=self.request.user, type=9001)
+            if obj.exists():
+                obj.update(count=F("count") + 1, latest_time=timezone.now())
+            else:
+                obj.create(curUser=self.request.user, type=9001, count=1, latest_time=timezone.now())
+
+
         object = self.get_object()
         if int(object.user.id) is int(request.user.id):
             return self.retrieve(request, *args, **kwargs)

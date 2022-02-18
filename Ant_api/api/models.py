@@ -529,7 +529,7 @@ class SystemNotification(models.Model):
 class PersonalData(models.Model):
     #p-page1:1001; p-viewer1:1002; p-focus:1003; p-focused:1004; p-moment:1005; p-setting:1006; p-friend:1007; p-focuspage:1008
     #p-page2:2001; p-viewer2:2002
-    #p-page3:3001; p-viewer3:3002; p-scan:3003; p-submit:3004
+    #p-page3:3001; p-viewer3:3002; p-scan:3003; p-submit:3004;
     #p-mail1:4001; p-mail2:4002; p-mail3:4003
     curUser = models.ForeignKey(verbose_name="current user", to="UserInfo", null=True,on_delete=models.CASCADE)
     type = models.IntegerField()
@@ -543,10 +543,11 @@ class PersonalData(models.Model):
 
 
 class PagesData(models.Model):
-    #o-index:5001; o-publish:5002; o-play:5003; o-tacit:5004
+    #o-index:5001; o-publish:5002; o-play:5003; o-tacit:5004; o-askanything:5005
     #o-topic1:6001; o-topic2:6002; o-topic3:6003; o-topic4:6004
     #o-addr1:7001; o-addr2:7002
     #o-otherpage1:8001; o-otherpage2:8002; o-otherpage3:8003; o-otherinvite:8004
+    #o-tacit-reply:9001; o-askanything-detail: 9002; 0-askanything-scan:9003
     curUser = models.ForeignKey(verbose_name="current user", to="UserInfo", null=True, on_delete=models.CASCADE)
     type = models.IntegerField()
     count = models.PositiveIntegerField(verbose_name="次数", default=0)
