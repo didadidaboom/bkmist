@@ -66,11 +66,18 @@ class getDayOpenidUsedListModelSerializer(ModelSerializer):
 class getPersonalDataModelSerializer(ModelSerializer):
     nickName = serializers.CharField(source="curUser.nickName")
     latest_time = serializers.SerializerMethodField(read_only=True)
+    type_from = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = models.PersonalData
-        fields = ["nickName", "type", "count", "latest_time"]
+        fields = ["nickName", "type", "count", "latest_time","type_from"]
         # fields = "__all__"
+
+    def get_type_from(self,obj):
+        gate_obj = models.GateData.objects.filter(curUser_id=obj.curUser.id).first()
+        if not gate_obj.type:
+             return None
+        return gate_obj.type
 
     def get_latest_time(self,obj):
         create_date = obj.latest_time
@@ -100,11 +107,18 @@ class getPersonalDataModelSerializer(ModelSerializer):
 class getPageDataViewModelSerializer(ModelSerializer):
     nickName = serializers.CharField(source="curUser.nickName")
     latest_time = serializers.SerializerMethodField(read_only=True)
+    type_from = serializers.SerializerMethodField(read_only=True)
 
     class Meta:
         model = models.PagesData
-        fields = ["nickName","type","count","latest_time"]
+        fields = ["nickName","type","count","latest_time","type_from"]
         # fields = "__all__"
+
+    def get_type_from(self,obj):
+        gate_obj = models.GateData.objects.filter(curUser_id=obj.curUser.id).first()
+        if not gate_obj.type:
+             return None
+        return gate_obj.type
 
     def get_latest_time(self,obj):
         create_date = obj.latest_time
