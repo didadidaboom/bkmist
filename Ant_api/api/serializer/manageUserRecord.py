@@ -75,7 +75,7 @@ class getPersonalDataModelSerializer(ModelSerializer):
 
     def get_type_from(self,obj):
         gate_obj = models.GateData.objects.filter(curUser_id=obj.curUser.id).first()
-        if not gate_obj.type:
+        if not gate_obj:
              return None
         return gate_obj.type
 
