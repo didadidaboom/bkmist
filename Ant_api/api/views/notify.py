@@ -29,7 +29,7 @@ class NotificationPage1View(ListAPIView):
         if obj.exists():
             obj.update(count=F("count") + 1, latest_time=timezone.now())
         else:
-            obj.create(curUser=self.request.user, type=4001, count=1, latest_time=timezone.now())
+            obj.create(curUser=self.request.user, type=4001, count=1, latest_time=timezone.now(),oritype=4001)
 
         queryset = models.Notification.objects.filter(toUser=self.request.user).all().order_by('-id')
         return queryset
@@ -99,7 +99,7 @@ class SystemNotificationView(ListAPIView):
         if obj.exists():
             obj.update(count=F("count") + 1, latest_time=timezone.now())
         else:
-            obj.create(curUser=self.request.user, type=4002, count=1, latest_time=timezone.now())
+            obj.create(curUser=self.request.user, type=4002, count=1, latest_time=timezone.now(),oritype=4002)
 
         queryset = models.SystemNotification.objects.filter(toUser=self.request.user).all().order_by("-id")
         return queryset

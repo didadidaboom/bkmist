@@ -32,7 +32,7 @@ class PublishView(CreateAPIView):
             if obj.exists():
                 obj.update(count=F("count") + 1, latest_time=timezone.now())
             else:
-                obj.create(curUser=self.request.user, type=5002, count=1, latest_time=timezone.now())
+                obj.create(curUser=self.request.user, type=5002, count=1, latest_time=timezone.now(),oritype=5002)
 
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)

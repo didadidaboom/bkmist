@@ -30,7 +30,7 @@ class TacitView(ListAPIView,CreateAPIView):
             if obj.exists():
                 obj.update(count=F("count") + 1, latest_time=timezone.now())
             else:
-                obj.create(curUser=self.request.user, type=5004, count=1, latest_time=timezone.now())
+                obj.create(curUser=self.request.user, type=5004, count=1, latest_time=timezone.now(),oritype=5004)
         return self.list(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
@@ -89,7 +89,7 @@ class ReplyTacitView(RetrieveAPIView):
             if obj.exists():
                 obj.update(count=F("count") + 1, latest_time=timezone.now())
             else:
-                obj.create(curUser=self.request.user, type=9001, count=1, latest_time=timezone.now())
+                obj.create(curUser=self.request.user, type=9001, count=1, latest_time=timezone.now(),oritype=9001)
 
 
         object = self.get_object()

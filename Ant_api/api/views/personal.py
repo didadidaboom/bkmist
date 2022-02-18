@@ -70,7 +70,7 @@ class PersonalViewerPage1View(ListAPIView):
         if obj.exists():
             obj.update(count=F("count") + 1, latest_time=timezone.now())
         else:
-            obj.create(curUser=self.request.user, type=1002, count=1, latest_time=timezone.now())
+            obj.create(curUser=self.request.user, type=1002, count=1, latest_time=timezone.now(),oritype=1002)
 
         models.ViewerNotification.objects.filter(toUser=self.request.user).update(viewer_count_page1=0)
         queryset = models.UserViewerRecord.objects.filter(user=self.request.user).order_by("-create_time")[0:10]
@@ -87,7 +87,7 @@ class PersonalViewerPage2View(ListAPIView):
         if obj.exists():
             obj.update(count=F("count") + 1, latest_time=timezone.now())
         else:
-            obj.create(curUser=self.request.user, type=2002, count=1, latest_time=timezone.now())
+            obj.create(curUser=self.request.user, type=2002, count=1, latest_time=timezone.now(),oritype=2002)
 
         models.ViewerNotification.objects.filter(toUser=self.request.user).update(viewer_count_page2=0)
         queryset = models.UserViewerRecordPage2.objects.filter(user=self.request.user).order_by("-create_time")[0:10]
@@ -104,7 +104,7 @@ class PersonalViewerPage3View(ListAPIView):
         if obj.exists():
             obj.update(count=F("count") + 1, latest_time=timezone.now())
         else:
-            obj.create(curUser=self.request.user, type=3002, count=1, latest_time=timezone.now())
+            obj.create(curUser=self.request.user, type=3002, count=1, latest_time=timezone.now(),oritype=3002)
 
         models.ViewerNotification.objects.filter(toUser=self.request.user).update(viewer_count_page3=0)
         queryset = models.UserViewerRecordPage3.objects.filter(user=self.request.user).order_by("-create_time")[0:10]
@@ -121,7 +121,7 @@ class PersonalViewerPage3ScanView(ListAPIView):
         if obj.exists():
             obj.update(count=F("count") + 1, latest_time=timezone.now())
         else:
-            obj.create(curUser=self.request.user, type=3003, count=1, latest_time=timezone.now())
+            obj.create(curUser=self.request.user, type=3003, count=1, latest_time=timezone.now(),oritype=3003)
 
         models.ViewerNotification.objects.filter(toUser=self.request.user).update(tacit_viewer_count=0)
         queryset = models.TacitReplyViewer.objects.filter(user=self.request.user).order_by("-create_time")[0:10]
@@ -138,7 +138,7 @@ class PersonalViewerPage3SubmitView(ListAPIView):
         if obj.exists():
             obj.update(count=F("count") + 1, latest_time=timezone.now())
         else:
-            obj.create(curUser=self.request.user, type=3004, count=1, latest_time=timezone.now())
+            obj.create(curUser=self.request.user, type=3004, count=1, latest_time=timezone.now(),oritype=3004)
 
         models.ViewerNotification.objects.filter(toUser=self.request.user).update(tacit_write_count=0)
         queryset = models.TacitReplyWrite.objects.filter(user=self.request.user).order_by("-create_time")[0:10]
@@ -155,7 +155,7 @@ class PersonalMomentViewerView(ListAPIView):
         if obj.exists():
             obj.update(count=F("count") + 1, latest_time=timezone.now())
         else:
-            obj.create(curUser=self.request.user, type=1005, count=1, latest_time=timezone.now())
+            obj.create(curUser=self.request.user, type=1005, count=1, latest_time=timezone.now(),oritype=1005)
 
         moment_id = self.request.query_params.get('moment_id')
         models.MomentViewerNotification.objects.filter(moment_id=moment_id).update(momentviewer_count=0)
@@ -173,7 +173,7 @@ class PersonalFocusListView(ListAPIView):
         if obj.exists():
             obj.update(count=F("count") + 1, latest_time=timezone.now())
         else:
-            obj.create(curUser=self.request.user, type=1003, count=1, latest_time=timezone.now())
+            obj.create(curUser=self.request.user, type=1003, count=1, latest_time=timezone.now(),oritype=1003)
 
         queryset = models.UserFocusRecord.objects.filter(focus_user=self.request.user).order_by("-create_time")[0:10]
         return queryset
@@ -189,7 +189,7 @@ class PersonalFocusedListView(ListAPIView):
         if obj.exists():
             obj.update(count=F("count") + 1, latest_time=timezone.now())
         else:
-            obj.create(curUser=self.request.user, type=1004, count=1, latest_time=timezone.now())
+            obj.create(curUser=self.request.user, type=1004, count=1, latest_time=timezone.now(),oritype=1004)
 
         models.ViewerNotification.objects.filter(toUser=self.request.user).update(focused_count=0)
         queryset = models.UserFocusRecord.objects.filter(user=self.request.user,).order_by("-create_time")[0:10]
@@ -206,7 +206,7 @@ class PersonalFriendListView(ListAPIView):
         if obj.exists():
             obj.update(count=F("count") + 1, latest_time=timezone.now())
         else:
-            obj.create(curUser=self.request.user, type=1007, count=1, latest_time=timezone.now())
+            obj.create(curUser=self.request.user, type=1007, count=1, latest_time=timezone.now(),oritype=1007)
 
         queryset = models.UserFocusRecord.objects.filter(
             user=self.request.user

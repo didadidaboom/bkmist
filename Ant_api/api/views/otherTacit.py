@@ -26,7 +26,7 @@ class OtherTacitsView(ListAPIView):
             if obj.exists():
                 obj.update(count=F("count") + 1, latest_time=timezone.now())
             else:
-                obj.create(curUser=self.request.user, type=8002, count=1, latest_time=timezone.now())
+                obj.create(curUser=self.request.user, type=8002, count=1, latest_time=timezone.now(),oritype=8002)
 
         queryset = models.TacitRecord.objects.filter(
             user_id=self.request.query_params.get("user_id"),
@@ -69,7 +69,7 @@ class OtherTacitsReplyView(ListAPIView):
             if obj.exists():
                 obj.update(count=F("count") + 1, latest_time=timezone.now())
             else:
-                obj.create(curUser=self.request.user, type=8003, count=1, latest_time=timezone.now())
+                obj.create(curUser=self.request.user, type=8003, count=1, latest_time=timezone.now(),oritype=8003)
 
         queryset = models.TacitRecord.objects.filter(
             user_id=self.request.query_params.get("user_id"),
@@ -114,6 +114,6 @@ class OtherInviteTacitsView(CreateAPIView):
             if obj.exists():
                 obj.update(count=F("count") + 1, latest_time=timezone.now())
             else:
-                obj.create(curUser=self.request.user, type=8004, count=1, latest_time=timezone.now())
+                obj.create(curUser=self.request.user, type=8004, count=1, latest_time=timezone.now(),oritype=8004)
 
         serializer.save(fromUser=self.request.user)

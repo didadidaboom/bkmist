@@ -58,7 +58,7 @@ class TopicMomentTimeView(ListAPIView):
             if obj.exists():
                 obj.update(count=F("count") + 1, latest_time=timezone.now())
             else:
-                obj.create(curUser=self.request.user, type=6001, count=1, latest_time=timezone.now())
+                obj.create(curUser=self.request.user, type=6001, count=1, latest_time=timezone.now(),oritype=6001)
 
         topic_id = self.request.query_params.get("topic_id")
         queryset = models.Moment.objects.filter(moment_status=0,topiccitedrecord__topic=int(topic_id)).all().order_by('-id')
@@ -85,7 +85,7 @@ class TopicMomentHotViewView(ListAPIView):
             if obj.exists():
                 obj.update(count=F("count") + 1, latest_time=timezone.now())
             else:
-                obj.create(curUser=self.request.user, type=6002, count=1, latest_time=timezone.now())
+                obj.create(curUser=self.request.user, type=6002, count=1, latest_time=timezone.now(),oritype=6002)
 
         topic_id = self.request.query_params.get("topic_id")
         queryset = models.Moment.objects.filter(moment_status=0,topiccitedrecord__topic=int(topic_id)).all().order_by('-viewer_count')
@@ -112,7 +112,7 @@ class TopicMomentHotCommentView(ListAPIView):
             if obj.exists():
                 obj.update(count=F("count") + 1, latest_time=timezone.now())
             else:
-                obj.create(curUser=self.request.user, type=6003, count=1, latest_time=timezone.now())
+                obj.create(curUser=self.request.user, type=6003, count=1, latest_time=timezone.now(),oritype=6003)
 
         topic_id = self.request.query_params.get("topic_id")
         queryset = models.Moment.objects.filter(moment_status=0,topiccitedrecord__topic=int(topic_id)).all().order_by('-comment_count')
@@ -139,7 +139,7 @@ class TopicMomentHotFavorView(ListAPIView):
             if obj.exists():
                 obj.update(count=F("count") + 1, latest_time=timezone.now())
             else:
-                obj.create(curUser=self.request.user, type=6004, count=1, latest_time=timezone.now())
+                obj.create(curUser=self.request.user, type=6004, count=1, latest_time=timezone.now(),oritype=6004)
 
         topic_id = self.request.query_params.get("topic_id")
         queryset = models.Moment.objects.filter(moment_status=0,topiccitedrecord__topic=int(topic_id)).all().order_by('-favor_count')

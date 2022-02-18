@@ -26,7 +26,7 @@ class CreateAskAnythingView(CreateAPIView):
             if obj.exists():
                 obj.update(count=F("count") + 1, latest_time=timezone.now())
             else:
-                obj.create(curUser=self.request.user, type=5005, count=1, latest_time=timezone.now())
+                obj.create(curUser=self.request.user, type=5005, count=1, latest_time=timezone.now(),oritype=5005)
         return self.create(request, *args, **kwargs)
 
 class ScanAskAnythingView(RetrieveAPIView):
@@ -41,7 +41,7 @@ class ScanAskAnythingView(RetrieveAPIView):
             if obj.exists():
                 obj.update(count=F("count") + 1, latest_time=timezone.now())
             else:
-                obj.create(curUser=self.request.user, type=9003, count=1, latest_time=timezone.now())
+                obj.create(curUser=self.request.user, type=9003, count=1, latest_time=timezone.now(),oritype=9003)
 
         object = self.get_object()
         if int(object.user.id) is int(request.user.id):
@@ -205,7 +205,7 @@ class AskMeAnythingDetailView(RetrieveAPIView):
             if obj.exists():
                 obj.update(count=F("count") + 1, latest_time=timezone.now())
             else:
-                obj.create(curUser=self.request.user, type=9002, count=1, latest_time=timezone.now())
+                obj.create(curUser=self.request.user, type=9002, count=1, latest_time=timezone.now(),oritype=9002)
 
         response = super().get(self, request, *args, **kwargs)
         #验证用户是否登入：登陆增加浏览记录，未登录不进行操作

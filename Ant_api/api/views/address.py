@@ -32,7 +32,7 @@ class AddressMomentDistanceView(ListAPIView):
             if obj.exists():
                 obj.update(count=F("count") + 1, latest_time=timezone.now())
             else:
-                obj.create(curUser=self.request.user, type=7001, count=1, latest_time=timezone.now())
+                obj.create(curUser=self.request.user, type=7001, count=1, latest_time=timezone.now(),oritype=7001)
 
         address_id = self.request.query_params.get("address_id")
         address_obj = models.Address.objects.get(id=address_id)
@@ -68,7 +68,7 @@ class AddressMomentTimeView(ListAPIView):
             if obj.exists():
                 obj.update(count=F("count") + 1, latest_time=timezone.now())
             else:
-                obj.create(curUser=self.request.user, type=7002, count=1, latest_time=timezone.now())
+                obj.create(curUser=self.request.user, type=7002, count=1, latest_time=timezone.now(),oritype=7002)
 
         address_id = self.request.query_params.get("address_id")
         address_obj = models.Address.objects.get(id=address_id)

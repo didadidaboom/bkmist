@@ -57,7 +57,7 @@ class MomentView(ListAPIView):
             if obj.exists():
                 obj.update(count=F("count") + 1, latest_time=timezone.now())
             else:
-                obj.create(curUser=self.request.user, type=5001, count=1, latest_time=timezone.now())
+                obj.create(curUser=self.request.user, type=5001, count=1, latest_time=timezone.now(),oritype=5001)
 
         return self.list(request, *args, **kwargs)
 
@@ -74,7 +74,7 @@ class FocusMomentView(ListAPIView):
         if obj.exists():
             obj.update(count=F("count") + 1, latest_time=timezone.now())
         else:
-            obj.create(curUser=self.request.user, type=1008, count=1, latest_time=timezone.now())
+            obj.create(curUser=self.request.user, type=1008, count=1, latest_time=timezone.now(),oritype=1008)
 
         user_obj = models.UserInfo.objects.filter(id=self.request.user.id).first()
         if user_obj.focus_count > settings.MAX_FOCUS_USERS:
