@@ -6,7 +6,7 @@ from api.views import topic,address
 from api.views import publish
 from api.views import moment
 from api.views import comment
-from api.views import login,notify,system,manage,manageUserRecord
+from api.views import login,notify,system,manage,manageUserRecord,manageTypeFrom
 from api.views import personalMoment,personalTacit
 from api.views import personal,other,otherTacit
 from api.views import tacit,askAnything
