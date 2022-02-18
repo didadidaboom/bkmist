@@ -31,6 +31,7 @@ class getAllDayOpenidUsedListView(ListAPIView):
 
         queryset = models.UserInfo.objects \
             .filter(~Q(openID__startswith ="oCKHr4gWMcH8ql0MPh7eE74llRpc")) \
+            .filter(~Q(openID__istartswith="oCKHr4nB-yw3eAapHjGUFxGmEzj4")) \
             .filter(~Q(openID__istartswith="olwGA5IMdGhdv2FD0n7GvEBo7_iY")) \
             .filter(~Q(openID__istartswith="olwGA5KXfu6-WpOLTsrwnu_0Q1kw")) \
             .filter(last_login__gte=start_date) \
