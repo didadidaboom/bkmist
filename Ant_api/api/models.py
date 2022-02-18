@@ -265,7 +265,7 @@ class CommentRecord(models.Model):
     用户评论记录
     '''
     moment = models.ForeignKey(verbose_name="评论的瞬间",to="Moment",on_delete=models.CASCADE)
-    content = models.CharField(verbose_name="评论内容",max_length=255)
+    content = models.CharField(verbose_name="评论内容",max_length=1000)
     user = models.ForeignKey(verbose_name="评论用户",to="UserInfo",null=True,blank=True,on_delete=models.CASCADE)
     nickName = models.CharField(verbose_name="随机名字",max_length=255,null=True,blank=True)
     avatarUrl = models.CharField(verbose_name="随机头像", max_length=1000,null=True,blank=True)
@@ -533,7 +533,7 @@ class PersonalData(models.Model):
     #p-mail1:4001; p-mail2:4002; p-mail3:4003
     curUser = models.ForeignKey(verbose_name="current user", to="UserInfo", null=True,on_delete=models.CASCADE)
     type = models.IntegerField()
-    oritype = models.IntegerField(default=0)
+    oritype = models.IntegerField(verbose_name="第一次登陆", default=0)
     count = models.PositiveIntegerField(verbose_name="次数", default=0)
     latest_time = models.DateTimeField(verbose_name="最近时间", auto_now_add=True)
 
@@ -551,7 +551,7 @@ class PagesData(models.Model):
     #o-tacit-reply:9001; o-askanything-detail: 9002; 0-askanything-scan:9003
     curUser = models.ForeignKey(verbose_name="current user", to="UserInfo", null=True, on_delete=models.CASCADE)
     type = models.IntegerField()
-    oritype = models.IntegerField(default=0)
+    oritype = models.IntegerField(verbose_name="第一次登陆", default=0)
     count = models.PositiveIntegerField(verbose_name="次数", default=0)
     latest_time = models.DateTimeField(verbose_name="最近时间", auto_now_add=True)
 
