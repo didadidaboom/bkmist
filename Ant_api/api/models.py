@@ -551,7 +551,7 @@ class PagesData(models.Model):
     #o-tacit-reply:9001; o-askanything-detail: 9002; 0-askanything-scan:9003
     curUser = models.ForeignKey(verbose_name="current user", to="UserInfo", null=True, on_delete=models.CASCADE)
     type = models.IntegerField()
-    oritype = models.IntegerField()
+    oritype = models.IntegerField(default=0)
     count = models.PositiveIntegerField(verbose_name="次数", default=0)
     latest_time = models.DateTimeField(verbose_name="最近时间", auto_now_add=True)
 
