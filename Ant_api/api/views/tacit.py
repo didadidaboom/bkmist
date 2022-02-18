@@ -24,13 +24,18 @@ class TacitView(ListAPIView,CreateAPIView):
     def get(self, request, *args, **kwargs):
         # collect data for data analysis
         if self.request.user:
+            obj = models.GateData.objects.filter(curUser=self.request.user)
+            if not obj.exists():
+                obj.create(curUser=self.request.user, type=5004)
+        # collect data for data analysis
+        if self.request.user:
             from django.utils import timezone
             from django.db.models import F
             obj = models.PagesData.objects.filter(curUser=self.request.user, type=5004)
             if obj.exists():
                 obj.update(count=F("count") + 1, latest_time=timezone.now())
             else:
-                obj.create(curUser=self.request.user, type=5004, count=1, latest_time=timezone.now(),oritype=5004)
+                obj.create(curUser=self.request.user, type=5004, count=1, latest_time=timezone.now())
         return self.list(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
@@ -85,11 +90,16 @@ class ReplyTacitView(RetrieveAPIView):
     def get(self, request, *args, **kwargs):
         # collect data for data analysis
         if self.request.user:
+            obj = models.GateData.objects.filter(curUser=self.request.user)
+            if not obj.exists():
+                obj.create(curUser=self.request.user, type=9001)
+        # collect data for data analysis
+        if self.request.user:
             obj = models.PagesData.objects.filter(curUser=self.request.user, type=9001)
             if obj.exists():
                 obj.update(count=F("count") + 1, latest_time=timezone.now())
             else:
-                obj.create(curUser=self.request.user, type=9001, count=1, latest_time=timezone.now(),oritype=9001)
+                obj.create(curUser=self.request.user, type=9001, count=1, latest_time=timezone.now())
 
 
         object = self.get_object()

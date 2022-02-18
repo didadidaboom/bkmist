@@ -51,13 +51,18 @@ class MomentView(ListAPIView):
     def get(self, request, *args, **kwargs):
         # collect data for data analysis
         if self.request.user:
+            obj = models.GateData.objects.filter(curUser=self.request.user)
+            if not obj.exists():
+                obj.create(curUser=self.request.user, type=5001)
+        # collect data for data analysis
+        if self.request.user:
             from django.utils import timezone
             from django.db.models import F
             obj = models.PagesData.objects.filter(curUser=self.request.user, type=5001)
             if obj.exists():
                 obj.update(count=F("count") + 1, latest_time=timezone.now())
             else:
-                obj.create(curUser=self.request.user, type=5001, count=1, latest_time=timezone.now(),oritype=5001)
+                obj.create(curUser=self.request.user, type=5001, count=1, latest_time=timezone.now())
 
         return self.list(request, *args, **kwargs)
 
@@ -68,13 +73,19 @@ class FocusMomentView(ListAPIView):
     authentication_classes = [UserAuthentication,]
     def get_queryset(self):
         # collect data for data analysis
-        from django.utils import timezone
-        from django.db.models import F
-        obj = models.PersonalData.objects.filter(curUser=self.request.user, type=1008)
-        if obj.exists():
-            obj.update(count=F("count") + 1, latest_time=timezone.now())
-        else:
-            obj.create(curUser=self.request.user, type=1008, count=1, latest_time=timezone.now(),oritype=1008)
+        if self.request.user:
+            obj = models.GateData.objects.filter(curUser=self.request.user)
+            if not obj.exists():
+                obj.create(curUser=self.request.user, type=1008)
+        # collect data for data analysis
+        if self.request.user:
+            from django.utils import timezone
+            from django.db.models import F
+            obj = models.PersonalData.objects.filter(curUser=self.request.user, type=1008)
+            if obj.exists():
+                obj.update(count=F("count") + 1, latest_time=timezone.now())
+            else:
+                obj.create(curUser=self.request.user, type=1008, count=1, latest_time=timezone.now())
 
         user_obj = models.UserInfo.objects.filter(id=self.request.user.id).first()
         if user_obj.focus_count > settings.MAX_FOCUS_USERS:

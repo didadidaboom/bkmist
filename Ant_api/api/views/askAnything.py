@@ -22,11 +22,16 @@ class CreateAskAnythingView(CreateAPIView):
     def post(self, request, *args, **kwargs):
         # collect data for data analysis
         if self.request.user:
+            obj = models.GateData.objects.filter(curUser=self.request.user)
+            if not obj.exists():
+                obj.create(curUser=self.request.user, type=5005)
+        # collect data for data analysis
+        if self.request.user:
             obj = models.PagesData.objects.filter(curUser=self.request.user, type=5005)
             if obj.exists():
                 obj.update(count=F("count") + 1, latest_time=timezone.now())
             else:
-                obj.create(curUser=self.request.user, type=5005, count=1, latest_time=timezone.now(),oritype=5005)
+                obj.create(curUser=self.request.user, type=5005, count=1, latest_time=timezone.now())
         return self.create(request, *args, **kwargs)
 
 class ScanAskAnythingView(RetrieveAPIView):
@@ -37,11 +42,16 @@ class ScanAskAnythingView(RetrieveAPIView):
     def get(self, request, *args, **kwargs):
         # collect data for data analysis
         if self.request.user:
+            obj = models.GateData.objects.filter(curUser=self.request.user)
+            if not obj.exists():
+                obj.create(curUser=self.request.user, type=9003)
+        # collect data for data analysis
+        if self.request.user:
             obj = models.PagesData.objects.filter(curUser=self.request.user, type=9003)
             if obj.exists():
                 obj.update(count=F("count") + 1, latest_time=timezone.now())
             else:
-                obj.create(curUser=self.request.user, type=9003, count=1, latest_time=timezone.now(),oritype=9003)
+                obj.create(curUser=self.request.user, type=9003, count=1, latest_time=timezone.now())
 
         object = self.get_object()
         if int(object.user.id) is int(request.user.id):
@@ -199,13 +209,18 @@ class AskMeAnythingDetailView(RetrieveAPIView):
     def get(self, request, *args, **kwargs):
         # collect data for data analysis
         if self.request.user:
+            obj = models.GateData.objects.filter(curUser=self.request.user)
+            if not obj.exists():
+                obj.create(curUser=self.request.user, type=9002)
+        # collect data for data analysis
+        if self.request.user:
             from django.utils import timezone
             from django.db.models import F
             obj = models.PagesData.objects.filter(curUser=self.request.user, type=9002)
             if obj.exists():
                 obj.update(count=F("count") + 1, latest_time=timezone.now())
             else:
-                obj.create(curUser=self.request.user, type=9002, count=1, latest_time=timezone.now(),oritype=9002)
+                obj.create(curUser=self.request.user, type=9002, count=1, latest_time=timezone.now())
 
         response = super().get(self, request, *args, **kwargs)
         #验证用户是否登入：登陆增加浏览记录，未登录不进行操作

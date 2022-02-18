@@ -20,13 +20,18 @@ class OtherTacitsView(ListAPIView):
     def get_queryset(self):
         # collect data for data analysis
         if self.request.user:
+            obj = models.GateData.objects.filter(curUser=self.request.user)
+            if not obj.exists():
+                obj.create(curUser=self.request.user, type=8002)
+        # collect data for data analysis
+        if self.request.user:
             from django.utils import timezone
             from django.db.models import F
             obj = models.PagesData.objects.filter(curUser=self.request.user, type=8002)
             if obj.exists():
                 obj.update(count=F("count") + 1, latest_time=timezone.now())
             else:
-                obj.create(curUser=self.request.user, type=8002, count=1, latest_time=timezone.now(),oritype=8002)
+                obj.create(curUser=self.request.user, type=8002, count=1, latest_time=timezone.now())
 
         queryset = models.TacitRecord.objects.filter(
             user_id=self.request.query_params.get("user_id"),
@@ -63,13 +68,18 @@ class OtherTacitsReplyView(ListAPIView):
     def get_queryset(self):
         # collect data for data analysis
         if self.request.user:
+            obj = models.GateData.objects.filter(curUser=self.request.user)
+            if not obj.exists():
+                obj.create(curUser=self.request.user, type=8003)
+        # collect data for data analysis
+        if self.request.user:
             from django.utils import timezone
             from django.db.models import F
             obj = models.PagesData.objects.filter(curUser=self.request.user, type=8003)
             if obj.exists():
                 obj.update(count=F("count") + 1, latest_time=timezone.now())
             else:
-                obj.create(curUser=self.request.user, type=8003, count=1, latest_time=timezone.now(),oritype=8003)
+                obj.create(curUser=self.request.user, type=8003, count=1, latest_time=timezone.now())
 
         queryset = models.TacitRecord.objects.filter(
             user_id=self.request.query_params.get("user_id"),
@@ -108,12 +118,17 @@ class OtherInviteTacitsView(CreateAPIView):
     def perform_create(self, serializer):
         # collect data for data analysis
         if self.request.user:
+            obj = models.GateData.objects.filter(curUser=self.request.user)
+            if not obj.exists():
+                obj.create(curUser=self.request.user, type=8004)
+        # collect data for data analysis
+        if self.request.user:
             from django.utils import timezone
             from django.db.models import F
             obj = models.PagesData.objects.filter(curUser=self.request.user, type=8004)
             if obj.exists():
                 obj.update(count=F("count") + 1, latest_time=timezone.now())
             else:
-                obj.create(curUser=self.request.user, type=8004, count=1, latest_time=timezone.now(),oritype=8004)
+                obj.create(curUser=self.request.user, type=8004, count=1, latest_time=timezone.now())
 
         serializer.save(fromUser=self.request.user)

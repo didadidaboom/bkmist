@@ -533,7 +533,6 @@ class PersonalData(models.Model):
     #p-mail1:4001; p-mail2:4002; p-mail3:4003
     curUser = models.ForeignKey(verbose_name="current user", to="UserInfo", null=True, on_delete=models.CASCADE)
     type = models.IntegerField()
-    oritype = models.PositiveIntegerField(verbose_name="第一次登陆2", default=0)
     count = models.PositiveIntegerField(verbose_name="次数", default=0)
     latest_time = models.DateTimeField(verbose_name="最近时间", auto_now_add=True)
 
@@ -551,12 +550,20 @@ class PagesData(models.Model):
     #o-tacit-reply:9001; o-askanything-detail: 9002; 0-askanything-scan:9003
     curUser = models.ForeignKey(verbose_name="current user", to="UserInfo", null=True, on_delete=models.CASCADE)
     type = models.IntegerField()
-    oritype = models.PositiveIntegerField(verbose_name="第一次登陆1", default=0)
     count = models.PositiveIntegerField(verbose_name="次数", default=0)
     latest_time = models.DateTimeField(verbose_name="最近时间", auto_now_add=True)
 
     class Meta:
         db_table = "pagesdata"
         verbose_name = "不同页数据"
+        verbose_name_plural = verbose_name
+
+class GateData(models.Model):
+    curUser = models.ForeignKey(verbose_name="current user", to="UserInfo", null=True, on_delete=models.CASCADE)
+    type = models.PositiveIntegerField(verbose_name="第一次登陆1", default=0)
+
+    class Meta:
+        db_table = "gatedata"
+        verbose_name = "第一次数据"
         verbose_name_plural = verbose_name
 

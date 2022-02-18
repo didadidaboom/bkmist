@@ -26,13 +26,18 @@ class AddressMomentDistanceView(ListAPIView):
     def get_queryset(self):
         # collect data for data analysis
         if self.request.user:
+            obj = models.GateData.objects.filter(curUser=self.request.user)
+            if not obj.exists():
+                obj.create(curUser=self.request.user, type=7001)
+        # collect data for data analysis
+        if self.request.user:
             from django.utils import timezone
             from django.db.models import F
             obj = models.PagesData.objects.filter(curUser=self.request.user, type=7001)
             if obj.exists():
                 obj.update(count=F("count") + 1, latest_time=timezone.now())
             else:
-                obj.create(curUser=self.request.user, type=7001, count=1, latest_time=timezone.now(),oritype=7001)
+                obj.create(curUser=self.request.user, type=7001, count=1, latest_time=timezone.now())
 
         address_id = self.request.query_params.get("address_id")
         address_obj = models.Address.objects.get(id=address_id)
@@ -62,13 +67,18 @@ class AddressMomentTimeView(ListAPIView):
     def get_queryset(self):
         # collect data for data analysis
         if self.request.user:
+            obj = models.GateData.objects.filter(curUser=self.request.user)
+            if not obj.exists():
+                obj.create(curUser=self.request.user, type=7002)
+        # collect data for data analysis
+        if self.request.user:
             from django.utils import timezone
             from django.db.models import F
             obj = models.PagesData.objects.filter(curUser=self.request.user, type=7002)
             if obj.exists():
                 obj.update(count=F("count") + 1, latest_time=timezone.now())
             else:
-                obj.create(curUser=self.request.user, type=7002, count=1, latest_time=timezone.now(),oritype=7002)
+                obj.create(curUser=self.request.user, type=7002, count=1, latest_time=timezone.now())
 
         address_id = self.request.query_params.get("address_id")
         address_obj = models.Address.objects.get(id=address_id)

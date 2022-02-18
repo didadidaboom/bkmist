@@ -18,14 +18,20 @@ class PersonalMomentView(ListAPIView):
     filter_backends = [MinFilterBackend,MaxFilterBackend]
 
     def get_queryset(self):
+        # collect data for data analysis
+        if self.request.user:
+            obj = models.GateData.objects.filter(curUser=self.request.user)
+            if not obj.exists():
+                obj.create(curUser=self.request.user, type=1001)
         #collect data for data analysis
-        from django.utils import timezone
-        from django.db.models import F
-        obj = models.PersonalData.objects.filter(curUser=self.request.user,type=1001)
-        if obj.exists():
-            obj.update(count=F("count") + 1,latest_time=timezone.now())
-        else:
-            obj.create(curUser=self.request.user,type=1001,count=1,latest_time=timezone.now(),oritype=1001)
+        if self.request.user:
+            from django.utils import timezone
+            from django.db.models import F
+            obj = models.PersonalData.objects.filter(curUser=self.request.user,type=1001)
+            if obj.exists():
+                obj.update(count=F("count") + 1,latest_time=timezone.now())
+            else:
+                obj.create(curUser=self.request.user,type=1001,count=1,latest_time=timezone.now())
 
         queryset = models.Moment.objects.filter(user = self.request.user).order_by("-id").all()
         return queryset

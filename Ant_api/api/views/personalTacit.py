@@ -25,13 +25,19 @@ class PersonalTacitView(ListAPIView):
 
     def get_queryset(self):
         # collect data for data analysis
-        from django.utils import timezone
-        from django.db.models import F
-        obj = models.PersonalData.objects.filter(curUser=self.request.user, type=2001)
-        if obj.exists():
-            obj.update(count=F("count") + 1, latest_time=timezone.now())
-        else:
-            obj.create(curUser=self.request.user, type=2001, count=1, latest_time=timezone.now(),oritype=2001)
+        if self.request.user:
+            obj = models.GateData.objects.filter(curUser=self.request.user)
+            if not obj.exists():
+                obj.create(curUser=self.request.user, type=2001)
+        # collect data for data analysis
+        if self.request.user:
+            from django.utils import timezone
+            from django.db.models import F
+            obj = models.PersonalData.objects.filter(curUser=self.request.user, type=2001)
+            if obj.exists():
+                obj.update(count=F("count") + 1, latest_time=timezone.now())
+            else:
+                obj.create(curUser=self.request.user, type=2001, count=1, latest_time=timezone.now())
 
         queryset = models.TacitRecord.objects.filter(user=self.request.user).order_by("-id").all()
         return queryset
@@ -72,13 +78,19 @@ class PersonalTacitReplyView(ListAPIView):
 
     def get_queryset(self):
         # collect data for data analysis
-        from django.utils import timezone
-        from django.db.models import F
-        obj = models.PersonalData.objects.filter(curUser=self.request.user, type=3001)
-        if obj.exists():
-            obj.update(count=F("count") + 1, latest_time=timezone.now())
-        else:
-            obj.create(curUser=self.request.user, type=3001, count= 1, latest_time=timezone.now(),oritype=3001)
+        if self.request.user:
+            obj = models.GateData.objects.filter(curUser=self.request.user)
+            if not obj.exists():
+                obj.create(curUser=self.request.user, type=3001)
+        # collect data for data analysis
+        if self.request.user:
+            from django.utils import timezone
+            from django.db.models import F
+            obj = models.PersonalData.objects.filter(curUser=self.request.user, type=3001)
+            if obj.exists():
+                obj.update(count=F("count") + 1, latest_time=timezone.now())
+            else:
+                obj.create(curUser=self.request.user, type=3001, count= 1, latest_time=timezone.now())
         queryset = models.TacitRecord.objects.filter(user=self.request.user,type=10001).order_by("-id").all()
         return queryset
 
