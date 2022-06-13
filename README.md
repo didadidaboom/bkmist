@@ -1,5 +1,3 @@
-# A back-end server for a social app
+# A back-end for a social app: provided api for different service
 ## framework
 + Django
-## Goal
-+ proivde api for a social app
